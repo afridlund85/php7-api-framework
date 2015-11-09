@@ -18,5 +18,8 @@
         "psr-4": {
             "API\\": "src"
         }
+    },
+    "scripts": {
+        "coverage" : "phpdbg -qrr vendor/bin/phpunit"
     }
 }
