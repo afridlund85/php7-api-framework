@@ -20,6 +20,7 @@
         }
     },
     "scripts": {
+        "test": "vendor/bin/phpunit --no-configuration --bootstrap vendor/autoload.php tests",
         "coverage" : "phpdbg -qrr vendor/bin/phpunit"
     }
 }
