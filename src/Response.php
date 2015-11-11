@@ -4,8 +4,9 @@ namespace Asd;
 
 class Response
 {
-    public function __construct()
+    public function __construct(string $str = null)
     {
-        throw new \Exception();
+        if($str === null)
+            throw new \Exception();
     }
 }
