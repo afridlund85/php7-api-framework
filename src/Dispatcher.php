@@ -18,4 +18,12 @@ class Dispatcher
         if($req === null || $res === null)
             throw new \Exception();
     }
+    
+    /**
+     * @return string   ResponseString from request
+     */
+    public function dispatch() : string
+    {
+        return '';
+    }
 }
