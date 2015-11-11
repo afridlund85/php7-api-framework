@@ -2,9 +2,14 @@
 
 namespace Asd;
 
-class Response
+class Response implements iResponse
 {
     public function __construct(string $body = '')
+    {
+        
+    }
+    
+    public function getResponseAsString() : string
     {
         
     }
