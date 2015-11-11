@@ -10,7 +10,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
     * @test
     * @expectedException    \Exception
-    * @covers               Asd\Dispatcher:__construct
+    * @covers               \Asd\Dispatcher::__construct
     */
     public function constructor_withNoArguments_throwsException()
     {
@@ -20,7 +20,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException   \Exception
-     * @covers              Asd\Dispatcher:__construct
+     * @covers              \Asd\Dispatcher::__construct
      */
     public function constructor_withMissingReponseArgument_throwsException()
     {
@@ -31,7 +31,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException   \Exception
-     * @covers              Asd\Dispatcher:__construct
+     * @covers              \Asd\Dispatcher::__construct
      */
     public function constructor_withMissingRequestArgument_throwsException()
     {
@@ -41,7 +41,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers              Asd\Dispatcher:__construct
+     * @covers              \Asd\Dispatcher::__construct
      */
     public function constructor_withCorrectArguments_doesNotThrowException()
     {
