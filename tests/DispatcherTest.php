@@ -1,8 +1,10 @@
 <?php
 
-use Asd\Asd;
+namespace Test;
 
-class AsdTest extends PHPUnit_Framework_TestCase{
+use Asd\Dispatcher;
+
+class DispatcherTest extends \PHPUnit_Framework_TestCase{
     
     /**
     *   @test
@@ -10,6 +12,6 @@ class AsdTest extends PHPUnit_Framework_TestCase{
     *   @covers \API\Asd:__construct
     */
     public function constructor_withNoArguments_throwsException(){
-        $asd = new Asd();
+        $dispatcher = new Dispatcher();
     }
 }
