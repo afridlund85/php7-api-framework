@@ -3,6 +3,7 @@
 namespace Test;
 
 use Asd\Response;
+use Asd\iResponse;
 
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {   
@@ -22,5 +23,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     public function constructor_withNoArguments_defaultsToEmptyString()
     {
         $response = new Response();
+    }
+    
+    /**
+     * @test
+     */
+    public function implements_iResponse_Interface()
+    {
+        $response = new Response();
+        $this->assertTrue($response instanceof iResponse);
     }
 }
