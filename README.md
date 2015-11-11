@@ -10,7 +10,7 @@ None, it is not even close to ready for release.
 
 ```
 git clone https://github.com/afridlund85/php7-api-framework.git
-cd hp7-api-framework
+cd php7-api-framework
 composer install
 ```
 
@@ -19,7 +19,9 @@ composer install
 Runs all tests in "tests"-folder.
 
 ```
-composer run-script tests
+phpunit
+or
+vendor/bin/phpunit
 ```
 
 ### Generate code coverage
