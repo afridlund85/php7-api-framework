@@ -9,7 +9,7 @@ class Response implements iResponse
         
     }
     
-    public function getResponseAsString() : string
+    public function toString() : string
     {
         
     }

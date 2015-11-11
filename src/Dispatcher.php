@@ -29,6 +29,6 @@ class Dispatcher
      */
     public function dispatch() : string
     {
-        return $this->response->getResponseAsString();
+        return $this->response->toString();
     }
 }

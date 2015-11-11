@@ -59,7 +59,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $expected = 'the expected result';
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $responseStub->method('getResponseAsString')->willReturn($expected);
+        $responseStub->method('toString')->willReturn($expected);
         $dispatcher = new Dispatcher($requestStub, $responseStub);
         
         $actual = $dispatcher->dispatch();

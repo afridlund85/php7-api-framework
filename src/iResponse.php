@@ -2,6 +2,7 @@
 
 namespace Asd;
 
-interface iResponse{
-    public function getResponseAsString() : string;
+interface iResponse
+{
+    public function toString() : string;
 }
