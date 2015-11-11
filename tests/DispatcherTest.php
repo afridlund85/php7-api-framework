@@ -24,7 +24,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function constructor_withCorrectArguments_doesNotThrowException()
     {
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $dispatcher = new Dispatcher($requestStub);
+        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
+        $dispatcher = new Dispatcher($requestStub, $responseStub);
     }
     
     /**
