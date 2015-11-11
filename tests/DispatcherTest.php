@@ -26,4 +26,15 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $dispatcher = new Dispatcher($requestStub);
     }
+    
+    /**
+     * @test
+     * @expectedException   \Exception
+     * @covers              Asd\Dispatcher:__construct
+     */
+    public function constructor_withMissingReponseArgument_throwsException()
+    {
+        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
+        $dispatcher = new Dispatcher($requestStub, null);
+    }
 }
