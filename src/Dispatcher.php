@@ -7,6 +7,10 @@ namespace Asd;
  */
 class Dispatcher
 {
+    /**
+     * @var Response
+     */
+    private $response;
     
     /**
      *  @param iRequest     $req
@@ -17,6 +21,7 @@ class Dispatcher
     {
         if($req === null || $res === null)
             throw new \Exception();
+        $this->response = $res;
     }
     
     /**
@@ -24,6 +29,6 @@ class Dispatcher
      */
     public function dispatch() : string
     {
-        return '';
+        return $this->response->getResponseAsString();
     }
 }
