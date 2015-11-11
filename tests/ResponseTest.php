@@ -24,4 +24,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $response = new Response('string');
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::__construct
+     */
+    public function constructor_withNoArguments_defaultsToEmptyString()
+    {
+        $response = new Response();
+    }
 }
