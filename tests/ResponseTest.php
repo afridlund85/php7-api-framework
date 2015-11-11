@@ -33,4 +33,18 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
         $this->assertTrue($response instanceof iResponse);
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::toString
+     */
+    public function toString_returnsResponseBodyAsString()
+    {
+        $expected = 'the response body';
+        $response = new Response($expected);
+        
+        $actual = $response->toString();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
