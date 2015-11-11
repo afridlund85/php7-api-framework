@@ -11,7 +11,7 @@ class Dispatcher
     /**
      *  @param iRequest     $req
      *
-     *  @return Dispatcher         Instance of Asd\Dispatcher
+     *  @return Dispatcher  Instance of Asd\Dispatcher
      */
     public function __construct(iRequest $req = null)
     {
