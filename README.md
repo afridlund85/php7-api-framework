@@ -1,2 +1,31 @@
-# php7-api-framework
-PHP7 Framework for API applications
+# Asd(name?) PHP7 API Framework
+
+PHP7 Framework for API applications.
+
+## Installation
+
+None, it is not even close to ready for release.
+
+## Setup Dev
+
+```
+git clone https://github.com/afridlund85/php7-api-framework.git
+cd hp7-api-framework
+composer install
+```
+
+### Runing tests
+
+Runs all tests in "tests"-folder.
+
+```
+composer run-script tests
+```
+
+### Generate code coverage
+
+creates HTML-formated code coverage report in a folder in root called "coverage".
+
+```
+composer run-script coverage
+```

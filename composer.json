@@ -1,22 +1,32 @@
 {
-    "name": "Not decided, PHP 7 API framework",
+    "name": "Not decided(Asd?), PHP 7 API framework",
     "description": "API framework for PHP7",
     "license": "MIT",
-    "keywords": [],
+    "keywords": [
+        "PHP7",
+        "API framework"
+    ],
     "authors": [
         {
             "name": "Andreas Fridlund",
             "email": "afridlund85@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=7.0.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "5.0.*",
         "phpunit/php-code-coverage": "^3"
     },
     "autoload": {
         "psr-4": {
-            "API\\": "src"
+            "Asd\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
         }
     },
     "scripts": {
