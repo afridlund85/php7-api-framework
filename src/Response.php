@@ -34,6 +34,11 @@ class Response implements iResponse
     private $contentType;
     
     /**
+     * @var string
+     */
+    private $charset;
+    
+    /**
      * @param string $body  Response body
      */
     public function __construct(string $body = null, int $statusCode = null)
