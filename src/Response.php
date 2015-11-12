@@ -78,8 +78,10 @@ class Response implements iResponse
     /**
      * @return void
      */
-    public function addHeader($key, $value = null)
+    public function addHeader($key = null, $value = null)
     {
+        if($key === null)
+            throw new \Exception('Missing argument $key');
         $this->headers[$key] = $value ?? '';
     }
 }
