@@ -60,4 +60,12 @@ class Response implements iResponse
     {
         $this->statusCode = $statusCode;
     }
+    
+    /**
+     * @return array
+     */
+    public function getHeaders() : Array
+    {
+        
+    }
 }

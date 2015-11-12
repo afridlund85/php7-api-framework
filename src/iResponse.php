@@ -8,4 +8,5 @@ interface iResponse
     public function setBody(string $body);
     public function getStatusCode() : int;
     public function setStatusCode(int $statusCode);
+    public function getHeaders() : Array;
 }

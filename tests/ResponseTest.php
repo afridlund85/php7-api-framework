@@ -106,4 +106,18 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::__construct
+     */
+    public function constructor_headersArrayDefaultsToEmptyArray()
+    {
+        $expected = [];
+        $response = new Response();
+        
+        $actual = $response->getHeaders();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
