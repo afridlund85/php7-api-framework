@@ -29,6 +29,7 @@ class Dispatcher
      */
     public function dispatch() : string
     {
+        echo $this->response->toString();
         return $this->response->toString();
     }
 }
