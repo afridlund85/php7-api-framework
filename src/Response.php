@@ -99,8 +99,10 @@ class Response implements iResponse
     /**
      * @param string    protocol
      */
-    public function setProtocol(string $protocol)
+    public function setProtocol(string $protocol = null)
     {
+        if($protocol === null)
+            throw new \Exception('$protocol argument missing');
         $this->protocol = $protocol;
     }
 }
