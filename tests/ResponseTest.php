@@ -66,6 +66,21 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers  Asd\Response::__construct
+     */
+    public function constructor_takesArgumentStatusCode()
+    {
+        $expected = 404;
+        $response = new Response('some body', $expected);
+        
+        $actual = $response->getStatusCode();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::__construct
      */
     public function responsePropertyStatusCode_defaultsTo200()
     {
