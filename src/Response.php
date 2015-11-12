@@ -66,7 +66,7 @@ class Response implements iResponse
     public function setStatusCode(int $statusCode)
     {
         if($statusCode < 100 || $statusCode > 999)
-            throw new \Exception('$statusCode must be greater than 99');
+            throw new \Exception('$statusCode argument must be greater than 99');
         $this->statusCode = $statusCode;
     }
     
@@ -102,7 +102,7 @@ class Response implements iResponse
     public function setProtocol(string $protocol = null)
     {
         if($protocol === null)
-            throw new \Exception('$protocol argument missing');
+            throw new \Exception('Missing argument: $protocol');
         $this->protocol = $protocol;
     }
 }
