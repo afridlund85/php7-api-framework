@@ -333,4 +333,18 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
         $response->setContentType();
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::__construct
+     * @covers  Asd\Response::getCharset
+     */
+    public function constructor_setsCharsetDefaultValue()
+    {
+        $expected = 'UTF-8';
+        $response = new Response();
+        $actual = $response->getCharset();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
