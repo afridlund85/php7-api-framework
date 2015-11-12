@@ -322,4 +322,15 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @expectedException \Exception
+     * @covers Asd\Response::setContentType
+     */
+    public function setContentType_withNoArgument_throwsException()
+    {
+        $response = new Response();
+        $response->setContentType();
+    }
 }
