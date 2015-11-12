@@ -64,6 +64,8 @@ class Response implements iResponse
      */
     public function setStatusCode(int $statusCode)
     {
+        if($statusCode < 100)
+            throw new \Exception('$statusCode must be greater than 99');
         $this->statusCode = $statusCode;
     }
     
