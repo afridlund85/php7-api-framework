@@ -31,6 +31,7 @@ class Response implements iResponse
         $this->body = $body ?? '';
         $this->statusCode = $statusCode ?? 200;
         $this->headers = [];
+        $this->protocol = 'HTTP/1.1';
     }
     
     /**
@@ -85,5 +86,13 @@ class Response implements iResponse
         if($key === null)
             throw new \Exception('Missing argument: $key');
         $this->headers[$key] = $value ?? '';
+    }
+    
+    /**
+     * @return string   protocol
+     */
+    public function getProtocol() : string
+    {
+        return $this->protocol;
     }
 }
