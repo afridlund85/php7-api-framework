@@ -21,10 +21,10 @@ class Response implements iResponse
     /**
      * @param string $body  Response body
      */
-    public function __construct(string $body = '')
+    public function __construct(string $body = '', int $statusCode = null)
     {
         $this->body = $body;
-        $this->statusCode = 200;
+        $this->statusCode = $statusCode ?? 200;
     }
     
     /**
