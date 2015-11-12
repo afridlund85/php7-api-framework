@@ -172,4 +172,15 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::addHeader
+     * @expectedException \Exception
+     */
+    public function addHeader_withoutKey_throwsException()
+    {
+        $response = new Response();
+        $response->addHeader();
+    }
 }
