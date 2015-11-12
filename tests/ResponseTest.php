@@ -96,6 +96,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Response::setStatusCode
+     * @covers  Asd\Response::getStatusCode
      */
     public function setStatusCode_withCorrectArgument_setsStatusCode()
     {
@@ -152,6 +153,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers  Asd\Response::addHeader
+     * @covers  Asd\Response::getHeaders
      */
     public function addHeader_withCorrectArguments_addsToHeaderArray()
     {
@@ -169,6 +171,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers  Asd\Response::addHeader
+     * @covers  Asd\Response::getHeaders
      */
     public function addHeader_whenKeyAlreadyExists_overwritesHeaderKey()
     {
@@ -188,6 +191,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers  Asd\Response::addHeader
+     * @covers  Asd\Response::getHeaders
      */
     public function addHeader_withoutValue_defaultsToEmptyString()
     {
@@ -210,5 +214,19 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $response = new Response();
         $response->addHeader();
+    }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::__construct
+     * @covers  Asd\Response::getProtocol
+     */
+    public function constructor_setsProtocolDefaultValue()
+    {
+        $expected = 'HTTP/1.1';
+        $response = new Response();
+        $actual = $response->getProtocol();
+        
+        $this->assertEquals($expected, $actual);
     }
 }
