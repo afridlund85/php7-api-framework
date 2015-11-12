@@ -306,4 +306,20 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Response::setContentType
+     * @covers Asd\Response::getContentType
+     */
+    public function setContentType_withString_changesContentTypeProperty()
+    {
+        $expected = 'text/html';
+        $response = new Response();
+        
+        $response->setContentType($expected);
+        $actual = $response->getContentType();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
