@@ -13,4 +13,5 @@ interface iResponse
     public function removeHeader(string $key);
     public function getProtocol() : string;
     public function setProtocol(string $protocol);
+    public function getContentType() : string;
 }

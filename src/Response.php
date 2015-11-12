@@ -32,6 +32,7 @@ class Response implements iResponse
         $this->statusCode = $statusCode ?? 200;
         $this->headers = [];
         $this->protocol = 'HTTP/1.1';
+        $this->contentType = 'application/json';
     }
     
     /**
@@ -114,5 +115,12 @@ class Response implements iResponse
         if($protocol === null)
             throw new \Exception('Missing argument: $protocol');
         $this->protocol = $protocol;
+    }
+    /**
+     * @return string   contentType
+     */
+    public function getContentType() : string
+    {
+        return $this->contentType;
     }
 }
