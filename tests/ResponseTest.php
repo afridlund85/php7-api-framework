@@ -47,4 +47,19 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::setBody
+     */
+    public function setBody_setsBodyOfResponseObject()
+    {
+        $expected = 'expected body';
+        $response = new Response();
+        $response->setBody($expected);
+        
+        $actual = $response->toString();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }

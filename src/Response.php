@@ -21,6 +21,15 @@ class Response implements iResponse
     }
     
     /**
+     * @param string $body  ResponseBody
+     * @return void
+     */
+    public function setBody(string $body)
+    {
+        
+    }
+    
+    /**
      * @return string   Response body
      */
     public function toString() : string
