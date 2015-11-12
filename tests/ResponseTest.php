@@ -122,6 +122,19 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers Asd\Response::setStatusCode
+     * @expectedException \Exception
+     */
+    public function setStatusCode_withIllegalHighValue_throwsException()
+    {
+        $illegalStatusCode = 1000;
+        $response = new Response();
+        
+        $response->setStatusCode($illegalStatusCode);
+    }
+    
+    /**
+     * @test
      * @covers  Asd\Response::__construct
      */
     public function constructor_headersArrayDefaultsToEmptyArray()
