@@ -139,8 +139,10 @@ class Response implements iResponse
      * @param string    contentType
      * @return void
      */
-    public function setContentType(string $contentType)
+    public function setContentType(string $contentType = null)
     {
+        if($contentType === null)
+            throw new \Exception('Missing argument: $contentType');
         $this->contentType = $contentType;
     }
 }
