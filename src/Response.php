@@ -80,6 +80,6 @@ class Response implements iResponse
      */
     public function addHeader($key, $value)
     {
-        
+        $this->headers[] = [$key => $value];
     }
 }
