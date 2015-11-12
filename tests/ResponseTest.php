@@ -245,4 +245,15 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @expectedException \Exception
+     * @covers Asd\Response::setProtocol
+     */
+    public function setProtocol_withNoArgument_throwsException()
+    {
+        $response = new Response();
+        $response->setProtocol();
+    }
 }
