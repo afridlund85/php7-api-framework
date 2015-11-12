@@ -229,4 +229,20 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Response::setProtocol
+     * @covers Asd\Response::getProtocol
+     */
+    public function setProtocol_withString_changesProtocolProperty()
+    {
+        $expected = 'CustomProt';
+        $response = new Response();
+        
+        $response->setProtocol($expected);
+        $actual = $response->getProtocol();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
