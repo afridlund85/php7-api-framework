@@ -26,7 +26,7 @@ class Response implements iResponse
      */
     public function setBody(string $body)
     {
-        
+        $this->body = $body;
     }
     
     /**
