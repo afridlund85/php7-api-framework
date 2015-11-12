@@ -63,20 +63,4 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
-    
-    /**
-     * @test
-     * @expectedException \TypeError
-     */
-    public function setBody_withNonStringAgument_throwsTypeError()
-    {
-        $response = new Response();
-        $response->setBody(123);
-        // try{
-            
-        //     $this->fail();
-        // } catch (\TypeError $e) {
-        //     $this->assertTrue(true);
-        // }
-    }
 }
