@@ -14,11 +14,17 @@ class Response implements iResponse
     private $body;
     
     /**
+     * @var int
+     */
+    private $statusCode;
+    
+    /**
      * @param string $body  Response body
      */
     public function __construct(string $body = '')
     {
         $this->body = $body;
+        $this->statusCode = 200;
     }
     
     /**
@@ -43,6 +49,6 @@ class Response implements iResponse
      */
     public function getStatusCode() : int
     {
-        return 0;
+        return $this->statusCode;
     }
 }
