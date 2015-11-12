@@ -81,6 +81,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers  Asd\Response::__construct
+     * @covers  Asd\Response::getStatusCode
      */
     public function responsePropertyStatusCode_defaultsTo200()
     {
@@ -136,6 +137,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers  Asd\Response::__construct
+     * @covers  Asd\Response::getHeaders
      */
     public function constructor_headersArrayDefaultsToEmptyArray()
     {
