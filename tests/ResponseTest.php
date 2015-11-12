@@ -7,14 +7,14 @@ use Asd\Response;
 use Asd\iResponse;
 
 class ResponseTest extends \PHPUnit_Framework_TestCase
-{   
+{
     /**
      * @test
-     * @covers  Asd\Response::__construct
      */
-    public function constructor_takesStringArgument()
+    public function implements_iResponse_Interface()
     {
-        $response = new Response('string');
+        $response = new Response();
+        $this->assertTrue($response instanceof iResponse);
     }
     
     /**
@@ -28,11 +28,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers  Asd\Response::__construct
      */
-    public function implements_iResponse_Interface()
+    public function constructor_takesStringArgument()
     {
-        $response = new Response();
-        $this->assertTrue($response instanceof iResponse);
+        $response = new Response('string');
     }
     
     /**
