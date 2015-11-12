@@ -292,4 +292,18 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
         $response->setProtocol();
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::__construct
+     * @covers  Asd\Response::getContentType
+     */
+    public function constructor_setsContentTypeDefaultValue()
+    {
+        $expected = 'application/json';
+        $response = new Response();
+        $actual = $response->getContentType();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
