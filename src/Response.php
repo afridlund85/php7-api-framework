@@ -19,12 +19,18 @@ class Response implements iResponse
     private $statusCode;
     
     /**
+     * @var Array
+     */
+    private $headers;
+    
+    /**
      * @param string $body  Response body
      */
     public function __construct(string $body = null, int $statusCode = null)
     {
         $this->body = $body ?? '';
         $this->statusCode = $statusCode ?? 200;
+        $this->headers = [];
     }
     
     /**
@@ -66,6 +72,6 @@ class Response implements iResponse
      */
     public function getHeaders() : Array
     {
-        
+        return $this->headers;
     }
 }
