@@ -16,4 +16,5 @@ interface iResponse
     public function getContentType() : string;
     public function setContentType(string $contentType);
     public function getCharset() : string;
+    public function setCharset(string $charset);
 }

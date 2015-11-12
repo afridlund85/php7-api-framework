@@ -159,4 +159,13 @@ class Response implements iResponse
     {
         return $this->charset;
     }
+    
+    /**
+     * @param string    charset
+     * @return void
+     */
+    public function setCharset(string $charset)
+    {
+        $this->charset = $charset;
+    }
 }
