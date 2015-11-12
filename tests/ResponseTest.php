@@ -91,4 +91,19 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Response::setStatusCode
+     */
+    public function setStatusCode_withCorrectArgument_setsStatusCode()
+    {
+        $expected = 300;
+        $response = new Response();
+        
+        $response->setStatusCode($expected);
+        $actual = $response->getStatusCode();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }

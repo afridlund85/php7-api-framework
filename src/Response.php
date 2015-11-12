@@ -45,6 +45,15 @@ class Response implements iResponse
     }
     
     /**
+     * @param int   statusCode
+     * @return void
+     */
+    public function setStatusCode(int $statusCode)
+    {
+        
+    }
+    
+    /**
      * @return string   Response body
      */
     public function toString() : string
