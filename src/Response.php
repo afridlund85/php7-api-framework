@@ -43,6 +43,7 @@ class Response implements iResponse
         $this->headers = [];
         $this->protocol = 'HTTP/1.1';
         $this->contentType = 'application/json';
+        $this->charset = 'UTF-8';
     }
     
     /**
@@ -144,5 +145,13 @@ class Response implements iResponse
         if($contentType === null)
             throw new \Exception('Missing argument: $contentType');
         $this->contentType = $contentType;
+    }
+    
+    /**
+     * @return string   charset
+     */
+    public function getCharset() : string
+    {
+        return $this->charset;
     }
 }
