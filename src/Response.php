@@ -21,9 +21,9 @@ class Response implements iResponse
     /**
      * @param string $body  Response body
      */
-    public function __construct(string $body = '', int $statusCode = null)
+    public function __construct(string $body = null, int $statusCode = null)
     {
-        $this->body = $body;
+        $this->body = $body ?? '';
         $this->statusCode = $statusCode ?? 200;
     }
     
@@ -37,18 +37,18 @@ class Response implements iResponse
     }
     
     /**
-     * @return string   Response body
-     */
-    public function toString() : string
-    {
-        return $this->body;
-    }
-    
-    /**
      * @return int  statusCode
      */
     public function getStatusCode() : int
     {
         return $this->statusCode;
+    }
+    
+    /**
+     * @return string   Response body
+     */
+    public function toString() : string
+    {
+        return $this->body;
     }
 }
