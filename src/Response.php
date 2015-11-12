@@ -95,4 +95,12 @@ class Response implements iResponse
     {
         return $this->protocol;
     }
+    
+    /**
+     * @param string    protocol
+     */
+    public function setProtocol(string $protocol)
+    {
+        $this->protocol = $protocol;
+    }
 }
