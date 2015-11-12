@@ -363,4 +363,15 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @expectedException \Exception
+     * @covers Asd\Response::setChartset
+     */
+    public function setCharset_withNoArgument_throwsException()
+    {
+        $response = new Response();
+        $response->setCharset();
+    }
 }
