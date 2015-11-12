@@ -142,7 +142,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers  Asd\Response::addHeader
      */
-    public function addHeader_whenAlreadyExists_overwritesHeaderKey()
+    public function addHeader_whenKeyAlreadyExists_overwritesHeaderKey()
     {
         $headerKey = 'theKey';
         $headerValue = 'theValue';
@@ -152,6 +152,22 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $response->addHeader($headerKey, $headerValue);
         $response->addHeader($headerKey, $newHeaderValue);
+        $actual = $response->getHeaders();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::addHeader
+     */
+    public function addHeader_withoutValue_defaultsToEmptyString()
+    {
+        $headerKey = 'theKey';
+        $response = new Response();
+        $expected = [$headerKey => ''];
+        
+        $response->addHeader($headerKey);
         $actual = $response->getHeaders();
         
         $this->assertEquals($expected, $actual);
