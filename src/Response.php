@@ -74,4 +74,12 @@ class Response implements iResponse
     {
         return $this->headers;
     }
+    
+    /**
+     * @return void
+     */
+    public function addHeader($key, $value)
+    {
+        
+    }
 }

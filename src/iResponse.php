@@ -9,4 +9,5 @@ interface iResponse
     public function getStatusCode() : int;
     public function setStatusCode(int $statusCode);
     public function getHeaders() : Array;
+    public function addHeader($key, $value);
 }

@@ -120,4 +120,21 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers  Asd\Response::addHeader
+     */
+    public function addHeader_withCorrectArguments_addsToHeaderArray()
+    {
+        $headerKey = 'theKey';
+        $headerValue = 'theValue';
+        $response = new Response();
+        $expected = [[$headerKey => $headerValue]];
+        
+        $response->addHeader($headerKey, $headerValue);
+        $actual = $response->getHeaders();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
