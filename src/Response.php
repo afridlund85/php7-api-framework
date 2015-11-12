@@ -94,9 +94,8 @@ class Response implements iResponse
      */
     public function removeHeader(string $key)
     {
-        if(!isset($this->headers[$key]))
-            throw new \Exception('Missing key');
-        unset($this->headers[$key]);
+        if(isset($this->headers[$key]))
+            unset($this->headers[$key]);
     }
     
     /**
