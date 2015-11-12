@@ -50,7 +50,7 @@ class Response implements iResponse
      */
     public function setStatusCode(int $statusCode)
     {
-        
+        $this->statusCode = $statusCode;
     }
     
     /**
