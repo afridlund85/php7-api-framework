@@ -24,6 +24,16 @@ class Response implements iResponse
     private $headers;
     
     /**
+     * @var string
+     */
+    private $protocol;
+    
+    /**
+     * @var string
+     */
+    private $contentType;
+    
+    /**
      * @param string $body  Response body
      */
     public function __construct(string $body = null, int $statusCode = null)
