@@ -89,6 +89,15 @@ class Response implements iResponse
     }
     
     /**
+     * @param string $key
+     * @return void
+     */
+    public function removeHeader(string $key)
+    {
+        
+    }
+    
+    /**
      * @return string   protocol
      */
     public function getProtocol() : string

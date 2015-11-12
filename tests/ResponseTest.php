@@ -218,6 +218,25 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers Asd\Response::removeHeader
+     */
+    public function removeHeader_removesAHeaderFromArray()
+    {
+        $firstKey = 'first';
+        $secondKey = 'second';
+        $expected = [$secondKey => ''];
+        $response = new Response();
+        $response->addHeader($firstKey);
+        $response->addHeader($secondKey);
+        
+        $response->removeHeader($firstKey);
+        $actual = $response->getHeaders();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
      * @covers  Asd\Response::__construct
      * @covers  Asd\Response::getProtocol
      */

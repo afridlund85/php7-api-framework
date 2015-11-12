@@ -10,6 +10,7 @@ interface iResponse
     public function setStatusCode(int $statusCode);
     public function getHeaders() : Array;
     public function addHeader(string $key, string $value);
+    public function removeHeader(string $key);
     public function getProtocol() : string;
     public function setProtocol(string $protocol);
 }
