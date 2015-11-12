@@ -237,6 +237,21 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @expectedException   \Exception
+     * @covers              Asd\Response::removeHeader
+     */
+    public function removeHeader_withNonExistingKey_throwsException()
+    {
+        $key = 'key';
+        $expected = [$key => ''];
+        $response = new Response();
+        $response->addHeader($key);
+        
+        $response->removeHeader('notThe' . $key);
+    }
+    
+    /**
+     * @test
      * @covers  Asd\Response::__construct
      * @covers  Asd\Response::getProtocol
      */
