@@ -126,11 +126,21 @@ class Response implements iResponse
             throw new \Exception('Missing argument: $protocol');
         $this->protocol = $protocol;
     }
+    
     /**
      * @return string   contentType
      */
     public function getContentType() : string
     {
         return $this->contentType;
+    }
+    
+    /**
+     * @param string    contentType
+     * @return void
+     */
+    public function setContentType(string $contentType)
+    {
+        $this->contentType = $contentType;
     }
 }
