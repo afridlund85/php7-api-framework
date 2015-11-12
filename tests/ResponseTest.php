@@ -347,4 +347,20 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Response::setCharset
+     * @covers Asd\Response::getCharset
+     */
+    public function setCharset_withString_changesCharsetProperty()
+    {
+        $expected = 'UTF-16';
+        $response = new Response();
+        
+        $response->setCharset($expected);
+        $actual = $response->getCharset();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
