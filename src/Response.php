@@ -94,7 +94,7 @@ class Response implements iResponse
      */
     public function removeHeader(string $key)
     {
-        
+        unset($this->headers[$key]);
     }
     
     /**
