@@ -28,6 +28,14 @@ class Response implements iResponse
     }
     
     /**
+     * @return string   Response body
+     */
+    public function getBody() : string
+    {
+        return $this->body;
+    }
+    
+    /**
      * @param string $body  ResponseBody
      * @return void
      */
@@ -51,13 +59,5 @@ class Response implements iResponse
     public function setStatusCode(int $statusCode)
     {
         $this->statusCode = $statusCode;
-    }
-    
-    /**
-     * @return string   Response body
-     */
-    public function toString() : string
-    {
-        return $this->body;
     }
 }

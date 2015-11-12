@@ -52,23 +52,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers  \Asd\Dispatcher::dispatch
-     */
-    public function dispatch_returnsStringResultFromResponse()
-    {
-        $expected = 'the expected result';
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $responseStub->method('toString')->willReturn($expected);
-        $dispatcher = new Dispatcher($requestStub, $responseStub);
-        
-        $actual = $dispatcher->dispatch();
-        
-        $this->assertEquals($actual, $expected);
-    }
-    
-    /**
-     * @test
      * @covers  Asd\Dispatcher::dispatch
      */
     public function dispatch_generatesOutputBasedOnResponse()
@@ -78,7 +61,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $responseStub->method('toString')->willReturn($expected);
+        $responseStub->method('getBody')->willReturn($expected);
         $dispatcher = new Dispatcher($requestStub, $responseStub);
         
         $dispatcher->dispatch();

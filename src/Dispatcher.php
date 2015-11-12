@@ -25,11 +25,10 @@ class Dispatcher
     }
     
     /**
-     * @return string   ResponseString from request
+     * @return void
      */
-    public function dispatch() : string
+    public function dispatch()
     {
-        echo $this->response->toString();
-        return $this->response->toString();
+        echo $this->response->getBody();
     }
 }

@@ -37,14 +37,14 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers  Asd\Response::toString
+     * @covers  Asd\Response::getBody
      */
-    public function toString_returnsResponseBodyAsString()
+    public function getBody_returnsResponseBodyAsString()
     {
         $expected = 'the response body';
         $response = new Response($expected);
         
-        $actual = $response->toString();
+        $actual = $response->getBody();
         
         $this->assertEquals($expected, $actual);
     }
@@ -59,7 +59,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
         $response->setBody($expected);
         
-        $actual = $response->toString();
+        $actual = $response->getBody();
         
         $this->assertEquals($expected, $actual);
     }
