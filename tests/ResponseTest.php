@@ -130,7 +130,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $headerKey = 'theKey';
         $headerValue = 'theValue';
         $response = new Response();
-        $expected = [[$headerKey => $headerValue]];
+        $expected = [$headerKey => $headerValue];
         
         $response->addHeader($headerKey, $headerValue);
         $actual = $response->getHeaders();
@@ -148,7 +148,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $headerValue = 'theValue';
         $newHeaderValue = 'newValue';
         $response = new Response();
-        $expected = [[$headerKey => $newHeaderValue]];
+        $expected = [$headerKey => $newHeaderValue];
         
         $response->addHeader($headerKey, $headerValue);
         $response->addHeader($headerKey, $newHeaderValue);
