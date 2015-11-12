@@ -63,4 +63,17 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     */
+    public function responsePropertyStatusCode_defaultsTo200()
+    {
+        $expected = 200;
+        $response = new Response();
+        
+        $actual = $response->getStatusCode();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }

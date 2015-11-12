@@ -37,4 +37,12 @@ class Response implements iResponse
     {
         return $this->body;
     }
+    
+    /**
+     * @return int  statusCode
+     */
+    public function getStatusCode() : int
+    {
+        return 0;
+    }
 }
