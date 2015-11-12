@@ -164,8 +164,10 @@ class Response implements iResponse
      * @param string    charset
      * @return void
      */
-    public function setCharset(string $charset)
+    public function setCharset(string $charset = null)
     {
+        if($charset === null)
+            throw new \Exception('Missing argument: $charset');
         $this->charset = $charset;
     }
 }
