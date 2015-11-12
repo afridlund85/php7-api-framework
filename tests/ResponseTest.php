@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Test;
 
@@ -61,5 +62,21 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $actual = $response->toString();
         
         $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @expectedException \TypeError
+     */
+    public function setBody_withNonStringAgument_throwsTypeError()
+    {
+        $response = new Response();
+        $response->setBody(123);
+        // try{
+            
+        //     $this->fail();
+        // } catch (\TypeError $e) {
+        //     $this->assertTrue(true);
+        // }
     }
 }
