@@ -13,9 +13,8 @@ class Dispatcher
     private $response;
     
     /**
-     *  @param iRequest     $req
-     *
-     *  @return Dispatcher  Instance of Asd\Dispatcher
+     * @param iRequest|null $req Request object
+     * @param iResponse|null $res Response object
      */
     public function __construct(iRequest $req = null, iResponse $res = null)
     {

@@ -39,7 +39,8 @@ class Response implements iResponse
     private $charset;
     
     /**
-     * @param string $body  Response body
+     * @param string|null $body Response body
+     * @param int|null $statusCode HTTP status code
      */
     public function __construct(string $body = null, int $statusCode = null)
     {
@@ -52,7 +53,7 @@ class Response implements iResponse
     }
     
     /**
-     * @return string   Response body
+     * @return string Response body
      */
     public function getBody() : string
     {
@@ -60,7 +61,7 @@ class Response implements iResponse
     }
     
     /**
-     * @param string $body  ResponseBody
+     * @param string $body Response body
      * @return void
      */
     public function setBody(string $body)
@@ -69,7 +70,7 @@ class Response implements iResponse
     }
     
     /**
-     * @return int  statusCode
+     * @return int HTTP status code
      */
     public function getStatusCode() : int
     {
@@ -77,7 +78,8 @@ class Response implements iResponse
     }
     
     /**
-     * @param int   statusCode
+     * @param int HTTP status code
+     * @throws \Exception
      * @return void
      */
     public function setStatusCode(int $statusCode)
@@ -88,7 +90,7 @@ class Response implements iResponse
     }
     
     /**
-     * @return array
+     * @return Array HTTP headers 
      */
     public function getHeaders() : Array
     {
@@ -96,6 +98,7 @@ class Response implements iResponse
     }
     
     /**
+     * @throws \Exception
      * @return void
      */
     public function addHeader(string $key = null, string $value = null)
@@ -106,7 +109,7 @@ class Response implements iResponse
     }
     
     /**
-     * @param string $key
+     * @param string $key Header name to remove
      * @return void
      */
     public function removeHeader(string $key)
@@ -116,7 +119,7 @@ class Response implements iResponse
     }
     
     /**
-     * @return string   protocol
+     * @return string The current protocol(Default: HTTP/1.1 )
      */
     public function getProtocol() : string
     {
@@ -124,7 +127,9 @@ class Response implements iResponse
     }
     
     /**
-     * @param string    protocol
+     * @param string $protocol Name of protocol to use
+     * @throws \Exception
+     * @return void 
      */
     public function setProtocol(string $protocol = null)
     {
@@ -134,7 +139,7 @@ class Response implements iResponse
     }
     
     /**
-     * @return string   contentType
+     * @return string Content type(json, xml, html etc)
      */
     public function getContentType() : string
     {
@@ -142,7 +147,8 @@ class Response implements iResponse
     }
     
     /**
-     * @param string    contentType
+     * @param string|null $contentType What content type to be used.
+     * @throws \Exception
      * @return void
      */
     public function setContentType(string $contentType = null)
@@ -153,7 +159,7 @@ class Response implements iResponse
     }
     
     /**
-     * @return string   charset
+     * @return string Returns charset(default: UTF-8)
      */
     public function getCharset() : string
     {
@@ -161,7 +167,8 @@ class Response implements iResponse
     }
     
     /**
-     * @param string    charset
+     * @param string|null $charset What character set to use in response.
+     * @throws \Exception
      * @return void
      */
     public function setCharset(string $charset = null)
