@@ -2,6 +2,8 @@
 
 PHP7 Framework for API applications.
 
+[check out Code Coverage](http://afridlund85.github.io/php7-api-framework/)
+
 ## Installation
 
 None, it is not even close to ready for release.
