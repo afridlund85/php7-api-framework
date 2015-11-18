@@ -21,22 +21,22 @@ class Response implements iResponse
     /**
      * @var Array
      */
-    private $headers;
+    private $headers = [];
     
     /**
      * @var string
      */
-    private $protocol;
+    private $protocol = 'HTTP/1.1';
     
     /**
      * @var string
      */
-    private $contentType;
+    private $contentType = 'application/json';
     
     /**
      * @var string
      */
-    private $charset;
+    private $charset = 'UTF-8';
     
     /**
      * @param string|null $body Response body
@@ -46,10 +46,6 @@ class Response implements iResponse
     {
         $this->body = $body ?? '';
         $this->statusCode = $statusCode ?? 200;
-        $this->headers = [];
-        $this->protocol = 'HTTP/1.1';
-        $this->contentType = 'application/json';
-        $this->charset = 'UTF-8';
     }
     
     /**
