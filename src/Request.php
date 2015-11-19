@@ -1,6 +1,6 @@
 <?php
 namespace Asd;
 
-class Request{
+class Request implements iRequest{
     
 }
