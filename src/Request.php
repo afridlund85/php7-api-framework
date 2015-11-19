@@ -5,4 +5,10 @@ namespace Asd;
 
 class Request implements iRequest{
     
+    private $url;
+    
+    public function getUrl()
+    {
+        return $this->url;
+    }
 }
