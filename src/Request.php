@@ -5,14 +5,23 @@ namespace Asd;
 
 class Request implements iRequest{
     
+    /**
+     * @var string
+     */
     private $url;
     
+    /**
+     * 
+     */
     public function __construct()
     {
         $this->url = $_SERVER['PATH_INFO'];
     }
     
-    public function getUrl()
+    /**
+     * @return string
+     */
+    public function getUrl() : string
     {
         return $this->url;
     }
