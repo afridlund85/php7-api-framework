@@ -6,6 +6,15 @@ use Asd\iRequest;
 
 class RequestTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $_SERVER['PATH_INFO'] = '';
+    }
+    
+    protected function tearDown()
+    {
+        unset($_SERVER['PATH_INFO']);
+    }
     /**
      * @test 
      */
