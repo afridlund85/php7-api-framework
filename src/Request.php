@@ -48,6 +48,7 @@ class Request implements iRequest{
     {
         if($queryKey === null) throw new \Exception('Query key is missing');
         if(!isset($this->queries[$queryKey])) throw new \Exception('Query Key does not exist.');
+        return $this->queries[$queryKey];
     }
     
     /**
