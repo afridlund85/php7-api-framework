@@ -36,4 +36,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::getUrl
+     */
+    public function constructor_readsUriFromRequestUriIfPathInfoIsUnset()
+    {
+        $expected = 'some/other/path';
+        $_SERVER['REQUEST_URI'] = $expected;
+        $req = new Request();
+        
+        $actual = $req->getUrl();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
