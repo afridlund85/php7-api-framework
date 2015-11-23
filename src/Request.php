@@ -44,9 +44,9 @@ class Request implements iRequest{
      * @param string $queryKey
      * @return string
      */
-    public function getQuery(string $queryKey) : string
+    public function getQuery(string $queryKey = null) : string
     {
-        
+        if($queryKey === null) throw new \Exception('Query key is missing');
     }
     
     /**
