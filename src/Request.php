@@ -11,6 +11,11 @@ class Request implements iRequest{
     private $uri;
     
     /**
+     * @var array
+     */
+    private $queries;
+    
+    /**
      * 
      */
     public function __construct()
@@ -29,5 +34,13 @@ class Request implements iRequest{
     public function getUri() : string
     {
         return $this->uri;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getQueries() : array
+    {
+        return $this->queries;
     }
 }

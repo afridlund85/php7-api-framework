@@ -55,4 +55,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
     
+    /**
+     * @test
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::getQueries
+     */
+    public function constructor_readsQueryValues_FromGet()
+    {
+        $expected = ['first' => 1, 'second' => 'two'];
+        foreach($expected as $k => $v){
+            $_GET[$k] = $v;
+        }
+        $req = new Request();
+        
+        $actual = $req->getQueries();
+        $this->assertEquals($expected, $actual);
+    }
 }
