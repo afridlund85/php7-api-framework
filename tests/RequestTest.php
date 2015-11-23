@@ -31,7 +31,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseUri
      * @covers Asd\Request::getUri
      */
-    public function constructor_readsUri_FromPathInfo()
+    public function parseUri_readsUri_FromPathInfo()
     {
         $expected = 'some/path';
         $_SERVER['PATH_INFO'] = $expected;
@@ -48,7 +48,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseUri
      * @covers Asd\Request::getUri
      */
-    public function constructor_readsUri_FromRequestUri_IfPathInfoIsMissing()
+    public function parseUri_readsUri_FromRequestUri_IfPathInfoIsMissing()
     {
         $expected = 'some/other/path';
         $_SERVER['REQUEST_URI'] = $expected;
@@ -82,7 +82,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
      */
-    public function constructor_readsQueryValues_FromGet()
+    public function parseQueries_readsQueryValues_FromGet()
     {
         $expected = ['first' => 1, 'second' => 'two'];
         foreach($expected as $k => $v){
@@ -101,7 +101,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
      */
-    public function constructor_readsQueryValues_FromServerQueryString()
+    public function parseQueries_readsQueryValues_FromServerQueryString()
     {
         $expected = ['param1' => 1, 'param2' => 'two'];
         $params = [];
@@ -123,7 +123,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
      */
-    public function constructor_readsQueryValues_FromUri()
+    public function parseQueries_readsQueryValues_FromUri()
     {
         $expected = ['param1' => 1, 'param2' => 'two'];
         $params = [];
