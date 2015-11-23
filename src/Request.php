@@ -13,7 +13,7 @@ class Request implements iRequest{
     /**
      * @var array
      */
-    private $queries;
+    private $queries = [];
     
     /**
      * 
@@ -27,6 +27,14 @@ class Request implements iRequest{
             $this->uri = $_SERVER['REQUEST_URI'];
         }
         $this->queries = $_GET;
+        if(isset($this->uri) && strpos($this->uri, '?') !== false){
+            $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
+            $queries = explode('&', $queryString);
+            foreach($queries as $query){
+                $q = explode('=', $query);
+                $this->queries[$q[0]] = $q[1];
+            }
+        }
     }
     
     /**
