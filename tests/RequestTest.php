@@ -61,6 +61,23 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers Ads\Request::__construct
+     * @covers Asd\Request::parseUri
+     * @covers Asd\Request::getUri
+     */
+    public function parseUri_removesTrailingQueryParameters()
+    {
+        $expected = 'some/other/path';
+        $_SERVER['REQUEST_URI'] = $expected . '?query=value';
+        $req = new Request();
+        
+        $actual = $req->getUri();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
      * @covers Asd\Request::__construct
      * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
