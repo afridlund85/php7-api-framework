@@ -21,15 +21,7 @@ class Request implements iRequest{
     public function __construct()
     {
         $this->parseUri();
-        $this->queries = $_GET;
-        if(isset($this->uri) && strpos($this->uri, '?') !== false){
-            $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
-            $queries = explode('&', $queryString);
-            foreach($queries as $query){
-                $q = explode('=', $query);
-                $this->queries[$q[0]] = $q[1];
-            }
-        }
+        $this->parseQueries();
     }
     
     /**
@@ -59,6 +51,19 @@ class Request implements iRequest{
         }
         else{
             $this->uri = $_SERVER['REQUEST_URI'];
+        }
+    }
+    
+    /**
+     * Checks $_GET and the uri for query parameters
+     * @return void
+     */
+    private function parseQueries()
+    {
+        $this->queries = $_GET;
+        if(isset($this->uri) && strpos($this->uri, '?') !== false){
+            $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
+            parse_str($queryString, $this->queries);
         }
     }
 }
