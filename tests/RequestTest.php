@@ -27,7 +27,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::__construct
      * @covers Asd\Request::getUrl
      */
-    public function constructor_readsPathInfoFromServerVar()
+    public function constructor_readsUri_FromPathInfo()
     {
         $expected = 'some/path';
         $_SERVER['PATH_INFO'] = $expected;
@@ -43,7 +43,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::__construct
      * @covers Asd\Request::getUrl
      */
-    public function constructor_readsUriFromRequestUriIfPathInfoIsUnset()
+    public function constructor_readsUri_FromRequestUri_IfPathInfoIsMissing()
     {
         $expected = 'some/other/path';
         $_SERVER['REQUEST_URI'] = $expected;
