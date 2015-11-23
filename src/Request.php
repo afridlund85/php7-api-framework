@@ -72,6 +72,9 @@ class Request implements iRequest{
             $uri = explode('?', $this->url);
             $this->uri = $uri[0];
         }
+        if(empty($this->uri)){
+            $this->uri = '/';
+        }
     }
     
     /**
