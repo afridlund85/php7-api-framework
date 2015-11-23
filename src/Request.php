@@ -26,6 +26,7 @@ class Request implements iRequest{
         else{
             $this->uri = $_SERVER['REQUEST_URI'];
         }
+        $this->queries = $_GET;
     }
     
     /**

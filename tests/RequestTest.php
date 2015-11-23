@@ -69,6 +69,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $req = new Request();
         
         $actual = $req->getQueries();
+        
         $this->assertEquals($expected, $actual);
     }
 }
