@@ -98,4 +98,23 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseQueries
+     * @covers Asd\Request::getQueries
+     */
+    public function parseQueries_mergesQueries_fromGetAndUri()
+    {
+        $expected = ['param1' => 'value1', 'param2' => 'two'];
+        $_SERVER['REQUEST_URI'] = '?param1=value1';
+        $_GET['param2'] = 'two';
+        
+        $req = new Request();
+        
+        $actual = $req->getQueries();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
