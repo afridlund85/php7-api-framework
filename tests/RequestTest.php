@@ -83,6 +83,28 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
      */
+    public function constructor_readsQueryValues_FromServerQueryString()
+    {
+        $expected = ['param1' => 1, 'param2' => 'two'];
+        $params = [];
+        foreach($expected as $k => $v){
+            $params[] = $k . '=' . $v;
+        }
+        $_SERVER['QUERY_STRING'] = implode('&', $params);
+        
+        $req = new Request();
+        
+        $actual = $req->getQueries();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseQueries
+     * @covers Asd\Request::getQueries
+     */
     public function constructor_readsQueryValues_FromUri()
     {
         $expected = ['param1' => 1, 'param2' => 'two'];
