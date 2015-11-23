@@ -8,7 +8,7 @@ class Request implements iRequest{
     /**
      * @var string
      */
-    private $uri;
+    private $uri = '';
     
     /**
      * @var array
@@ -20,12 +20,7 @@ class Request implements iRequest{
      */
     public function __construct()
     {
-        if(isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
-            $this->uri = $_SERVER['PATH_INFO'];
-        }
-        else{
-            $this->uri = $_SERVER['REQUEST_URI'];
-        }
+        $this->parseUri();
         $this->queries = $_GET;
         if(isset($this->uri) && strpos($this->uri, '?') !== false){
             $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
@@ -51,5 +46,19 @@ class Request implements iRequest{
     public function getQueries() : array
     {
         return $this->queries;
+    }
+    
+    /**
+     * Checks server variables for the uri the request was made to.
+     * @return void
+     */
+    private function parseUri()
+    {
+        if(isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
+            $this->uri = $_SERVER['PATH_INFO'];
+        }
+        else{
+            $this->uri = $_SERVER['REQUEST_URI'];
+        }
     }
 }
