@@ -27,6 +27,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseUri
      * @covers Asd\Request::getUri
      */
     public function constructor_readsUri_FromPathInfo()
@@ -43,6 +44,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseUri
      * @covers Asd\Request::getUri
      */
     public function constructor_readsUri_FromRequestUri_IfPathInfoIsMissing()
@@ -59,6 +61,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
      */
     public function constructor_readsQueryValues_FromGet()
@@ -77,6 +80,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseQueries
      * @covers Asd\Request::getQueries
      */
     public function constructor_readsQueryValues_FromUri()
