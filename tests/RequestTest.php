@@ -10,6 +10,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $_SERVER['PATH_INFO'] = null;
+        $_SERVER['REQUEST_URI'] = null;
     }
     
     /**
