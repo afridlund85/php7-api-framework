@@ -12,6 +12,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO'] = null;
         $_SERVER['REQUEST_URI'] = null;
         $_SERVER['PHP_SELF'] = null;
+        $_GET = null;
     }
     
     /**
@@ -66,6 +67,27 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         foreach($expected as $k => $v){
             $_GET[$k] = $v;
         }
+        $req = new Request();
+        
+        $actual = $req->getQueries();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::getQueries
+     */
+    public function constructor_readsQueryValues_FromUri()
+    {
+        $expected = ['param1' => 1, 'param2' => 'two'];
+        $params = [];
+        foreach($expected as $k => $v){
+            $params[] = $k . '=' . $v;
+        }
+        $_SERVER['REQUEST_URI'] = '?' . implode('&', $params);
+        
         $req = new Request();
         
         $actual = $req->getQueries();
