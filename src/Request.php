@@ -41,6 +41,15 @@ class Request implements iRequest{
     }
     
     /**
+     * @param string $queryKey
+     * @return string
+     */
+    public function getQuery(string $queryKey) : string
+    {
+        
+    }
+    
+    /**
      * Checks server variables for the uri the request was made to.
      * @return void
      */

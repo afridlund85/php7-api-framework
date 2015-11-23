@@ -117,4 +117,15 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($expected, $actual);
     }
+    
+    /**
+     * @test
+     * @covers Asd\Request::GetQuery
+     * @expectedException \Exception
+     */
+    public function getQuery_withNoArgument_throwsException()
+    {
+        $req = new Request();
+        $req->getQuery();
+    }
 }
