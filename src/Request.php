@@ -8,7 +8,7 @@ class Request implements iRequest{
     /**
      * @var string
      */
-    private $url;
+    private $uri;
     
     /**
      * 
@@ -16,18 +16,18 @@ class Request implements iRequest{
     public function __construct()
     {
         if(isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
-            $this->url = $_SERVER['PATH_INFO'];
+            $this->uri = $_SERVER['PATH_INFO'];
         }
         else{
-            $this->url = $_SERVER['REQUEST_URI'];
+            $this->uri = $_SERVER['REQUEST_URI'];
         }
     }
     
     /**
      * @return string
      */
-    public function getUrl() : string
+    public function getUri() : string
     {
-        return $this->url;
+        return $this->uri;
     }
 }

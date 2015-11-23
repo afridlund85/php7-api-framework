@@ -11,6 +11,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $_SERVER['PATH_INFO'] = null;
         $_SERVER['REQUEST_URI'] = null;
+        $_SERVER['PHP_SELF'] = null;
     }
     
     /**
@@ -25,7 +26,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
-     * @covers Asd\Request::getUrl
+     * @covers Asd\Request::getUri
      */
     public function constructor_readsUri_FromPathInfo()
     {
@@ -33,7 +34,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO'] = $expected;
         $req = new Request();
         
-        $actual = $req->getUrl();
+        $actual = $req->getUri();
         
         $this->assertEquals($expected, $actual);
     }
@@ -41,7 +42,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
-     * @covers Asd\Request::getUrl
+     * @covers Asd\Request::getUri
      */
     public function constructor_readsUri_FromRequestUri_IfPathInfoIsMissing()
     {
@@ -49,8 +50,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_URI'] = $expected;
         $req = new Request();
         
-        $actual = $req->getUrl();
+        $actual = $req->getUri();
         
         $this->assertEquals($expected, $actual);
     }
+    
 }

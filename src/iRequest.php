@@ -3,5 +3,5 @@ namespace Asd;
 
 interface iRequest
 {
-    public function getUrl() : string;
+    public function getUri() : string;
 }
