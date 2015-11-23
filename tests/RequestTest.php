@@ -33,7 +33,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function parseUri_readsUri_FromPathInfo()
     {
-        $expected = 'some/path';
+        $expected = '/some/path';
         $_SERVER['PATH_INFO'] = $expected;
         $req = new Request();
         
@@ -50,7 +50,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function parseUri_readsUri_FromRequestUri_IfPathInfoIsMissing()
     {
-        $expected = 'some/other/path';
+        $expected = '/some/other/path';
         $_SERVER['REQUEST_URI'] = $expected;
         $req = new Request();
         
@@ -67,7 +67,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function parseUri_removesTrailingQueryParameters()
     {
-        $expected = 'some/other/path';
+        $expected = '/some/other/path';
         $_SERVER['REQUEST_URI'] = $expected . '?query=value';
         $req = new Request();
         
