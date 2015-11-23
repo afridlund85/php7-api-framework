@@ -60,10 +60,12 @@ class Request implements iRequest{
      */
     private function parseQueries()
     {
-        $this->queries = $_GET;
+        $this->queries = $_GET ?? [];
         if(isset($this->uri) && strpos($this->uri, '?') !== false){
             $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
-            parse_str($queryString, $this->queries);
+            $queries = [];
+            parse_str($queryString, $queries);
+            $this->queries += $queries;
         }
     }
 }
