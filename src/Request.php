@@ -71,9 +71,14 @@ class Request implements iRequest{
      */
     private function parseQueries()
     {
-        if(isset($this->uri) && strpos($this->uri, '?') !== false){
-            $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
-            parse_str($queryString, $this->queries);
+        if(isset($_SERVER['QUERY_STRING'])){
+            parse_str($_SERVER['QUERY_STRING'], $this->queries);
+        }
+        else{
+            if(isset($this->uri) && strpos($this->uri, '?') !== false){
+                $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
+                parse_str($queryString, $this->queries);
+            }
         }
         if(isset($_GET) && !empty($_GET)){
             $this->queries += $_GET;
