@@ -139,4 +139,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $req = new Request();
         $req->getQuery('iDontExist');
     }
+    
+    /**
+     * @test
+     * @covers Asd\Request::GetQuery
+     */
+    public function getQuery_withValidKey_returnsQueryValue()
+    {
+        $key = 'theKey';
+        $expected = 'theValue';
+        $_GET[$key] = $expected;
+        $req = new Request();
+        
+        $actual = $req->getQuery($key);
+        
+        $this->assertEquals($expected, $actual);
+    }
 }
