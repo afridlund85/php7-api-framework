@@ -128,4 +128,15 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $req = new Request();
         $req->getQuery();
     }
+    
+    /**
+     * @test
+     * @covers Asd\Request::GetQuery
+     * @expectedException \Exception
+     */
+    public function getQuery_withNonExistingKey_throwsException()
+    {
+        $req = new Request();
+        $req->getQuery('iDontExist');
+    }
 }
