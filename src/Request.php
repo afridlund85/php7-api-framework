@@ -4,6 +4,10 @@ declare(strict_types = 1);
 namespace Asd;
 
 class Request implements iRequest{
+    /**
+     * @var string
+     */
+    private $url = '';
     
     /**
      * @var string
@@ -20,7 +24,7 @@ class Request implements iRequest{
      */
     public function __construct()
     {
-        $this->parseUri();
+        $this->parseUrl();
         $this->parseQueries();
     }
     
@@ -55,13 +59,18 @@ class Request implements iRequest{
      * Checks server variables for the uri the request was made to.
      * @return void
      */
-    private function parseUri()
+    private function parseUrl()
     {
         if(isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
-            $this->uri = $_SERVER['PATH_INFO'];
+            $this->url = $_SERVER['PATH_INFO'];
         }
-        else{
-            $this->uri = $_SERVER['REQUEST_URI'];
+        else if(isset($_SERVER['REQUEST_URI'])){
+            $this->url = $_SERVER['REQUEST_URI'];
+        }
+        $this->uri = $this->url;
+        if(strpos($this->url, '?') !== false){
+            $uri = explode('?', $this->url);
+            $this->uri = $uri[0];
         }
     }
     
@@ -75,8 +84,8 @@ class Request implements iRequest{
             parse_str($_SERVER['QUERY_STRING'], $this->queries);
         }
         else{
-            if(isset($this->uri) && strpos($this->uri, '?') !== false){
-                $queryString = substr($this->uri, strpos($this->uri, '?') + 1);
+            if(isset($this->url) && strpos($this->url, '?') !== false){
+                $queryString = substr($this->url, strpos($this->url, '?') + 1);
                 parse_str($queryString, $this->queries);
             }
         }
