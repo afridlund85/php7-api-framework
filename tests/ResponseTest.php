@@ -349,7 +349,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Response::setCharset
-     * @covers Asd\Response::getCharset
+     * @covers Asd\Response::setCharset
      */
     public function setCharset_withString_changesCharsetProperty()
     {
@@ -365,7 +365,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException \Exception
-     * @covers Asd\Response::setChartset
+     * @covers Asd\Response::setCharset
      */
     public function setCharset_withNoArgument_throwsException()
     {
