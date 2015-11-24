@@ -19,6 +19,16 @@ class Dispatcher
     private $response;
     
     /**
+     * @var string
+     */
+    private $controller;
+    
+    /**
+     * @var string
+     */
+    private $action;
+    
+    /**
      * @param iRequest|null $req Request object
      * @param iResponse|null $res Response object
      */
@@ -28,6 +38,7 @@ class Dispatcher
             throw new \Exception();
         $this->response = $res;
         $this->request = $req;
+        $this->parseRequest();
     }
     
     /**
@@ -35,9 +46,7 @@ class Dispatcher
      */
     public function getController() : string
     {
-        $uri = trim($this->request->getUri(), '/');
-        $paths = explode('/', $uri);
-        return $paths[0] . 'Controller';
+        return $this->controller;
     }
     
     /**
@@ -45,9 +54,7 @@ class Dispatcher
      */
     public function getAction() : string
     {
-        $uri = trim($this->request->getUri(), '/');
-        $paths = explode('/', $uri);
-        return $paths[1];
+        return $this->action;
     }
     
     /**
@@ -56,5 +63,16 @@ class Dispatcher
     public function dispatch()
     {
         echo $this->response->getBody();
+    }
+    
+    /**
+     * @return void
+     */
+    private function parseRequest()
+    {
+        $uri = trim($this->request->getUri(), '/');
+        $path = explode('/', $uri);
+        $this->controller = $path[0] . 'Controller';
+        $this->action = $path[1] ?? '';
     }
 }
