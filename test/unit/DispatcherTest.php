@@ -108,15 +108,19 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'A response from MyAction in MyResourceController.';
         
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseMock = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $responseMock
-            ->expects($this->once())
+        $requestStub = $this->getMockBuilder('Asd\Request')
+            ->getMock();
+        $requestStub->method('getUri')
+            ->willReturn('/MyResource/MyAction/');
+        $responseMock = $this->getMockBuilder('Asd\Response')
+            ->setMethods(array('setBody'))
+            ->getMock();
+        $responseMock->expects($this->once())
             ->method('setBody')
-            ->with($this->equalTo($expected));
-        $requestStub
-            ->method('getUri')
-            ->willReturn('/MyResource/MyAction');
+            ->with($this->equalTo('A response from MyAction in MyResourceController.'));
+        
         $dispatcher = new Dispatcher($requestStub, $responseMock);
+        
+        $dispatcher->dispatch();
     }
 }
