@@ -1,6 +1,6 @@
 <?php
 
-namespace Test;
+namespace Test\Unit;
 
 use Asd\Dispatcher;
 

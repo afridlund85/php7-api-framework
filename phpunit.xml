@@ -12,7 +12,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="PHP7 API Framework Test Suite">
-            <directory suffix=".php">./tests/</directory>
+            <directory suffix=".php">./test/</directory>
         </testsuite>
     </testsuites>
     <filter>

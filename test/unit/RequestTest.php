@@ -1,5 +1,5 @@
 <?php
-namespace Test;
+namespace Test\Unit;
 
 use Asd\Request;
 use Asd\iRequest;

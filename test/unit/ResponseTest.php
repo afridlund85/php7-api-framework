@@ -1,5 +1,5 @@
 <?php
-namespace Test;
+namespace Test\Unit;
 
 use Asd\Response;
 use Asd\iResponse;
