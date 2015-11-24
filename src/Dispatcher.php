@@ -41,6 +41,14 @@ class Dispatcher
     }
     
     /**
+     * @return string
+     */
+    public function getAction() : string
+    {
+        return '';
+    }
+    
+    /**
      * @return void
      */
     public function dispatch()

@@ -69,6 +69,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers Asd\Dispatcher::getController
      */
     public function getController_returnsNameOfController_basedOnRequest()
     {
@@ -79,6 +80,23 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $dispatcher = new Dispatcher($requestStub, $responseStub);
         
         $actual = $dispatcher->getController();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @covers Asd\Dispatcher::getController
+     */
+    public function getAction_returnsNameOfAction_basedOnRequest()
+    {
+        $expected = 'MyAction';
+        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
+        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
+        $requestStub->method('getUri')->willReturn('/MyResource/MyAction');
+        $dispatcher = new Dispatcher($requestStub, $responseStub);
+        
+        $actual = $dispatcher->getAction();
         
         $this->assertEquals($expected, $actual);
     }
