@@ -29,11 +29,12 @@
         "psr-4": {
             "Test\\": "test",
             "Test\\Unit\\": "test/unit",
-            "Test\\Integration\\": "test/integration"
+            "Test\\Integration\\": "test/integration",
+            "Test\\System\\": "test/system"
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --no-configuration --bootstrap vendor/autoload.php tests",
+        "test": "vendor/bin/phpunit --no-configuration --bootstrap vendor/autoload.php test",
         "coverage" : "phpdbg -qrr vendor/bin/phpunit --coverage-html coverage"
     }
 }
