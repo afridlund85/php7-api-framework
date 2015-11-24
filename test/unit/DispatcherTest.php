@@ -66,4 +66,20 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         
         $dispatcher->dispatch();
     }
+    
+    /**
+     * @test
+     */
+    public function getController_returnsNameOfController_basedOnRequest()
+    {
+        $expected = 'MyResourceController';
+        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
+        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
+        $requestStub->method('getUri')->willReturn('/MyResource/');
+        $dispatcher = new Dispatcher($requestStub, $responseStub);
+        
+        $actual = $dispatcher->getController();
+        
+        $this->assertEquals($expected, $actual);
+    }
 }

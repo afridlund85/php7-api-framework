@@ -25,6 +25,14 @@ class Dispatcher
     }
     
     /**
+     * @return string
+     */
+    public function getController() : string
+    {
+        
+    }
+    
+    /**
      * @return void
      */
     public function dispatch()
