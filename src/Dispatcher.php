@@ -62,6 +62,7 @@ class Dispatcher
      */
     public function dispatch()
     {
+        $this->response->setBody('A response from ' . $this->action . ' in ' . $this->controller .'.');
         echo $this->response->getBody();
     }
     
