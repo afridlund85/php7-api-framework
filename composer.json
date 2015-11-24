@@ -34,7 +34,10 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --no-configuration --bootstrap vendor/autoload.php test",
+        "test": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite All",
+        "unit": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite Unit",
+        "integration": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite Integration",
+        "system": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite System",
         "coverage" : "phpdbg -qrr vendor/bin/phpunit --coverage-html coverage"
     }
 }
