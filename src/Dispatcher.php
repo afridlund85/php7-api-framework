@@ -9,7 +9,12 @@ namespace Asd;
 class Dispatcher
 {
     /**
-     * @var Response
+     * @var iRequest
+     */
+    private $request;
+    
+    /**
+     * @var iResponse
      */
     private $response;
     
@@ -22,6 +27,7 @@ class Dispatcher
         if($req === null || $res === null)
             throw new \Exception();
         $this->response = $res;
+        $this->request = $req;
     }
     
     /**
@@ -29,7 +35,9 @@ class Dispatcher
      */
     public function getController() : string
     {
-        
+        $uri = trim($this->request->getUri(), '/');
+        $paths = explode('/', $uri);
+        return $paths[0] . 'Controller';
     }
     
     /**
