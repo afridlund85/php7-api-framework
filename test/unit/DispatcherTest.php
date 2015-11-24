@@ -104,7 +104,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function dispatch_runsControllerAndAction_()
+    public function dispatch_setsBodyOfResponse_basedOnRequest()
     {
         $expected = 'A response from MyAction in MyResourceController.';
         
