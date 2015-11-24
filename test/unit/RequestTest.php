@@ -82,7 +82,24 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Request::parseUrl
      * @covers Asd\Request::getUri
      */
-    public function parseUrl_setsUriToSlash_WhenRequestHasNoUri()
+    public function parseUrl_setsUriToSlash_WhenRequestIsToRoot()
+    {
+        $expected = '/';
+        $_SERVER['REQUEST_URI'] = '/';
+        $req = new Request();
+        
+        $actual = $req->getUri();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    /**
+     * @test
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseUrl
+     * @covers Asd\Request::getUri
+     */
+    public function parseUrl_setsUriToSlash_WhenRequestUriIsEmpty()
     {
         $expected = '/';
         $_SERVER['REQUEST_URI'] = '';
