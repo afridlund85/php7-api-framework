@@ -45,7 +45,9 @@ class Dispatcher
      */
     public function getAction() : string
     {
-        return '';
+        $uri = trim($this->request->getUri(), '/');
+        $paths = explode('/', $uri);
+        return $paths[1];
     }
     
     /**
