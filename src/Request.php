@@ -72,7 +72,7 @@ class Request implements iRequest{
             $uri = explode('?', $this->url);
             $this->uri = $uri[0];
         }
-        if(empty($this->uri)){
+        if(empty($this->uri) || $this->uri === 'index.php'){
             $this->uri = '/';
         }
         if(strpos($this->uri, '/') !== 0){
