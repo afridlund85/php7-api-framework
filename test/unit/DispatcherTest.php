@@ -103,6 +103,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers Asd\Dispatcher::dispatch
      */
     public function dispatch_setsBodyOfResponse_basedOnRequest()
     {
