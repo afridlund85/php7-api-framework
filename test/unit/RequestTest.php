@@ -28,10 +28,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
-     * @covers Asd\Request::parseUri
+     * @covers Asd\Request::parseUrl
      * @covers Asd\Request::getUri
      */
-    public function parseUri_readsUri_FromPathInfo()
+    public function parseUrl_readsUri_FromPathInfo()
     {
         $expected = '/some/path';
         $_SERVER['PATH_INFO'] = $expected;
@@ -45,10 +45,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Request::__construct
-     * @covers Asd\Request::parseUri
+     * @covers Asd\Request::parseUrl
      * @covers Asd\Request::getUri
      */
-    public function parseUri_readsUri_FromRequestUri_IfPathInfoIsMissing()
+    public function parseUrl_readsUri_FromRequestUri_IfPathInfoIsMissing()
     {
         $expected = '/some/other/path';
         $_SERVER['REQUEST_URI'] = $expected;
@@ -61,11 +61,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Ads\Request::__construct
-     * @covers Asd\Request::parseUri
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseUrl
      * @covers Asd\Request::getUri
      */
-    public function parseUri_removesTrailingQueryParameters()
+    public function parseUrl_removesTrailingQueryParameters()
     {
         $expected = '/some/other/path';
         $_SERVER['REQUEST_URI'] = $expected . '?query=value';
@@ -78,11 +78,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Ads\Request::__construct
-     * @covers Asd\Request::parseUri
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseUrl
      * @covers Asd\Request::getUri
      */
-    public function parseUri_setsUriToSlash_WhenRequestHasNoUri()
+    public function parseUrl_setsUriToSlash_WhenRequestHasNoUri()
     {
         $expected = '/';
         $_SERVER['REQUEST_URI'] = '';
@@ -95,11 +95,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Ads\Request::__construct
-     * @covers Asd\Request::parseUri
+     * @covers Asd\Request::__construct
+     * @covers Asd\Request::parseUrl
      * @covers Asd\Request::getUri
      */
-    public function parseUri_addsInitialSlashToUri_IfMissing()
+    public function parseUrl_addsInitialSlashToUri_IfMissing()
     {
         $uri = 'one/path';
         $expected = '/' . $uri;

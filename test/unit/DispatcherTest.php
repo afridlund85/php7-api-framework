@@ -86,7 +86,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Dispatcher::getController
+     * @covers Asd\Dispatcher::getAction
      */
     public function getAction_returnsNameOfAction_basedOnRequest()
     {
