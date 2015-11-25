@@ -59,7 +59,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $requestStub = $this->getMockBuilder('Asd\Request')->getMock();
         $responseStub = $this->getMockBuilder('Asd\Response')->getMock();
-        $routerStub = $this->getMockBuilder('Asd\Router')->getMock();
+        $routerStub = $this->getMockBuilder('Asd\Router')
+            ->disableOriginalConstructor()
+            ->getMock();
         $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
     }
     
@@ -76,6 +78,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $requestStub->method('getUri')
             ->willReturn($route);
         $routerMock = $this->getMockBuilder('Asd\Router')
+            ->disableOriginalConstructor()
             ->getMock();
         $routerMock->expects($this->once())
             ->method('getController')
@@ -105,6 +108,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $requestStub = $this->getMockBuilder('Asd\Request')
             ->getMock();
         $routerStub = $this->getMockBuilder('Asd\Router')
+            ->disableOriginalConstructor()
             ->getMock();
         $routerStub->method('getController')
             ->willReturn($controller);
