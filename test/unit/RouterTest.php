@@ -13,4 +13,15 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         new Router();
     }
+    
+    /**
+     * @test
+     */
+    public function constructor_withControllerFactory_throwsNoException()
+    {
+        $factoryStub = $this->getMockBuilder('Asd\ControllerFactory')
+            ->getMock();
+            
+        new Router($factoryStub);
+    }
 }
