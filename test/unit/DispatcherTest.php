@@ -107,6 +107,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $routerStub->method('getController')
             ->willReturn($controller);
+        $routerStub->method('getAction')
+            ->willReturn('myAction');
         $responseMock = $this->getMockBuilder('Asd\Response')
             ->getMock();
         $responseMock->expects($this->once())

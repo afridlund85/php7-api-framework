@@ -6,4 +6,8 @@ class Router implements iRouter{
     {
         
     }
+    
+    public function getAction(){
+        
+    }
 }

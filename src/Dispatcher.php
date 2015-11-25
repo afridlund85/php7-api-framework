@@ -62,6 +62,16 @@ class Dispatcher
      */
     public function dispatch()
     {
-        $this->router->getController($this->request->getUri());
+        $this->setControllerFromRouter();
+        if($this->controller){ 
+            $action = $this->router->getAction();
+            $result = call_user_func(array($this->controller, $action));
+            $this->response->setBody($result);
+        }
+    }
+    
+    private function setControllerFromRouter()
+    {
+        $this->controller = $this->router->getController($this->request->getUri());
     }
 }
