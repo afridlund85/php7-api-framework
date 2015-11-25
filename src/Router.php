@@ -3,7 +3,14 @@ namespace Asd;
 
 class Router implements iRouter
 {
+    /**
+     * @var ControllerFactory
+     */
     private $factory;
+    
+    /**
+     * @var array
+     */
     private $routes = [];
     
     public function __construct(ControllerFactory $factory = null)
@@ -13,6 +20,10 @@ class Router implements iRouter
         $this->factory = $factory;
     }
     
+    /**
+     * @param iRequest $req
+     * @return Object will be instance of Asd\Controller later
+     */
     public function getController(iRequest $req)
     {
         return $this->factory->createController($req->getUri());
@@ -23,6 +34,10 @@ class Router implements iRouter
         
     }
     
+    /**
+     * @param string $route
+     * @return null
+     */
     public function addRoute(string $route = null)
     {
         if($route === null)
@@ -30,7 +45,10 @@ class Router implements iRouter
         $this->routes[] = $route;
     }
     
-    public function getRoutes()
+    /**
+     * @return array
+     */
+    public function getRoutes() : array
     {
         return $this->routes;
     }
