@@ -24,6 +24,6 @@ class Router implements iRouter
     
     public function addRoute()
     {
-        
+        throw new \Exception('Requires string argument.');
     }
 }
