@@ -66,8 +66,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Dispatcher::dispatch
+     * @covers Asd\Dispatcher::setControllerFromRouter
      */
-    public function dispatch_callsRouterGetController_withRequestUri()
+    public function dispatch_callsRouterGetController_withRequest()
     {
         $route = '/MyResource/MyAction/';
         $requestStub = $this->getMockBuilder('Asd\Request')
