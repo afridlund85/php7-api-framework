@@ -38,6 +38,7 @@ class Dispatcher
             throw new \Exception();
         $this->response = $res;
         $this->request = $req;
+        $this->router = $router;
         $this->parseRequest();
     }
     
@@ -63,6 +64,8 @@ class Dispatcher
     public function dispatch()
     {
         $this->response->setBody('A response from ' . $this->action . ' in ' . $this->controller .'.');
+        
+        $c = $this->router->getController($this->request->getUri());
         echo $this->response->getBody();
     }
     

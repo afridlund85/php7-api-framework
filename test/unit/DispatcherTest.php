@@ -150,23 +150,27 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $route = '/MyResource/MyAction/';
         $expected = 'Some text response';
-        $this->expectOutputString($expected);
+        $controller = new class($expected){
+            private $s;
+            public function __construct($s){
+                $this->s = $s;
+            }
+            public function myAction(){
+                return $this->s;
+            }
+        };
         $requestStub = $this->getMockBuilder('Asd\Request')
             ->getMock();
         $requestStub->method('getUri')
             ->willReturn($route);
-        $controllerStub = $this->getMockBuilder('stdClass')
-            ->getMock();
-        $controllerStub->method('myAction')
-            ->willReturn($expected);
-        $routerMock = $this->getMockBuilder('Asd\iRouter')
+        $routerMock = $this->getMockBuilder('Asd\Router')
             ->getMock();
         $routerMock->method('getController')
-            ->willReturn($controllerStub);
+            ->willReturn($controller);
         $routerMock->expects($this->once())
             ->method('getController')
             ->with($this->equalTo($route));
-        $responseStub = $this->getMockBuilder('Asd\iResponse')
+        $responseStub = $this->getMockBuilder('Asd\Response')
             ->getMock();
             
         $dispatcher = new Dispatcher($requestStub, $responseStub, $routerMock);
