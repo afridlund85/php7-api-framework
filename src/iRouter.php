@@ -2,6 +2,6 @@
 namespace Asd;
 
 interface iRouter{
-    public function getController(string $uri);
+    public function getController(iRequest $req);
     public function getAction();
 }

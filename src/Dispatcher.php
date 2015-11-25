@@ -19,7 +19,7 @@ class Dispatcher
     private $response;
     
     /**
-     * @var string
+     * @var Object Will be Asd\Controller or Asd\iController in future
      */
     private $controller;
     
@@ -42,22 +42,6 @@ class Dispatcher
     }
     
     /**
-     * @return string
-     */
-    public function getController() : string
-    {
-        return $this->controller;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getAction() : string
-    {
-        return $this->action;
-    }
-    
-    /**
      * @return void
      */
     public function dispatch()
@@ -72,6 +56,6 @@ class Dispatcher
     
     private function setControllerFromRouter()
     {
-        $this->controller = $this->router->getController($this->request->getUri());
+        $this->controller = $this->router->getController($this->request);
     }
 }

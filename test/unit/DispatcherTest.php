@@ -78,7 +78,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $routerMock->expects($this->once())
             ->method('getController')
-            ->with($this->equalTo($route));
+            ->with($this->equalTo($requestStub));
         $responseStub = $this->getMockBuilder('Asd\Response')
             ->getMock();
             
@@ -90,6 +90,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Dispatcher::dispatch
+     * @covers Asd\Dispatcher::setControllerFromRouter
      */
     public function dispatch_setsResponseBody_withControllersActionResult()
     {
@@ -100,7 +101,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             public function myAction(){return $this->s;}
             
         };
-        $route = '/MyResource/MyAction/';
         $requestStub = $this->getMockBuilder('Asd\Request')
             ->getMock();
         $routerStub = $this->getMockBuilder('Asd\Router')
