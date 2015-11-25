@@ -76,6 +76,22 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @covers Asd\Router::addRoute
+     * @expectedException \Exception
+     */
+    public function addRoute_withAlreadyExistingRoute_throwsException()
+    {
+        $toAdd = '/some/path';
+        $factoryStub = $this->getMockBuilder('Asd\ControllerFactory')
+            ->getMock();
+        $router = new Router($factoryStub);
+        
+        $router->addRoute($toAdd);
+        $router->addRoute($toAdd);
+    }
+    
+    /**
+     * @test
      * @covers Asd\Router::getController
      */
     public function getController_usesFactoryToGetControllerInstance()
