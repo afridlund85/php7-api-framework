@@ -39,7 +39,6 @@ class Dispatcher
         $this->response = $res;
         $this->request = $req;
         $this->router = $router;
-        $this->parseRequest();
     }
     
     /**
@@ -63,20 +62,6 @@ class Dispatcher
      */
     public function dispatch()
     {
-        $this->response->setBody('A response from ' . $this->action . ' in ' . $this->controller .'.');
-        
-        $c = $this->router->getController($this->request->getUri());
-        echo $this->response->getBody();
-    }
-    
-    /**
-     * @return void
-     */
-    private function parseRequest()
-    {
-        $uri = trim($this->request->getUri(), '/');
-        $path = explode('/', $uri);
-        $this->controller = $path[0] . 'Controller';
-        $this->action = $path[1] ?? '';
+        $this->router->getController($this->request->getUri());
     }
 }

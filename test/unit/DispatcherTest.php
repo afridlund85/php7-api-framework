@@ -24,7 +24,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function constructor_withMissingReponseArgument_throwsException()
     {
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
+        $requestStub = $this->getMockBuilder('Asd\Request')->getMock();
         $dispatcher = new Dispatcher($requestStub, null);
     }
     
@@ -35,7 +35,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function constructor_withMissingRequestArgument_throwsException()
     {
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
+        $responseStub = $this->getMockBuilder('Asd\Response')->getMock();
         $dispatcher = new Dispatcher(null, $responseStub);
     }
     
@@ -46,8 +46,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function constructor_withMissingRouterArgument_throwsException()
     {
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
+        $requestStub = $this->getMockBuilder('Asd\Request')->getMock();
+        $responseStub = $this->getMockBuilder('Asd\Response')->getMock();
         $dispatcher = new Dispatcher($requestStub, $responseStub);
     }
     
@@ -57,89 +57,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function constructor_withCorrectArguments_doesNotThrowException()
     {
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
+        $requestStub = $this->getMockBuilder('Asd\Request')->getMock();
+        $responseStub = $this->getMockBuilder('Asd\Response')->getMock();
+        $routerStub = $this->getMockBuilder('Asd\Router')->getMock();
         $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
-    }
-    
-    /**
-     * @test
-     * @covers  Asd\Dispatcher::dispatch
-     */
-    public function dispatch_generatesOutputBasedOnResponse()
-    {
-        $expected = 'the expected result';
-        $this->expectOutputString($expected);
-        
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $responseStub->method('getBody')->willReturn($expected);
-        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
-        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
-        
-        $dispatcher->dispatch();
-    }
-    
-    /**
-     * @test
-     * @covers Asd\Dispatcher::getController
-     */
-    public function getController_returnsNameOfController_basedOnRequest()
-    {
-        $expected = 'MyResourceController';
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $requestStub->method('getUri')->willReturn('/MyResource/');
-        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
-        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
-        
-        $actual = $dispatcher->getController();
-        
-        $this->assertEquals($expected, $actual);
-    }
-    
-    /**
-     * @test
-     * @covers Asd\Dispatcher::getAction
-     */
-    public function getAction_returnsNameOfAction_basedOnRequest()
-    {
-        $expected = 'MyAction';
-        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
-        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $requestStub->method('getUri')->willReturn('/MyResource/MyAction');
-        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
-        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
-        
-        $actual = $dispatcher->getAction();
-        
-        $this->assertEquals($expected, $actual);
-    }
-    
-    /**
-     * @test
-     * @covers Asd\Dispatcher::dispatch
-     */
-    public function dispatch_setsBodyOfResponse_basedOnRequest()
-    {
-        $expected = 'A response from MyAction in MyResourceController.';
-        
-        $requestStub = $this->getMockBuilder('Asd\Request')
-            ->getMock();
-        $requestStub->method('getUri')
-            ->willReturn('/MyResource/MyAction/');
-        $responseMock = $this->getMockBuilder('Asd\Response')
-            ->setMethods(array('setBody'))
-            ->getMock();
-        $responseMock->expects($this->once())
-            ->method('setBody')
-            ->with($this->equalTo('A response from MyAction in MyResourceController.'));
-        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
-        
-        $dispatcher = new Dispatcher($requestStub, $responseMock, $routerStub);
-        
-        $dispatcher->dispatch();
     }
     
     /**
