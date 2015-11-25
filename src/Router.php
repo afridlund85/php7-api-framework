@@ -21,4 +21,9 @@ class Router implements iRouter
     {
         
     }
+    
+    public function addRoute()
+    {
+        
+    }
 }
