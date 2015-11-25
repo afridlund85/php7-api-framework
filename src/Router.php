@@ -42,6 +42,8 @@ class Router implements iRouter
     {
         if($route === null || $route === '')
             throw new \Exception('Requires string argument.');
+        if(in_array($route, $this->routes))
+            throw new \Exception('Route already set.');
         $this->routes[] = $route;
     }
     
