@@ -76,12 +76,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function addRoute_withStringValue_createNewRoute()
     {
-        $expected = '/some/path';
+        $expected = array('/some/path', 'SomeController');
         $factoryStub = $this->getMockBuilder('Asd\ControllerFactory')
             ->getMock();
         $router = new Router($factoryStub);
         
-        $router->addRoute($expected ,'');
+        $router->addRoute($expected[0], $expected[1]);
         $routes = $router->getRoutes();
         $actual = $routes[0];
             

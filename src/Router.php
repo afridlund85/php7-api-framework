@@ -46,7 +46,7 @@ class Router implements iRouter
             throw new \Exception('Missing controller');
         if(in_array($route, $this->routes))
             throw new \Exception('Route already set.');
-        $this->routes[] = $route;
+        $this->routes[] = array($route, $controller);
     }
     
     /**
