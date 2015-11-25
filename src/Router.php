@@ -38,10 +38,12 @@ class Router implements iRouter
      * @param string $route
      * @return null
      */
-    public function addRoute(string $route = null)
+    public function addRoute(string $route = null, string $controller = null)
     {
         if($route === null || $route === '')
             throw new \Exception('Requires string argument.');
+        if($controller === null)
+            throw new \Exception('Missing controller');
         if(in_array($route, $this->routes))
             throw new \Exception('Route already set.');
         $this->routes[] = $route;

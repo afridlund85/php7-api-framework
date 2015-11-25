@@ -81,7 +81,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $router = new Router($factoryStub);
         
-        $router->addRoute($expected);
+        $router->addRoute($expected ,'');
         $routes = $router->getRoutes();
         $actual = $routes[0];
             
