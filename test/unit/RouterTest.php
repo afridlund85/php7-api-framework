@@ -40,12 +40,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $requestStub->method('getUri')
             ->willReturn($uri);
         $factoryMock = $this->getMockBuilder('Asd\ControllerFactory')
+            ->setMethods(array('createController'))
             ->getMock();
         $factoryMock->method('createController')
             ->willReturn($expected);
         $factoryMock->expects($this->once())
             ->method('createController')
-            ->with($uri);
+            ->with($this->equalTo($uri));
         $router = new Router($factoryMock);
         
         $actual = $router->getController($requestStub);
