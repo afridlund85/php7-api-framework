@@ -40,7 +40,7 @@ class Router implements iRouter
      */
     public function addRoute(string $route = null)
     {
-        if($route === null)
+        if($route === null || $route === '')
             throw new \Exception('Requires string argument.');
         $this->routes[] = $route;
     }
