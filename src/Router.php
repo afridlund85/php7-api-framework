@@ -4,6 +4,7 @@ namespace Asd;
 class Router implements iRouter
 {
     private $factory;
+    private $routes = [];
     
     public function __construct(ControllerFactory $factory = null)
     {
@@ -22,8 +23,15 @@ class Router implements iRouter
         
     }
     
-    public function addRoute()
+    public function addRoute(string $route = null)
     {
-        throw new \Exception('Requires string argument.');
+        if($route === null)
+            throw new \Exception('Requires string argument.');
+        $this->routes[] = $route;
+    }
+    
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 }

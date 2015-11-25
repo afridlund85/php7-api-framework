@@ -56,7 +56,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router->addRoute($expected);
         $routes = $router->getRoutes();
         $actual = $routes[0];
-        
+            
         $this->assertEquals($expected, $actual);
     }
     
