@@ -41,6 +41,18 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
+     * @expectedException \Exception
+     * @covers Asd\Dispather::__construct
+     */
+    public function constructor_withMissingRouterArgument_throwsException()
+    {
+        $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
+        $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
+        $dispatcher = new Dispatcher($requestStub, $responseStub);
+    }
+    
+    /**
+     * @test
      * @covers              \Asd\Dispatcher::__construct
      */
     public function constructor_withCorrectArguments_doesNotThrowException()
