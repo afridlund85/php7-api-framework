@@ -32,9 +32,9 @@ class Dispatcher
      * @param iRequest|null $req Request object
      * @param iResponse|null $res Response object
      */
-    public function __construct(iRequest $req = null, iResponse $res = null)
+    public function __construct(iRequest $req = null, iResponse $res = null, iRouter $router = null)
     {
-        if($req === null || $res === null)
+        if($req === null || $res === null || $router === null)
             throw new \Exception();
         $this->response = $res;
         $this->request = $req;

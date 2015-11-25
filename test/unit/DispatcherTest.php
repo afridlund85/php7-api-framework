@@ -59,7 +59,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
-        $dispatcher = new Dispatcher($requestStub, $responseStub);
+        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
+        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
     }
     
     /**
@@ -74,7 +75,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
         $responseStub->method('getBody')->willReturn($expected);
-        $dispatcher = new Dispatcher($requestStub, $responseStub);
+        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
+        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
         
         $dispatcher->dispatch();
     }
@@ -89,7 +91,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
         $requestStub->method('getUri')->willReturn('/MyResource/');
-        $dispatcher = new Dispatcher($requestStub, $responseStub);
+        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
+        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
         
         $actual = $dispatcher->getController();
         
@@ -106,7 +109,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $requestStub = $this->getMockBuilder('Asd\iRequest')->getMock();
         $responseStub = $this->getMockBuilder('Asd\iResponse')->getMock();
         $requestStub->method('getUri')->willReturn('/MyResource/MyAction');
-        $dispatcher = new Dispatcher($requestStub, $responseStub);
+        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
+        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerStub);
         
         $actual = $dispatcher->getAction();
         
@@ -131,8 +135,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $responseMock->expects($this->once())
             ->method('setBody')
             ->with($this->equalTo('A response from MyAction in MyResourceController.'));
+        $routerStub = $this->getMockBuilder('Asd\iRouter')->getMock();
         
-        $dispatcher = new Dispatcher($requestStub, $responseMock);
+        $dispatcher = new Dispatcher($requestStub, $responseMock, $routerStub);
         
         $dispatcher->dispatch();
     }
