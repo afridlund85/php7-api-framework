@@ -141,4 +141,36 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         
         $dispatcher->dispatch();
     }
+    
+    /**
+     * @test
+     * @covers Asd\Dispatcher::dispatch
+     */
+    public function dispatch_usesRouterToGetAController_echoItsResponse()
+    {
+        $route = '/MyResource/MyAction/';
+        $expected = 'Some text response';
+        $this->expectOutputString($expected);
+        $requestStub = $this->getMockBuilder('Asd\Request')
+            ->getMock();
+        $requestStub->method('getUri')
+            ->willReturn($route);
+        $controllerStub = $this->getMockBuilder('stdClass')
+            ->getMock();
+        $controllerStub->method('myAction')
+            ->willReturn($expected);
+        $routerMock = $this->getMockBuilder('Asd\iRouter')
+            ->getMock();
+        $routerMock->method('getController')
+            ->willReturn($controllerStub);
+        $routerMock->expects($this->once())
+            ->method('getController')
+            ->with($this->equalTo($route));
+        $responseStub = $this->getMockBuilder('Asd\iResponse')
+            ->getMock();
+            
+        $dispatcher = new Dispatcher($requestStub, $responseStub, $routerMock);
+        
+        $dispatcher->dispatch();
+    }
 }
