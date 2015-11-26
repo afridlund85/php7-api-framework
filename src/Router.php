@@ -44,9 +44,10 @@ class Router implements iRouter
             throw new \Exception('Requires string argument.');
         if($controller === null)
             throw new \Exception('Missing controller');
-        if(in_array($route, $this->routes))
+        $newRoute = array($route, $controller);
+        if(in_array($newRoute, $this->routes))
             throw new \Exception('Route already set.');
-        $this->routes[] = array($route, $controller);
+        $this->routes[] = $newRoute;
     }
     
     /**

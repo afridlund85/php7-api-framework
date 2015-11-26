@@ -74,7 +74,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Router::addRoute
      * @covers Asd\Router::getRoutes
      */
-    public function addRoute_withStringValue_createNewRoute()
+    public function addRoute_withStringValues_createNewRoute()
     {
         $expected = array('/some/path', 'SomeController');
         $factoryStub = $this->getMockBuilder('Asd\ControllerFactory')
@@ -95,13 +95,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function addRoute_withAlreadyExistingRoute_throwsException()
     {
-        $toAdd = '/some/path';
+        $toAdd = array('/some/path', 'SomeController');
         $factoryStub = $this->getMockBuilder('Asd\ControllerFactory')
             ->getMock();
         $router = new Router($factoryStub);
         
-        $router->addRoute($toAdd);
-        $router->addRoute($toAdd);
+        $router->addRoute($toAdd[0], $toAdd[1]);
+        $router->addRoute($toAdd[0], $toAdd[1]);
     }
     
     /**
