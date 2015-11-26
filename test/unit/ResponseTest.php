@@ -93,7 +93,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Response::setStatusCode
+     * @covers  Asd\Response::setStatusCode
      * @covers  Asd\Response::getStatusCode
      */
     public function setStatusCode_withCorrectArgument_setsStatusCode()
@@ -109,8 +109,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Response::setStatusCode
-     * @expectedException \Exception
+     * @covers              Asd\Response::setStatusCode
+     * @expectedException   \Exception
      */
     public function setStatusCode_withIllegalLowValue_throwsException()
     {
@@ -122,8 +122,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Response::setStatusCode
-     * @expectedException \Exception
+     * @covers              Asd\Response::setStatusCode
+     * @expectedException   \Exception
      */
     public function setStatusCode_withIllegalHighValue_throwsException()
     {
@@ -205,8 +205,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers  Asd\Response::addHeader
-     * @expectedException \Exception
+     * @covers              Asd\Response::addHeader
+     * @expectedException   \Exception
      */
     public function addHeader_withoutKey_throwsException()
     {
@@ -235,7 +235,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers  Asd\Response::removeHeader
+     * @covers Asd\Response::removeHeader
      */
     public function removeHeader_withNonExistingKey_doesNotAffectArray()
     {
@@ -252,8 +252,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers  Asd\Response::__construct
-     * @covers  Asd\Response::getProtocol
+     * @covers Asd\Response::__construct
+     * @covers Asd\Response::getProtocol
      */
     public function constructor_setsProtocolDefaultValue()
     {
@@ -282,8 +282,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @expectedException \Exception
-     * @covers Asd\Response::setProtocol
+     * @covers              Asd\Response::setProtocol
+     * @expectedException   \Exception
      */
     public function setProtocol_withNoArgument_throwsException()
     {
@@ -293,8 +293,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers  Asd\Response::__construct
-     * @covers  Asd\Response::getContentType
+     * @covers Asd\Response::__construct
+     * @covers Asd\Response::getContentType
      */
     public function constructor_setsContentTypeDefaultValue()
     {
@@ -323,8 +323,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @expectedException \Exception
-     * @covers Asd\Response::setContentType
+     * @covers              Asd\Response::setContentType
+     * @expectedException   \Exception
      */
     public function setContentType_withNoArgument_throwsException()
     {
@@ -364,8 +364,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @expectedException \Exception
-     * @covers Asd\Response::setCharset
+     * @covers              Asd\Response::setCharset
+     * @expectedException   \Exception
      */
     public function setCharset_withNoArgument_throwsException()
     {

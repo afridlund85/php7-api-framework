@@ -229,8 +229,8 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Request::GetQuery
-     * @expectedException \Exception
+     * @covers              Asd\Request::GetQuery
+     * @expectedException   \Exception
      */
     public function getQuery_withNoArgument_throwsException()
     {
@@ -240,8 +240,8 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Request::GetQuery
-     * @expectedException \Exception
+     * @covers              Asd\Request::GetQuery
+     * @expectedException   \Exception
      */
     public function getQuery_withNonExistingKey_throwsException()
     {

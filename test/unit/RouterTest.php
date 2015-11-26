@@ -7,8 +7,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers Asd\Router::__constructor
-     * @expectedException \Exception
+     * @covers              Asd\Router::__construct
+     * @expectedException   \Exception
      */
     public function constructor_withNoArgument_throwsException()
     {
@@ -17,7 +17,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Router::__constructor
+     * @covers Asd\Router::__construct
      */
     public function constructor_withControllerFactory_throwsNoException()
     {
@@ -29,8 +29,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Router::addRoute
-     * @expectedException \Exception 
+     * @covers              Asd\Router::addRoute
+     * @expectedException   \Exception 
      */
     public function addRoute_withEmptyArgument_throwsException()
     {
@@ -43,8 +43,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Router::addRoute
-     * @expectedException \Exception 
+     * @covers              Asd\Router::addRoute
+     * @expectedException   \Exception 
      */
     public function addRoute_withEmptyString_throwsException()
     {
@@ -57,8 +57,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Router::addRoute
-     * @expectedException \Exception 
+     * @covers              Asd\Router::addRoute
+     * @expectedException   \Exception 
      */
     public function addRoute_withoutControllerArgument_throwsException()
     {
@@ -90,8 +90,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers Asd\Router::addRoute
-     * @expectedException \Exception
+     * @covers              Asd\Router::addRoute
+     * @expectedException   \Exception
      */
     public function addRoute_withAlreadyExistingRoute_throwsException()
     {
