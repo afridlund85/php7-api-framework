@@ -13,12 +13,14 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "psr/http-message": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.0.*",
+        "phpunit/phpunit": "~5.2",
         "phpunit/php-code-coverage": "^3",
-        "guzzlehttp/guzzle": "~6.0"
+        "squizlabs/php_codesniffer": "2.*",
+        "guzzlehttp/guzzle": "^6.1"
     },
     "autoload": {
         "psr-4": {
@@ -34,10 +36,10 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite All",
-        "unit": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite Unit",
-        "integration": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite Integration",
-        "system": "vendor/bin/phpunit --bootstrap vendor/autoload.php --testsuite System",
+        "test": "phpunit --bootstrap vendor/autoload.php --testsuite All",
+        "unit": "phpunit --bootstrap vendor/autoload.php --testsuite Unit",
+        "integration": "phpunit --bootstrap vendor/autoload.php --testsuite Integration",
+        "system": "phpunit --bootstrap vendor/autoload.php --testsuite System",
         "coverage" : "phpdbg -qrr vendor/bin/phpunit --coverage-html coverage"
     }
 }

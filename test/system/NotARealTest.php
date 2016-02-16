@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 class NotARealTest extends \PHPUnit_Framework_TestCase
 {
     private $client;
-    
+
     protected function setUp()
     {
         $this->client = new Client([
@@ -15,7 +15,7 @@ class NotARealTest extends \PHPUnit_Framework_TestCase
             'timeout'  => 2.0,
         ]);
     }
-    
+
     /**
      * @test
      * @expectedException \GuzzleHttp\Exception\RequestException
