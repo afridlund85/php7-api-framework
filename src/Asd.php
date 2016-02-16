@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Asd;
 
 use InvalidArgumentException;
-use Asd\Router;
+use Asd\Router\Router;
 use Asd\Http\Request;
 
 class Asd{
