@@ -9,7 +9,8 @@ use Http\Request;
 /**
  * Router handles the registration of routes from the user and such
  */
-class Router{
+class Router
+{
   /**
    * array of route-objects
    * @var array

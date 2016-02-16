@@ -1,5 +1,6 @@
 {
-    "name": "Not decided(Asd?), PHP 7 API framework",
+    "name": "afridlund85/api",
+    "version": "0.0.1",
     "description": "API framework for PHP7",
     "license": "MIT",
     "keywords": [
