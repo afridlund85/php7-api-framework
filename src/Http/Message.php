@@ -21,6 +21,9 @@ use Psr\Http\Message\StreamInterface;
  */
 abstract class Message implements MessageInterface
 {
+  protected $protocolVersion = '1.1';
+  protected $headers;
+  protected $body;
   /**
    * Retrieves the HTTP protocol version as a string.
    *
@@ -28,7 +31,10 @@ abstract class Message implements MessageInterface
    *
    * @return string HTTP protocol version.
    */
-  public function getProtocolVersion();
+  public function getProtocolVersion() : string
+  {
+    return $this->protocolVersion;
+  }
 
   /**
    * Return an instance with the specified HTTP protocol version.
@@ -43,7 +49,12 @@ abstract class Message implements MessageInterface
    * @param string $version HTTP protocol version
    * @return self
    */
-  public function withProtocolVersion($version);
+  public function withProtocolVersion($version) : MessageInterface
+  {
+    $clone = clone $this;
+    $clone->protocolVersion = $version;
+    return $clone;
+  }
 
   /**
    * Retrieves all message header values.
@@ -70,7 +81,10 @@ abstract class Message implements MessageInterface
    *     key MUST be a header name, and each value MUST be an array of strings
    *     for that header.
    */
-  public function getHeaders();
+  public function getHeaders() : Array
+  {
+    return $this->headers;
+  }
 
   /**
    * Checks if a header exists by the given case-insensitive name.
@@ -80,7 +94,10 @@ abstract class Message implements MessageInterface
    *     name using a case-insensitive string comparison. Returns false if
    *     no matching header name is found in the message.
    */
-  public function hasHeader($name);
+  public function hasHeader($name) : bool
+  {
+    return true;
+  }
 
   /**
    * Retrieves a message header value by the given case-insensitive name.
@@ -96,8 +113,10 @@ abstract class Message implements MessageInterface
    *    header. If the header does not appear in the message, this method MUST
    *    return an empty array.
    */
-  public function getHeader($name);
-
+  public function getHeader($name) : Array
+  {
+    return [];
+  }
   /**
    * Retrieves a comma-separated string of the values for a single header.
    *
@@ -117,8 +136,10 @@ abstract class Message implements MessageInterface
    *    concatenated together using a comma. If the header does not appear in
    *    the message, this method MUST return an empty string.
    */
-  public function getHeaderLine($name);
-
+  public function getHeaderLine($name) : string
+  {
+    return '';
+  }
   /**
    * Return an instance with the provided value replacing the specified header.
    *
@@ -134,7 +155,10 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException for invalid header names or values.
    */
-  public function withHeader($name, $value);
+  public function withHeader($name, $value) : MessageInterface
+  {
+    return clone $this;
+  }
 
   /**
    * Return an instance with the specified header appended with the given value.
@@ -152,7 +176,10 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException for invalid header names or values.
    */
-  public function withAddedHeader($name, $value);
+  public function withAddedHeader($name, $value) : MessageInterface
+  {
+    return clone $this;
+  }
 
   /**
    * Return an instance without the specified header.
@@ -166,14 +193,20 @@ abstract class Message implements MessageInterface
    * @param string $name Case-insensitive header field name to remove.
    * @return self
    */
-  public function withoutHeader($name);
+  public function withoutHeader($name) : MessageInterface
+  {
+    return clone $this;
+  }
 
   /**
    * Gets the body of the message.
    *
    * @return StreamInterface Returns the body as a stream.
    */
-  public function getBody();
+  public function getBody() : StreamInterface
+  {
+    return $this->body;
+  }
 
   /**
    * Return an instance with the specified message body.
@@ -188,5 +221,8 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException When the body is not valid.
    */
-  public function withBody(StreamInterface $body);
+  public function withBody(StreamInterface $body) : MessageInterface
+  {
+    return clone $this;
+  }
 }

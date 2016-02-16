@@ -5,6 +5,7 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Representation of an outgoing, client-side request.
@@ -27,6 +28,9 @@ use Psr\Http\Message\RequestInterface;
  */
 class Request extends Message implements RequestInterface
 {
+    protected $target;
+    protected $method;
+    protected $uri;
     /**
      * Retrieves the message's request target.
      *
@@ -43,7 +47,10 @@ class Request extends Message implements RequestInterface
      *
      * @return string
      */
-    public function getRequestTarget();
+    public function getRequestTarget() : string
+    {
+        return "/";
+    }
 
     /**
      * Return an instance with the specific request-target.
@@ -62,14 +69,20 @@ class Request extends Message implements RequestInterface
      * @param mixed $requestTarget
      * @return self
      */
-    public function withRequestTarget($requestTarget);
+    public function withRequestTarget($requestTarget) : Message
+    {
+        return clone $this;
+    }
 
     /**
      * Retrieves the HTTP method of the request.
      *
      * @return string Returns the request method.
      */
-    public function getMethod();
+    public function getMethod() : string
+    {
+        return $this->method;
+    }
 
     /**
      * Return an instance with the provided HTTP method.
@@ -86,7 +99,10 @@ class Request extends Message implements RequestInterface
      * @return self
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method);
+    public function withMethod($method) : Message
+    {
+        return clone $this;
+    }
 
     /**
      * Retrieves the URI instance.
@@ -97,7 +113,10 @@ class Request extends Message implements RequestInterface
      * @return UriInterface Returns a UriInterface instance
      *     representing the URI of the request.
      */
-    public function getUri();
+    public function getUri() : UriInterface
+    {
+        return $this->uri;
+    }
 
     /**
      * Returns an instance with the provided URI.
@@ -129,5 +148,8 @@ class Request extends Message implements RequestInterface
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return self
      */
-    public function withUri(UriInterface $uri, $preserveHost = false);
+    public function withUri(UriInterface $uri, $preserveHost = false) : Message
+    {
+        return clone $this;
+    }
 }

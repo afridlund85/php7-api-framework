@@ -23,6 +23,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Response extends Message implements ResponseInterface
 {
+    protected $statusCode = 200;
     /**
      * Gets the response status code.
      *
@@ -31,7 +32,10 @@ class Response extends Message implements ResponseInterface
      *
      * @return int Status code.
      */
-    public function getStatusCode();
+    public function getStatusCode() : int
+    {
+        return $this->statusCode;
+    }
 
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
@@ -53,7 +57,10 @@ class Response extends Message implements ResponseInterface
      * @return self
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus($code, $reasonPhrase = '');
+    public function withStatus($code, $reasonPhrase = '') : Response
+    {
+        return clone $this;
+    }
 
     /**
      * Gets the response reason phrase associated with the status code.
@@ -68,5 +75,8 @@ class Response extends Message implements ResponseInterface
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */
-    public function getReasonPhrase();
+    public function getReasonPhrase() : string
+    {
+        return '';
+    }
 }
