@@ -12,7 +12,7 @@ class Asd{
   private $req;
   private $router;
 
-  public function __construct(Request $req, Router $router)
+  public function __construct(Request $req = null, Router $router = null)
   {
     $this->req = $req ?? new Request();
     $this->router = $router ?? new Router();
