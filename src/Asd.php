@@ -5,6 +5,7 @@ namespace Asd;
 
 use InvalidArgumentException;
 use Asd\Router\Router;
+use Asd\Router\Route;
 use Asd\Http\Request;
 
 class Asd{
