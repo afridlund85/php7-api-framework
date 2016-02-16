@@ -5,6 +5,7 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+
 /**
  * Representation of an outgoing, server-side response.
  *

@@ -3,7 +3,9 @@ declare(strict_types = 1);
 
 namespace Asd\Http;
 
+use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
+
 /**
  * Representation of an outgoing, client-side request.
  *

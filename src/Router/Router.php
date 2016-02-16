@@ -3,8 +3,12 @@ declare(strict_types = 1);
 
 namespace Asd\Router;
 
+use InvalidArgumentException;
 use Http\Request;
 
+/**
+ * Router handles the registration of routes from the user and such
+ */
 class Router{
   /**
    * array of route-objects
@@ -14,7 +18,7 @@ class Router{
 
   /**
    * Add route
-   * @param Route $route [description]
+   * @param Route $route Route object
    */
   public function addRoute(Route $route)
   {
@@ -22,9 +26,18 @@ class Router{
   }
 
   /**
+   * Returns array of routes 
+   * @return Array of Route-instances
+   */
+  public function getRoutes() : Array
+  {
+    return $this->routes;
+  }
+
+  /**
    * Validate that a Request is in the collection of routes
-   * @param  Request $req [description]
-   * @return boolean      [description]
+   * @param  Request $req Request-object
+   * @return boolean
    */
   public function isValidRoute(Request $req) : bool
   {
