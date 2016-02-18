@@ -19,13 +19,18 @@ class Asd{
     $this->router = $router ?? new Router();
   }
 
+  /**
+   * @codeCoverageIgnore
+   */
   private function dump($v)
   {
     echo '<pre>';
     var_dump($v);
     exit;
   }
-
+  /**
+   * @codeCoverageIgnore
+   */
   public function run()
   {
     $this->dump($this->req);

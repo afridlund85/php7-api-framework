@@ -31,8 +31,8 @@ class Route
   {
     if(!$this->isValidMethod($method))
       throw new InvalidArgumentException('"' . $method . '" is not a valid method.');
-    $this->method = $method;
-    $this->path = trim($path, '/');
+    $this->method = strtoupper($method);
+    $this->path = '/' . trim((trim(trim($path), '/')));
   }
   /**
    * Return HTTP-method as string
@@ -61,6 +61,20 @@ class Route
   {
     $valid = ['GET', 'POST'];
     return in_array(strtoupper($method), $valid);
+  }
+
+  /**
+   * Check if the route compared has the same properties
+   * @param  Route  $route route to be compared
+   * @return boolean
+   */
+  public function equals(Route $route) : bool
+  {
+    if($this->method !== $route->getMethod())
+      return false;
+    if($this->path !== $route->getPath())
+      return false;
+    return true;
   }
 
 }

@@ -41,6 +41,6 @@
         "unit": "phpunit --testsuite Unit",
         "integration": "phpunit --testsuite Integration",
         "system": "phpunit --testsuite System",
-        "coverage" : "phpdbg -qrr vendor/bin/phpunit --coverage-html coverage"
+        "coverage" : "vendor\\bin\\phpunit --coverage-html coverage"
     }
 }

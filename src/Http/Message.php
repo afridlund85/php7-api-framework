@@ -22,7 +22,7 @@ use Psr\Http\Message\StreamInterface;
 abstract class Message implements MessageInterface
 {
   protected $protocolVersion = '1.1';
-  protected $headers;
+  protected $headers = [];
   protected $body;
   /**
    * Retrieves the HTTP protocol version as a string.
@@ -51,8 +51,10 @@ abstract class Message implements MessageInterface
    */
   public function withProtocolVersion($version) : MessageInterface
   {
+    if(is_numeric($version))
+      $version = number_format((float)$version,1);
     $clone = clone $this;
-    $clone->protocolVersion = $version;
+    $clone->protocolVersion = ''.$version;
     return $clone;
   }
 
@@ -96,7 +98,17 @@ abstract class Message implements MessageInterface
    */
   public function hasHeader($name) : bool
   {
-    return true;
+    $headerNames = array_keys($this->headers);
+    foreach ($headerNames as $headerName) {
+      if(strtolower($headerName) === strtolower(''.$name)){
+        return true;
+      }
+    }
+    // foreach($this->headers as $headerName => $values){
+    //   if(strtolower($headerName) === strtolower($name))
+    //     return true;
+    // }
+    return false;
   }
 
   /**
@@ -115,7 +127,9 @@ abstract class Message implements MessageInterface
    */
   public function getHeader($name) : Array
   {
-    return [];
+    if(!$this->hasHeader($name))
+      return [];
+    return $this->headers[$this->getHeaderName($name)];
   }
   /**
    * Retrieves a comma-separated string of the values for a single header.
@@ -138,7 +152,10 @@ abstract class Message implements MessageInterface
    */
   public function getHeaderLine($name) : string
   {
-    return '';
+    if(!$this->hasHeader($name))
+      return '';
+    $name = $this->getHeaderName($name);
+    return implode(',', $this->headers[$name]);
   }
   /**
    * Return an instance with the provided value replacing the specified header.
@@ -155,9 +172,16 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException for invalid header names or values.
    */
-  public function withHeader($name, $value) : MessageInterface
+  public function withHeader($name, $value = []) : MessageInterface
   {
-    return clone $this;
+    if(!is_string($name))
+      throw new InvalidArgumentException('header name must be a string.');
+    $this->validateHeaderValue($value);
+    $value = is_array($value) ? $value : [$value];
+    $clone = clone $this;
+    $name = $this->getHeaderName($name);
+    $clone->headers[$name] = $value;
+    return $clone;
   }
 
   /**
@@ -176,9 +200,16 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException for invalid header names or values.
    */
-  public function withAddedHeader($name, $value) : MessageInterface
+  public function withAddedHeader($name, $value = []) : MessageInterface
   {
-    return clone $this;
+    if(!is_string($name))
+      throw new InvalidArgumentException('header name must be a string.');
+    $this->validateHeaderValue($value);
+    $value = is_array($value) ? $value : [$value];
+    $clone = clone $this;
+    $name = $this->getHeaderName($name);
+    $clone->headers[$name][] = $value;
+    return $clone;
   }
 
   /**
@@ -195,7 +226,12 @@ abstract class Message implements MessageInterface
    */
   public function withoutHeader($name) : MessageInterface
   {
-    return clone $this;
+    $clone = clone $this;
+    if(!$this->hasHeader($name))
+      return $clone;
+    $name = $this->getHeaderName($name);
+    unset($clone->headers[$name]);
+    return $clone;
   }
 
   /**
@@ -224,5 +260,39 @@ abstract class Message implements MessageInterface
   public function withBody(StreamInterface $body) : MessageInterface
   {
     return clone $this;
+  }
+
+  /**
+   * Validates header value parameter, MUST be: string[] or string
+   * @throws InvalidArgumentException value is not a string or value is not an Array of strings
+   */
+  private function validateHeaderValue($value)
+  {
+    if(is_array($value)){
+      foreach ($value as $val) {
+        if(!is_string($val))
+          throw new InvalidArgumentException('When value is an array, it must only contain strings.');
+      }
+    }
+    else{
+      if(!is_string($value))
+        throw new InvalidArgumentException('value must be a string or an array of strings.');
+    }
+  }
+
+  /**
+   * Get case-insensitive header name, use hasHeader()
+   * @param  string $name case-insensitive name of header
+   * @return string headerName with existing case-sensitive value, param $name
+   */
+  private function getHeaderName($name)
+  {
+    $headerNames = array_keys($this->headers);
+    foreach ($headerNames as $headerName) {
+      if(strtolower(''.$headerName) === strtolower($name)){
+        return $headerName;
+      }
+    }
+    return $name;
   }
 }
