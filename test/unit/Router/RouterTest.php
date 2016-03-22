@@ -23,7 +23,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
    * @covers Asd\Router\Router::addRoute
    * @expectedException Throwable 
    */
-  public function addRoute_withoutArgument_throwsException()
+  public function addRoute_withoutArgument()
   {
     $this->router->addRoute();
   }
@@ -32,7 +32,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
    * @test
    * @covers Asd\Router\Router::getRoutes
    */
-  public function getRoutes_whenNoneAdded_returnErmptyArray()
+  public function getRoutes_whenEmpty()
   {
     $routes = $this->router->getRoutes();
     $this->assertEquals(sizeof($routes), 0);
@@ -43,7 +43,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
    * @covers Asd\Router\Router::addRoute
    * @covers Asd\Router\Router::routeExists
    */
-  public function addRoute_withRouteObject_addsRouteToCollection()
+  public function addRoute_routeObject()
   {
     $routeStub = $this->getMockBuilder('\\Asd\\Router\\Route')
       ->disableOriginalConstructor()
@@ -63,7 +63,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
    * @expectedException InvalidArgumentException
    * @expectedExceptionMessage Route already defined.
    */
-  public function addRoute_withAlreadyExistingRoute_throwsException()
+  public function addRoute_existingRoute()
   {
     $routeStub1 = $this->getMockBuilder('\\Asd\\Router\\Route')
       ->disableOriginalConstructor()

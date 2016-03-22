@@ -18,14 +18,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
   {
     $this->request = new Request();
   }
+
   /**
    * @test
    */
   public function implements_PSR7()
   {
-    
     $this->assertInstanceOf('Asd\Http\Message', $this->request);
-    $this->assertInstanceOf('Psr\Http\Message\RequestInterface', $this->request);
+    $this->assertInstanceOf('Psr\Http\Message\MessageInterface', $this->request);
     $this->assertInstanceOf('Psr\Http\Message\RequestInterface', $this->request);
   }
 
@@ -33,7 +33,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
    * @test
    * @covers Asd\Http\Message::getProtocolVersion
    */
-  public function getProtocolVersion_returnStringValue()
+  public function getProtocolVersion()
   {
     $this->assertSame($this->request->getProtocolVersion(), '1.1');
   }
@@ -42,7 +42,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
    * @test
    * @covers Asd\Http\Message::withProtocolVersion
    */
-  public function withProtocolVersion_returnMutatedClone()
+  public function withProtocolVersion_isImmutable()
   {
     $clone = $this->request->withProtocolVersion('1.0');
 
@@ -68,7 +68,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
    * @test
    * @covers Asd\Http\Message::getHeaders
    */
-  public function getHeaders_returnsArrayOfHeaders()
+  public function getHeaders()
   {
     $this->assertEquals($this->request->getHeaders(), []);
   }
