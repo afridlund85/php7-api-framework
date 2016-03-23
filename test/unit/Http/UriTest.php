@@ -40,7 +40,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
   public function implements_PSR7()
   {
     $uri = $this->uriSetup();
-    $this->assertInstanceOf('Asd\Http\Uri', $uri);
     $this->assertInstanceOf('Psr\Http\Message\UriInterface', $uri);
   }
 

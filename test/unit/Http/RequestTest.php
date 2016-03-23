@@ -29,47 +29,5 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     $this->assertInstanceOf('Psr\Http\Message\RequestInterface', $this->request);
   }
 
-  /**
-   * @test
-   * @covers Asd\Http\Message::getProtocolVersion
-   */
-  public function getProtocolVersion()
-  {
-    $this->assertSame($this->request->getProtocolVersion(), '1.1');
-  }
-
-  /**
-   * @test
-   * @covers Asd\Http\Message::withProtocolVersion
-   */
-  public function withProtocolVersion_isImmutable()
-  {
-    $clone = $this->request->withProtocolVersion('1.0');
-
-    $this->assertSame($clone->getProtocolVersion(), '1.0');
-    $this->assertSame($this->request->getProtocolVersion(), '1.1');
-    $this->assertNotEquals($this->request, $clone);
-    $this->assertNotSame($this->request, $clone);
-  }
-
-  /**
-   * @test
-   * @covers Asd\Http\Message::withProtocolVersion
-   */
-  public function withProtocolVersion_convertsNumericParamToStringValue()
-  {
-    $clone1 = $this->request->withProtocolVersion(1.0);
-    $clone2 = $this->request->withProtocolVersion(1.1);
-    $this->assertSame($clone1->getProtocolVersion(), '1.0');
-    $this->assertSame($clone2->getProtocolVersion(), '1.1');
-  }
-
-  /**
-   * @test
-   * @covers Asd\Http\Message::getHeaders
-   */
-  public function getHeaders()
-  {
-    $this->assertEquals($this->request->getHeaders(), []);
-  }
+  
 }

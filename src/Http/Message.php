@@ -21,9 +21,27 @@ use Psr\Http\Message\StreamInterface;
  */
 abstract class Message implements MessageInterface
 {
+
+  /**
+   * @var string
+   */
   protected $protocolVersion = '1.1';
+
+  /**
+   * @var array
+   */
   protected $headers = [];
+  
+  /**
+   * @var Psr\Http\Message\StreamInterface
+   */
   protected $body;
+
+  /**
+   * @var string[]
+   */
+  protected static $validProtocols = ['1.0', '1.1', '2.0'];
+  
   /**
    * Retrieves the HTTP protocol version as a string.
    *
@@ -49,10 +67,11 @@ abstract class Message implements MessageInterface
    * @param string $version HTTP protocol version
    * @return self
    */
-  public function withProtocolVersion($version) : MessageInterface
+  public function withProtocolVersion($version) : self
   {
-    if(is_numeric($version))
-      $version = number_format((float)$version,1);
+    
+    if(!in_array($version, self::$validProtocols))
+      throw new InvalidArgumentException('Accepted protocols are 1.0, 1.1 and 2.0.');
     $clone = clone $this;
     $clone->protocolVersion = ''.$version;
     return $clone;
@@ -131,6 +150,7 @@ abstract class Message implements MessageInterface
       return [];
     return $this->headers[$this->getHeaderName($name)];
   }
+
   /**
    * Retrieves a comma-separated string of the values for a single header.
    *
@@ -157,6 +177,7 @@ abstract class Message implements MessageInterface
     $name = $this->getHeaderName($name);
     return implode(',', $this->headers[$name]);
   }
+
   /**
    * Return an instance with the provided value replacing the specified header.
    *
@@ -172,11 +193,12 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException for invalid header names or values.
    */
-  public function withHeader($name, $value = []) : MessageInterface
+  public function withHeader($name, $value = []) : self
   {
     if(!is_string($name))
       throw new InvalidArgumentException('header name must be a string.');
     $this->validateHeaderValue($value);
+
     $value = is_array($value) ? $value : [$value];
     $clone = clone $this;
     $name = $this->getHeaderName($name);
@@ -200,15 +222,19 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException for invalid header names or values.
    */
-  public function withAddedHeader($name, $value = []) : MessageInterface
+  public function withAddedHeader($name, $value = []) : self
   {
     if(!is_string($name))
       throw new InvalidArgumentException('header name must be a string.');
+    if(!$this->hasHeader($name))
+      return $this->withHeader($name, $value);
+
     $this->validateHeaderValue($value);
+
     $value = is_array($value) ? $value : [$value];
     $clone = clone $this;
     $name = $this->getHeaderName($name);
-    $clone->headers[$name][] = $value;
+    $clone->headers[$name] = array_merge($clone->headers[$name], $value);
     return $clone;
   }
 
@@ -224,7 +250,7 @@ abstract class Message implements MessageInterface
    * @param string $name Case-insensitive header field name to remove.
    * @return self
    */
-  public function withoutHeader($name) : MessageInterface
+  public function withoutHeader($name) : self
   {
     $clone = clone $this;
     if(!$this->hasHeader($name))
@@ -257,9 +283,11 @@ abstract class Message implements MessageInterface
    * @return self
    * @throws \InvalidArgumentException When the body is not valid.
    */
-  public function withBody(StreamInterface $body) : MessageInterface
+  public function withBody(StreamInterface $body) : self
   {
-    return clone $this;
+    $clone = clone $this;
+    $clone->body = $body;
+    return $clone;
   }
 
   /**
@@ -285,7 +313,7 @@ abstract class Message implements MessageInterface
    * @param  string $name case-insensitive name of header
    * @return string headerName with existing case-sensitive value, param $name
    */
-  private function getHeaderName($name)
+  private function getHeaderName($name) : string
   {
     $headerNames = array_keys($this->headers);
     foreach ($headerNames as $headerName) {

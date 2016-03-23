@@ -44,12 +44,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
    */
   public function getReasonPhrase()
   {
-    $this->assertEquals('', $this->response->getReasonPhrase());
+    $this->assertEquals('OK', $this->response->getReasonPhrase());
   }
 
   /**
    * @test
    * @covers Asd\Http\Response::withStatus
+   * @covers Asd\Http\Response::filterReasonPhrase
    */
   public function withStatus()
   {
@@ -103,7 +104,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
    */
   public function withStatus_booleanValue()
   {
-    $this->response->withStatus([300]);
+    $this->response->withStatus(true);
   }
 
   /**
@@ -114,6 +115,28 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
   public function withStatus_numericPhraseValue()
   {
     $this->response->withStatus(300, 250);
+  }
+
+  /**
+   * @test
+   * @covers Asd\Http\Response::withStatus
+   * @covers Asd\Http\Response::validateStatusCode
+   * @expectedException InvalidArgumentException
+   */
+  public function withStatus_statusCodeTooSmall()
+  {
+    $this->response->withStatus(99);
+  }
+
+  /**
+   * @test
+   * @covers Asd\Http\Response::withStatus
+   * @covers Asd\Http\Response::validateStatusCode
+   * @expectedException InvalidArgumentException
+   */
+  public function withStatus_statusCodeTooBig()
+  {
+    $this->response->withStatus(600);
   }
   
 }
