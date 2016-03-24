@@ -714,7 +714,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
       . '?' .$this->defaultData['query']
       . '#' . $this->defaultData['fragment'];
 
-    $this->assertEquals('', (string)$uri);
+    $this->assertEquals('http:', (string)$uri);
     $this->assertEquals($expected, (string)$uri2);
   }
 
@@ -725,7 +725,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
   public function __toString_variousValues()
   {
     $uri = new Uri();
-    $this->assertEquals('', (string)$uri);
+    $this->assertEquals('http:', (string)$uri);
 
     $uri = $uri->withScheme('https');
     $this->assertEquals('https:', (string)$uri);

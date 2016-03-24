@@ -49,14 +49,15 @@ class Uri implements UriInterface
     string $fragment = null
   )
   {
-    $this->scheme = $scheme;
-    $this->user = $user;
-    $this->password = $password;
-    $this->host = $host;
-    $this->port = $port;
-    $this->path = $path;
-    $this->query = $query;
-    $this->fragment = $fragment;
+    $s = $_SERVER['HTTPS'] ?? '';
+    $this->scheme = $scheme ?? (empty($scheme) || strtolower($scheme) === 'off' ? 'http' : 'https');
+    $this->user = $user ?? $_SERVER['PHP_AUTH_USER'] ?? null;
+    $this->password = $password ?? $_SERVER['PHP_AUTH_PW'] ?? null;
+    $this->host = $host ?? (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'] ?? null);
+    $this->port = $port ?? $_SERVER['SERVER_PORT'] ?? null;
+    $this->path = $path ?? $_SERVER['REQUEST_URI'] ?? null;
+    $this->query = $query ?? $_SERVER['QUERY_STRING'] ?? null;
+    $this->fragment = $fragment ?? null;
   }
 
   /**
@@ -161,7 +162,7 @@ class Uri implements UriInterface
    */
   public function getPort()
   {
-    if(is_null($this->port) && is_null($this->scheme))
+    if(is_null($this->port) && empty($this->scheme))
       return null;
     if($this->port === 80 && strtolower($this->scheme) === 'http')
       return null;
@@ -462,7 +463,7 @@ class Uri implements UriInterface
   public function __toString() : string
   {
     $uri = '';
-    if($this->scheme !== null)
+    if($this->scheme)
       $uri .= $this->getScheme() . ':';
 
     if($this->getAuthority() !== '')

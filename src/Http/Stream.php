@@ -15,6 +15,20 @@ use Psr\Http\Message\StreamInterface;
  */
 class Stream implements StreamInterface
 {
+
+  protected $resource;
+
+  /**
+   * @link http://php.net/manual/en/language.types.resource.php
+   * @param php_resource $resource 
+   */
+  public function __construct($resource)
+  {
+    if(!is_resource($resource))
+      throw new InvalidArgumentException('provided resource must be a valid php resource.');
+    $this->resource = $resource;
+  }
+
   /**
    * Reads all data from the stream into a string, from the beginning to end.
    *
@@ -31,7 +45,18 @@ class Stream implements StreamInterface
    */
   public function __toString() : string
   {
-    return '';
+    if(!is_resource($this->resource))
+      return '';
+
+    $content;
+    try{
+      $this->rewind();
+      $content = $this->getContents();
+    }
+    catch(RuntimeException $e){
+      $content = '';
+    }
+    return $content;
   }
 
   /**
@@ -41,7 +66,7 @@ class Stream implements StreamInterface
    */
   public function close()
   {
-
+    fclose($this->resource);
   }
 
   /**
@@ -53,7 +78,9 @@ class Stream implements StreamInterface
    */
   public function detach()
   {
-    return null;
+    $resource = $this->resource;
+    $this->resource = null;
+    return $resource;
   }
 
   /**
@@ -63,7 +90,11 @@ class Stream implements StreamInterface
    */
   public function getSize()
   {
-    return null;
+    if(!is_resource($this->resource))
+      return null;
+
+    $stats = fstat($this->resource);
+    return isset($stats['size']) ? $stats['size'] : null;
   }
 
   /**
@@ -74,7 +105,12 @@ class Stream implements StreamInterface
    */
   public function tell() : int
   {
-    return 0;
+    if(is_resource($this->resource)){
+      $pos = ftell($this->resource);
+      if($pos !== false)
+        return $pos;
+    }
+    throw new RuntimeException('Could not get pointer position.');
   }
 
   /**
@@ -84,7 +120,7 @@ class Stream implements StreamInterface
    */
   public function eof() : bool
   {
-    return false;
+    return feof($this->resource);
   }
 
   /**
@@ -94,7 +130,9 @@ class Stream implements StreamInterface
    */
   public function isSeekable() : bool
   {
-    return false;
+    if(!is_resource($this->resource))
+      return false;
+    return $this->getMetadata('seekable') ?? false;
   }
 
   /**
@@ -111,7 +149,8 @@ class Stream implements StreamInterface
    */
   public function seek($offset, $whence = SEEK_SET)
   {
-
+    if(!$this->isSeekable() || fseek($this->resource, $offset, $whence) === -1)
+      throw new RuntimeException('Could not perform seek');
   }
 
   /**
@@ -124,8 +163,9 @@ class Stream implements StreamInterface
    * @link http://www.php.net/manual/en/function.fseek.php
    * @throws \RuntimeException on failure.
    */
-  public function rewind(){
-
+  public function rewind()
+  {
+    $this->seek(0);
   }
 
   /**
@@ -135,7 +175,11 @@ class Stream implements StreamInterface
    */
   public function isWritable() : bool
   {
-    return false;
+    if(!is_resource($this->resource))
+      return false;
+
+    $modes = ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'];
+    return in_array($this->getMetadata('mode'), $modes);
   }
 
   /**
@@ -147,7 +191,12 @@ class Stream implements StreamInterface
    */
   public function write($string) : int
   {
-    return 0;
+    if($this->isWritable()){
+      $written = fwrite($this->resource, $string);
+      if($written !== false)
+        return $written;
+    }
+    throw new RuntimeException('Could not write');
   }
 
   /**
@@ -157,7 +206,11 @@ class Stream implements StreamInterface
    */
   public function isReadable() : bool
   {
-    return false;
+    if(!is_resource($this->resource))
+      return false;
+    
+    $modes = ['r', 'r+', 'w+', 'a+', 'x+', 'c+'];
+    return in_array($this->getMetadata('mode'), $modes);
   }
 
   /**
@@ -172,7 +225,12 @@ class Stream implements StreamInterface
    */
   public function read($length) : string
   {
-    return '';
+    if($this->isReadable()){
+      $data = fread($this->resource, $length);
+      if($data !== false)
+        return $data;
+    }
+    throw new RuntimeException('Could not read');
   }
 
   /**
@@ -184,7 +242,12 @@ class Stream implements StreamInterface
    */
   public function getContents() : string
   {
-    return '';
+    if($this->isReadable()){
+      $data = stream_get_contents($this->resource);
+      if($data !== false)
+        return $data;
+    }
+    throw new RuntimeException('Could not read');
   }
 
   /**
@@ -201,6 +264,10 @@ class Stream implements StreamInterface
    */
   public function getMetadata($key = null)
   {
-    return null;
+    $metaData = stream_get_meta_data($this->resource);
+    if($key === null)
+      return $metaData;
+
+    return isset($metadata[$key]) ? $metadata[$key] : null;
   }
 }

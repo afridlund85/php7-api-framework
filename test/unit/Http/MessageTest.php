@@ -271,7 +271,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
    */
   public function withBody()
   {
-    $bodyStub = $this->getMockBuilder('\\Asd\\Http\\Body')
+    $bodyStub = $this->getMockBuilder('\\Asd\\Http\\RequestBody')
       ->disableOriginalConstructor()
       ->getMock();
 

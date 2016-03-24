@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Asd\Http;
 
 use InvalidArgumentException;
+use Asd\Http\RequestBody;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -28,9 +29,35 @@ use Psr\Http\Message\UriInterface;
  */
 class Request extends Message implements RequestInterface
 {
-  protected $target;
+
+  /**
+   * @var string
+   */
+  protected $target = null;
+
+  /**
+   * @var string http method
+   */
   protected $method;
+  
+  /**
+   * @var Psr\Http\Message\UriInterface
+   */
   protected $uri;
+
+  /**
+   * @param string            $method
+   * @param UriInterface|null $uri
+   * @param RequestBody|null  $body
+   */
+  public function __construct(string $method = null, UriInterface $uri = null, RequestBody $body = null)
+  {
+    $method = $method ?? $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    $this->method = $this->validateMethod($method);
+    $this->uri = $uri ?? new Uri();
+    $this->body = $body ?? new RequestBody();
+  }
+
   /**
    * Retrieves the message's request target.
    *
@@ -49,7 +76,10 @@ class Request extends Message implements RequestInterface
    */
   public function getRequestTarget() : string
   {
-      return "/";
+    if($this->target !== null)
+      return $this->target;
+
+    return $this->uri->getPath() === '' ? '/' : $this->uri->getPath();
   }
 
   /**
@@ -71,7 +101,9 @@ class Request extends Message implements RequestInterface
    */
   public function withRequestTarget($requestTarget) : self
   {
-      return clone $this;
+      $clone = clone $this;
+      $clone->target = $requestTarget;
+      return $clone;
   }
 
   /**
@@ -101,7 +133,9 @@ class Request extends Message implements RequestInterface
    */
   public function withMethod($method) : self
   {
-      return clone $this;
+      $clone = clone $this;
+      $clone->method = $this->validateMethod($method);
+      return $clone;
   }
 
   /**
@@ -150,6 +184,32 @@ class Request extends Message implements RequestInterface
    */
   public function withUri(UriInterface $uri, $preserveHost = false) : self
   {
-      return clone $this;
+      $clone = clone $this;
+      $clone->uri = $uri;
+      if($preserveHost){
+        if($this->uri->getHost() !== '' && !$this->hasHeader('Host'))
+          $clone = $clone->withHeader('Host', $uri->getHost());
+      }
+      else{
+        if($uri->getHost() !== '')
+          $clone = $clone->withHeader('Host', $uri->getHost());
+      }
+      return $clone;
+  }
+
+  /**
+   * Validate and upper case method.
+   * 
+   * @param  string $method
+   * @return string method as upper case
+   * @throws \InvalidArgumentException for invalid HTTP methods.
+   */
+  private function validateMethod(string $method) : string
+  {
+    $method = strtoupper($method);
+    $valid = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+    if(!in_array($method, $valid))
+      throw new InvalidArgumentException('Invalid http method');
+    return $method;
   }
 }

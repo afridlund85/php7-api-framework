@@ -29,5 +29,28 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     $this->assertInstanceOf('Psr\Http\Message\RequestInterface', $this->request);
   }
 
+  /**
+   * @test
+   * @expectedException InvalidArgumentException
+   */
+  public function __construct_invalidMethod()
+  {
+    new Request('Not_a_http_method');
+  }
+
+  /**
+   * @test
+   * @covers Asd\Http\Request::getUri
+   */
+  public function getUri()
+  {
+    $uriStub = $this->getMockBuilder('\\Asd\\Http\\Uri')
+      ->disableOriginalConstructor()
+      ->getMock();
+    $request = new Request('GET', $uriStub);
+
+    $this->assertEquals($uriStub, $request->getUri());
+    $this->assertSame($uriStub, $request->getUri());
+  }
   
 }
