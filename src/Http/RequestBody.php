@@ -10,11 +10,14 @@ class RequestBody extends Stream
 
   public function __construct($resource = null)
   {
-    if($resource === null || !is_resource($resource)){
+    if(!is_resource($resource) && $resource !== null)
+      throw new InvalidArgumentException('resource parameter must be a valid resource or null');
+    if($resource === null){
       $resource = fopen('php://temp', 'w+');
       stream_copy_to_stream(fopen('php://input', 'r'), $resource);
       rewind($resource);
     }
     parent::__construct($resource);
   }
+  
 }

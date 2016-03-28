@@ -11,10 +11,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
   protected $response;
   
-  /**
-   * @before
-   */
-  public function setup()
+  public function setUp()
   {
     $this->response = new Response();
   }

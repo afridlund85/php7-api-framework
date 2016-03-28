@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Asd\Http;
 
 use InvalidArgumentException;
+use RuntimeException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -47,16 +48,13 @@ class Stream implements StreamInterface
   {
     if(!is_resource($this->resource))
       return '';
-
-    $content;
     try{
       $this->rewind();
-      $content = $this->getContents();
+      return $this->getContents();
     }
     catch(RuntimeException $e){
-      $content = '';
+      return '';
     }
-    return $content;
   }
 
   /**
@@ -268,6 +266,6 @@ class Stream implements StreamInterface
     if($key === null)
       return $metaData;
 
-    return isset($metadata[$key]) ? $metadata[$key] : null;
+    return isset($metaData[$key]) ? $metaData[$key] : null;
   }
 }

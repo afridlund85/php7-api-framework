@@ -10,9 +10,11 @@ class ResponseBody extends Stream
 
   public function __construct($resource = null)
   {
-    if($resource === null || !is_resource($resource)){
+    if(!is_resource($resource) && $resource !== null)
+      throw new InvalidArgumentException('resource parameter must be a valid resource or null');
+    if($resource === null)
       $resource = fopen('php://temp', 'w+');
-    }
     parent::__construct($resource);
   }
+
 }

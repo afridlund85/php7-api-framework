@@ -2,22 +2,16 @@
 namespace Test\Unit;
 
 use Asd\Http\Message;
-use Asd\Http\Stream;
-use Asd\Http\Body;
 use Psr\Http\Message\MessageInterface;
-use Psr\Http\Message\StreamInterface;
 
 class MessageTest extends \PHPUnit_Framework_TestCase
 {
 
   protected $message;
   
-  /**
-   * @before
-   */
-  public function setup()
+  public function setUp()
   {
-    $this->message = $stub = $this->getMockForAbstractClass('Asd\Http\Message');
+    $this->message = $this->getMockForAbstractClass('Asd\Http\Message');
   }
 
   /**
@@ -271,13 +265,13 @@ class MessageTest extends \PHPUnit_Framework_TestCase
    */
   public function withBody()
   {
-    $bodyStub = $this->getMockBuilder('\\Asd\\Http\\RequestBody')
+    $requestBodyStub = $this->getMockBuilder('\\Asd\\Http\\RequestBody')
       ->disableOriginalConstructor()
       ->getMock();
 
-    $message = $this->message->withBody($bodyStub);
+    $message = $this->message->withBody($requestBodyStub);
 
-    $this->assertEquals($bodyStub, $message->getBody());
+    $this->assertEquals($requestBodyStub, $message->getBody());
   }
 
 }

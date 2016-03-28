@@ -49,8 +49,7 @@ class Uri implements UriInterface
     string $fragment = null
   )
   {
-    $s = $_SERVER['HTTPS'] ?? '';
-    $this->scheme = $scheme ?? (empty($scheme) || strtolower($scheme) === 'off' ? 'http' : 'https');
+    $this->scheme = $scheme ?? (empty($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) === 'off' ? 'http' : 'https');
     $this->user = $user ?? $_SERVER['PHP_AUTH_USER'] ?? null;
     $this->password = $password ?? $_SERVER['PHP_AUTH_PW'] ?? null;
     $this->host = $host ?? (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'] ?? null);

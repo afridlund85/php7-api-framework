@@ -11,10 +11,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
   protected $getRoute;
   protected $postRoute;
   
-  /**
-   * @before
-   */
-  public function setup()
+  public function setUp()
   {
       $this->getRoute = new Route('GET', 'my-path');
       $this->postRoute = new Route('POST', 'my-path');
