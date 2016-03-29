@@ -5,6 +5,7 @@ namespace Asd\Router;
 
 use InvalidArgumentException;
 use Asd\Http\Request;
+use Asd\Router\Route;
 
 /**
  * Router handles the registration of routes from the user and such
@@ -42,9 +43,9 @@ class Router
   /**
    * Validate that a Request is in the collection of routes
    * @param  Request $req Request-object
-   * @return boolean
+   * @return Route
    */
-  public function matchRequest(Request $req) : bool
+  public function matchRequest(Request $req) : Route
   {
     foreach($this->routes as $route){
       if($route->matchesRequest($req, $this->basePath))
