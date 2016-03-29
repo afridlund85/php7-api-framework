@@ -37,12 +37,13 @@ class Asd
    */
   public function run()
   {
-    $route = $this->router->matchRequest($this->req);
-    if($route === null){
-      echo '404 not found.';
-    }
-    else{
+    try{
+      $route = $this->router->matchRequest($this->req);
       $this->dump($route);
+    }catch(OutOfBoundsException $e){
+      echo '404';
+    }catch(Throwable $t){
+      echo 'error';
     }
   }
 

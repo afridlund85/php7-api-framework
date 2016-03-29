@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Asd\Router;
 
 use InvalidArgumentException;
+use OutOfBoundsException;
 use Asd\Http\Request;
 use Asd\Router\Route;
 
@@ -51,7 +52,7 @@ class Router
       if($route->matchesRequest($req, $this->basePath))
         return $route;
     }
-    return null;
+    throw new OutOfBoundsException('Route does not exist.');
   }
 
   /**
