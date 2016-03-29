@@ -18,9 +18,12 @@ class AsdTest extends \PHPUnit_Framework_TestCase
    */
   public function setup()
   {
-    $this->routeStub = $this->getMockBuilder('\\Asd\\Router\\Route')->disableOriginalConstructor()->getMock();
-    $this->requestStub = $this->getMockBuilder('\\Asd\\Http\\Request')->disableOriginalConstructor()->getMock();
-    $this->routerStub = $this->getMockBuilder('\\Asd\\Router\\Router')->disableOriginalConstructor()->getMock();
+    $this->routeStub = $this->getMockBuilder('\\Asd\\Router\\Route')
+      ->disableOriginalConstructor()->getMock();
+    $this->requestStub = $this->getMockBuilder('\\Asd\\Http\\Request')
+      ->disableOriginalConstructor()->getMock();
+    $this->routerStub = $this->getMockBuilder('\\Asd\\Router\\Router')
+      ->disableOriginalConstructor()->getMock();
     $this->asd = new Asd($this->requestStub, $this->routerStub);
   }
 

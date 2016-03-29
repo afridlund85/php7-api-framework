@@ -46,8 +46,6 @@ class Stream implements StreamInterface
    */
   public function __toString() : string
   {
-    if(!is_resource($this->resource))
-      return '';
     try{
       $this->rewind();
       return $this->getContents();
@@ -147,7 +145,11 @@ class Stream implements StreamInterface
    */
   public function seek($offset, $whence = SEEK_SET)
   {
-    if(!$this->isSeekable() || fseek($this->resource, $offset, $whence) === -1)
+    if(!$this->isSeekable())
+      throw new RuntimeException('Could not perform seek');
+    
+    $seek = fseek($this->resource, $offset, $whence);
+    if($seek !== 0)
       throw new RuntimeException('Could not perform seek');
   }
 
@@ -177,7 +179,13 @@ class Stream implements StreamInterface
       return false;
 
     $modes = ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'];
-    return in_array($this->getMetadata('mode'), $modes);
+    $mode = $this->getMetadata('mode');
+    foreach($modes as $m){
+      if(strpos($mode, $m) !== false)
+        return true;
+    }
+
+    return false;
   }
 
   /**
@@ -208,7 +216,17 @@ class Stream implements StreamInterface
       return false;
     
     $modes = ['r', 'r+', 'w+', 'a+', 'x+', 'c+'];
-    return in_array($this->getMetadata('mode'), $modes);
+
+    //modes can contain extra characters depending on system
+    //http://php.net/manual/en/function.fopen.php
+    //return in_array($this->getMetadata('mode'), $modes);
+    $mode = $this->getMetadata('mode');
+    foreach($modes as $m){
+      if(strpos($mode, $m) !== false)
+        return true;
+    }
+
+    return false;
   }
 
   /**
