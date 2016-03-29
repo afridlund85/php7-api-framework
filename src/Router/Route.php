@@ -78,7 +78,7 @@ class Route
     return true;
   }
 
-  public function matchesRequest(Request $req, string $basePath)
+  public function matchesRequest(Request $req, string $basePath) : bool
   {
     if($this->method !== $req->getMethod())
       return false;
@@ -94,7 +94,3 @@ class Route
   }
 
 }
-
-/*
-
-*/

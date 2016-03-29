@@ -37,8 +37,8 @@ class Asd
    */
   public function run()
   {
-    $route = $this->router->matchRequestRoute($this->req);
-    if($route === false){
+    $route = $this->router->matchRequest($this->req);
+    if($route === null){
       echo '404 not found.';
     }
     else{

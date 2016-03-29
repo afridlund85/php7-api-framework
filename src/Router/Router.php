@@ -40,18 +40,17 @@ class Router
   }
 
   /**
-   * @codeCoverageIgnore
    * Validate that a Request is in the collection of routes
    * @param  Request $req Request-object
    * @return boolean
    */
-  public function matchRequestRoute(Request $req) : bool
+  public function matchRequest(Request $req) : bool
   {
     foreach($this->routes as $route){
       if($route->matchesRequest($req, $this->basePath))
         return $route;
     }
-    return false;
+    return null;
   }
 
   /**
