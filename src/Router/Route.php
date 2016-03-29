@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Asd\Router;
 
 use InvalidArgumentException;
+use Asd\Http\Request;
 
 /**
  * Represents a single route and its settings
@@ -77,4 +78,23 @@ class Route
     return true;
   }
 
+  public function matchesRequest(Request $req, string $basePath)
+  {
+    if($this->method !== $req->getMethod())
+      return false;
+    $reqPath = trim($req->getUri()->getPath(), '/');
+    $basePath = trim($basePath, '/');
+
+    if(stripos($reqPath, $basePath) === 0){
+      $reqPath = substr($reqPath, strlen($basePath));
+      $reqPath = trim($reqPath, '/');
+    }
+    
+    return trim($this->path, '/') === $reqPath;
+  }
+
 }
+
+/*
+
+*/

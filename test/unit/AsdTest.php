@@ -4,15 +4,17 @@ namespace Test\Unit;
 use Throwable;
 use Asd\Asd;
 use Asd\Http\Request;
+use Asd\Http\Response;
 use Asd\Router\Router;
 use Asd\Router\Route;
 
 class AsdTest extends \PHPUnit_Framework_TestCase
 {
-  protected $asd;
+  protected $app;
   protected $routeStub;
   protected $routerStub;
   protected $requestStub;
+  protected $responseStub;
   /**
    * @before
    */
@@ -22,9 +24,11 @@ class AsdTest extends \PHPUnit_Framework_TestCase
       ->disableOriginalConstructor()->getMock();
     $this->requestStub = $this->getMockBuilder('\\Asd\\Http\\Request')
       ->disableOriginalConstructor()->getMock();
+    $this->responseStub = $this->getMockBuilder('\\Asd\\Http\\Response')
+      ->disableOriginalConstructor()->getMock();
     $this->routerStub = $this->getMockBuilder('\\Asd\\Router\\Router')
       ->disableOriginalConstructor()->getMock();
-    $this->asd = new Asd($this->requestStub, $this->routerStub);
+    $this->app = new Asd($this->routerStub, $this->requestStub, $this->responseStub);
   }
 
   /**
@@ -41,7 +45,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
       ->method('addRoute')
       ->with($this->identicalTo($this->routeStub));
 
-    $asd = new Asd($this->requestStub, $routerMock);
-    $asd->addRoute($this->routeStub);
+    $app = new Asd($routerMock, $this->requestStub, $this->responseStub);
+    $app->addRoute($this->routeStub);
   }
 }

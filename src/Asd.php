@@ -7,16 +7,20 @@ use InvalidArgumentException;
 use Asd\Router\Router;
 use Asd\Router\Route;
 use Asd\Http\Request;
+use Asd\Http\Response;
 
-class Asd{
+class Asd
+{
 
-  private $req;
   private $router;
+  private $req;
+  private $res;
 
-  public function __construct(Request $req = null, Router $router = null)
+  public function __construct(Router $router = null, Request $req = null, Response $res = null)
   {
-    $this->req = $req ?? new Request();
     $this->router = $router ?? new Router();
+    $this->req = $req ?? new Request();
+    $this->res = $res ?? new Response();
   }
 
   /**
@@ -33,12 +37,12 @@ class Asd{
    */
   public function run()
   {
-    $this->dump($this->req);
-    if(!$this->router->isValidRoute($this->req)){
+    $route = $this->router->matchRequestRoute($this->req);
+    if($route === false){
       echo '404 not found.';
     }
     else{
-      $this->dump($this->req);
+      $this->dump($route);
     }
   }
 
@@ -47,4 +51,8 @@ class Asd{
     $this->router->addRoute($route);
   }
 
+  public function setBasePath(string $basePath)
+  {
+    $this->router->setBasePath($basePath);
+  }
 }

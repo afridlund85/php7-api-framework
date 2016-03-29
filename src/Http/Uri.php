@@ -34,7 +34,6 @@ class Uri implements UriInterface
   protected $host;
   protected $port;
   protected $path;
-  protected $basePath;
   protected $query;
   protected $fragment;
 

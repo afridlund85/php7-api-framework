@@ -17,6 +17,8 @@ class Router
    */
   private $routes = [];
 
+  private $basePath = '';
+
   /**
    * Add route
    * @param Route $route Route object
@@ -43,15 +45,13 @@ class Router
    * @param  Request $req Request-object
    * @return boolean
    */
-  public function requestIsRoute(Request $req) : bool
+  public function matchRequestRoute(Request $req) : bool
   {
     foreach($this->routes as $route){
-      if($req->getMethod() !== $route->getMethod())
-        return false;
-      if($req->getUrl() !== $route->getPath())
-        return false;
+      if($route->matchesRequest($req, $this->basePath))
+        return $route;
     }
-    return true;
+    return false;
   }
 
   /**
@@ -67,4 +67,10 @@ class Router
     }
     return false;
   }
+
+  public function setBasePath(string $basePath)
+  {
+    $this->basePath = $basePath;
+  }
+
 }
