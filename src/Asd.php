@@ -81,17 +81,17 @@ class Asd
 
   private function sendResponse(Response $response)
   {
-    // if(!headers_sent()){
-    //   $protocol = $this->response->getProtocolVersion();
-    //   $statusCode = $this->response->getStatusCode();
-    //   $reasonPhrase = $this->response->getReasonPhrase();
-    //   header('HTTP/' . $protocol . ' ' . $statusCode . '' . $reasonPhrase;
+    if(!headers_sent()){
+      $protocol = $this->response->getProtocolVersion();
+      $statusCode = $this->response->getStatusCode();
+      $reasonPhrase = $this->response->getReasonPhrase();
+      header('HTTP/' . $protocol . ' ' . $statusCode . '' . $reasonPhrase;
     
-    //   foreach($this->response->getHeaders() as $header => $values){
-    //     foreach($values as $value)
-    //       header($header . ':' . $value, false);
-    //   }
-    // }
+      foreach($this->response->getHeaders() as $header => $values){
+        foreach($values as $value)
+          header($header . ':' . $value, false);
+      }
+    }
     
     echo (string)$response->getBody();
   }
