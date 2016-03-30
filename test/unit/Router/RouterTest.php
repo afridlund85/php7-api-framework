@@ -3,7 +3,14 @@ namespace Test\Unit;
 
 use Throwable;
 use Asd\Router\Router;
-use Asd\Router\Route;
+
+class MyController
+{
+  public function myAction()
+  {
+    return 'Hello World!';
+  }
+}
 
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,9 +76,104 @@ class RouterTest extends \PHPUnit_Framework_TestCase
       ->disableOriginalConstructor()
       ->getMock();
 
-    $routeStub1->method('equals')->will($this->returnValue(true));
+    $routeStub1->method('equals')
+      ->will($this->returnValue(true));
     
     $this->router->addRoute($routeStub1);
     $this->router->addRoute($routeStub2);
   }
+
+  /**
+   * @test
+   * @covers Asd\Router\Router::matchRequest
+   * @expectedException Asd\Exception\RouteNotFound
+   */
+  public function matchRequest_withoutMatch()
+  {
+    $routeStub = $this->getMockBuilder('\\Asd\\Router\\Route')
+      ->disableOriginalConstructor()
+      ->getMock();
+    $routeStub->method('matchesRequest')
+      ->will($this->returnValue(false));
+    $requestStub = $this->getMockBuilder('\\Asd\\Http\\Request')
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    $this->router->addRoute($routeStub);
+    $this->router->matchRequest($requestStub);
+  }
+
+  /**
+   * @test
+   * @covers Asd\Router\Router::matchRequest
+   */
+  public function matchRequest_withMatch()
+  {
+    $routeStub1 = $this->getMockBuilder('\\Asd\\Router\\Route')
+      ->disableOriginalConstructor()
+      ->getMock();
+    $routeStub1->method('matchesRequest')
+      ->will($this->returnValue(false));
+    $routeStub2 = $this->getMockBuilder('\\Asd\\Router\\Route')
+      ->disableOriginalConstructor()
+      ->getMock();
+    $routeStub2->method('matchesRequest')
+      ->will($this->returnValue(true));
+    $requestStub = $this->getMockBuilder('\\Asd\\Http\\Request')
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    $this->router->addRoute($routeStub1);
+    $this->router->addRoute($routeStub2);
+    
+    $this->assertSame($routeStub2, $this->router->matchRequest($requestStub));
+  }
+
+  /**
+   * @test
+   * @covers Asd\Router\Router::dispatch
+   */
+  public function dispatch()
+  {
+    $routeMock = $this->getMockBuilder('\\Asd\\Router\\Route')
+      ->disableOriginalConstructor()
+      ->getMock();
+    $routeMock->method('getController')
+      ->will($this->returnValue('Test\Unit\MyController'));
+    $routeMock->method('getAction')
+      ->will($this->returnValue('myAction'));
+
+    $this->assertEquals('Hello World', $this->router->dispatch($routeMock));
+  }
+
+  /**
+   * @test
+   * @covers Asd\Router\Router::setBasePath
+   */
+  public function setBasePath()
+  {
+    $basePath = 'some/base';
+    $this->router->setBasePath($basePath);
+
+    $requestStub = $this->getMockBuilder('\\Asd\\Http\\Request')
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    $routeMock = $this->getMockBuilder('\\Asd\\Router\\Route')
+      ->disableOriginalConstructor()
+      ->setMethods(array('matchesRequest'))
+      ->getMock();
+    $routeMock->method('matchesRequest')
+      ->will($this->returnValue(true));
+    $routeMock->expects($this->once())
+      ->method('matchesRequest')
+      ->with(
+        $this->identicalTo($requestStub),
+        $this->identicalTo($basePath)
+      );
+
+    $this->router->addRoute($routeMock);
+    $this->router->matchRequest($requestStub);
+  }
+  
 }

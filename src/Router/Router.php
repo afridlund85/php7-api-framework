@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Asd\Router;
 
 use InvalidArgumentException;
-use OutOfBoundsException;
+use Asd\Exception\RouteNotFound;
 use Asd\Http\Request;
 use Asd\Router\Route;
 
@@ -52,7 +52,7 @@ class Router
       if($route->matchesRequest($req, $this->basePath))
         return $route;
     }
-    throw new OutOfBoundsException('Route does not exist.');
+    throw new RouteNotFound('Route does not exist.');
   }
 
   /**
@@ -72,6 +72,19 @@ class Router
   public function setBasePath(string $basePath)
   {
     $this->basePath = $basePath;
+  }
+
+  public function dispatch(Route $route)
+  {
+    $controller = $route->getController();
+    $action = $route->getAction();
+    if(!class_exists($controller))
+      throw new InvalidArgumentException('Class: "' . $controller . '" not found');
+    $controller = new $controller();
+    if(!method_exists($controller, $action))
+      throw new InvalidArgumentException('Method: "' . $action . '" in controller class: "' . $controller . '" not found');
+
+    return call_user_func(array($controller, $action));
   }
 
 }

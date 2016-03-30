@@ -23,17 +23,22 @@ class Route
    */
   private $path;
 
+  private $controller;
+
+  private $action;
+
   /**
    * Route object that represents a registered route in the application
    * @param string $method HTTP-method
    * @param string $path   path/uri
    */
-  public function __construct(string $method, string $path)
+  public function __construct(string $method = '', string $path = '', string $callback = '')
   {
     if(!$this->isValidMethod($method))
       throw new InvalidArgumentException('"' . $method . '" is not a valid method.');
     $this->method = strtoupper($method);
     $this->path = '/' . trim((trim(trim($path), '/')));
+    $this->parseCallback($callback);
   }
   /**
    * Return HTTP-method as string
@@ -51,6 +56,22 @@ class Route
   public function getPath() : string
   {
     return $this->path;
+  }
+
+  /**
+   * @return string
+   */
+  public function getController() : string
+  {
+    return $this->controller;
+  }
+
+  /**
+   * @return string
+   */
+  public function getAction() : string
+  {
+    return $this->action;
   }
 
   /**
@@ -78,7 +99,7 @@ class Route
     return true;
   }
 
-  public function matchesRequest(Request $req, string $basePath) : bool
+  public function matchesRequest(Request $req, string $basePath = '') : bool
   {
     if($this->method !== $req->getMethod())
       return false;
@@ -90,7 +111,21 @@ class Route
       $reqPath = trim($reqPath, '/');
     }
     
-    return trim($this->path, '/') === $reqPath;
+    if(trim($this->path, '/') === $reqPath)
+      return true;
+
+    return false;
+  }
+
+  private function parseCallback(string $callback)
+  {
+    $parts = explode('@', $callback);
+    if(empty($parts[0]))
+      throw new InvalidArgumentException('No controller class provided for callback');
+    if(empty($parts[1]))
+      throw new InvalidArgumentException('No action method provided for callback');
+    $this->controller = $parts[0];
+    $this->action = $parts[1];
   }
 
 }

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Asd;
 
 use InvalidArgumentException;
+use Asd\Exception\RouteNotFound;
 use Asd\Router\Router;
 use Asd\Router\Route;
 use Asd\Http\Request;
@@ -32,15 +33,13 @@ class Asd
     var_dump($v);
     exit;
   }
-  /**
-   * @codeCoverageIgnore
-   */
+  
   public function run()
   {
     try{
       $route = $this->router->matchRequest($this->req);
-      $this->dump($route);
-    }catch(OutOfBoundsException $e){
+      $this->router->dispatch($route);
+    }catch(RouteNotFound $e){
       echo '404';
     }catch(Throwable $t){
       echo 'error';
