@@ -15,13 +15,13 @@ class Asd
 
   private $router;
   private $req;
-  private $res;
+  private $response;
 
-  public function __construct(Router $router = null, Request $req = null, Response $res = null)
+  public function __construct(Router $router = null, Request $req = null, Response $response = null)
   {
     $this->router = $router ?? new Router();
     $this->req = $req ?? new Request();
-    $this->res = $res ?? new Response();
+    $this->response = $response ?? new Response();
   }
 
   /**
@@ -33,12 +33,16 @@ class Asd
     var_dump($v);
     exit;
   }
-  
+
   public function run()
   {
     try{
       $route = $this->router->matchRequest($this->req);
-      $this->router->dispatch($route);
+      $result = $this->router->dispatch($route);
+      echo $result;
+      exit;
+      //$responseBody = $this->response->getBody();
+      //$this->response->withBody($responseBody->write($result));
     }catch(RouteNotFound $e){
       echo '404';
     }catch(Throwable $t){

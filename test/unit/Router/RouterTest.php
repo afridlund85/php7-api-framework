@@ -143,7 +143,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     $routeMock->method('getAction')
       ->will($this->returnValue('myAction'));
 
-    $this->assertEquals('Hello World', $this->router->dispatch($routeMock));
+    $this->assertEquals('Hello World!', $this->router->dispatch($routeMock));
   }
 
   /**
