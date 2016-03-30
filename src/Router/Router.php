@@ -74,17 +74,4 @@ class Router
     $this->basePath = $basePath;
   }
 
-  public function dispatch(Route $route)
-  {
-    $controller = $route->getController();
-    $action = $route->getAction();
-    if(!class_exists($controller))
-      throw new InvalidArgumentException('Class: "' . $controller . '" not found');
-    $controller = new $controller();
-    if(!method_exists($controller, $action))
-      throw new InvalidArgumentException('Method: "' . $action . '" in controller class: "' . $controller . '" not found');
-
-    return call_user_func(array($controller, $action));
-  }
-
 }

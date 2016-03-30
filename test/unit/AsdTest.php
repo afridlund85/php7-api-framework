@@ -1,12 +1,7 @@
 <?php
 namespace Test\Unit;
 
-use Throwable;
 use Asd\Asd;
-use Asd\Http\Request;
-use Asd\Http\Response;
-use Asd\Router\Router;
-use Asd\Router\Route;
 
 class AsdTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,4 +47,5 @@ class AsdTest extends \PHPUnit_Framework_TestCase
     $app = new Asd($routerMock, $this->requestStub, $this->responseStub);
     $app->addRoute($this->routeStub);
   }
+
 }

@@ -4,14 +4,6 @@ namespace Test\Unit;
 use Throwable;
 use Asd\Router\Router;
 
-class MyController
-{
-  public function myAction()
-  {
-    return 'Hello World!';
-  }
-}
-
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -127,23 +119,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     $this->router->addRoute($routeStub2);
     
     $this->assertSame($routeStub2, $this->router->matchRequest($requestStub));
-  }
-
-  /**
-   * @test
-   * @covers Asd\Router\Router::dispatch
-   */
-  public function dispatch()
-  {
-    $routeMock = $this->getMockBuilder('\\Asd\\Router\\Route')
-      ->disableOriginalConstructor()
-      ->getMock();
-    $routeMock->method('getController')
-      ->will($this->returnValue('Test\Unit\MyController'));
-    $routeMock->method('getAction')
-      ->will($this->returnValue('myAction'));
-
-    $this->assertEquals('Hello World!', $this->router->dispatch($routeMock));
   }
 
   /**

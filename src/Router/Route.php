@@ -32,7 +32,7 @@ class Route
    * @param string $method HTTP-method
    * @param string $path   path/uri
    */
-  public function __construct(string $method = '', string $path = '', string $callback = '')
+  public function __construct(string $method = '', string $path = '', string $callback)
   {
     if(!$this->isValidMethod($method))
       throw new InvalidArgumentException('"' . $method . '" is not a valid method.');
