@@ -3,8 +3,7 @@ declare(strict_types = 1);
 
 namespace Asd;
 
-use Asd\Http\Request;
-use Asd\Http\Response;
+use Asd\Http\{Request, Response};
 
 class Controller
 {

@@ -2,13 +2,9 @@
 
 namespace Test\Integration;
 
-use Asd\Asd;
-use Asd\Controller;
-use Asd\Http\Request;
-use Asd\Http\Response;
-use Asd\Http\Uri;
-use Asd\Router\Router;
-use Asd\Router\Route;
+use Asd\{Asd, Controller};
+use Asd\Http\{Request, Response, Uri};
+use Asd\Router\{Router, Route};
 
 class MyController extends Controller
 {

@@ -5,10 +5,8 @@ namespace Asd;
 
 use InvalidArgumentException;
 use Asd\Exception\RouteNotFound;
-use Asd\Router\Router;
-use Asd\Router\Route;
-use Asd\Http\Request;
-use Asd\Http\Response;
+use Asd\Router\{Router, Route};
+use Asd\Http\{Request, Response};
 use Asd\Controller;
 
 class Asd
@@ -85,7 +83,7 @@ class Asd
       $protocol = $this->response->getProtocolVersion();
       $statusCode = $this->response->getStatusCode();
       $reasonPhrase = $this->response->getReasonPhrase();
-      header('HTTP/' . $protocol . ' ' . $statusCode . '' . $reasonPhrase;
+      header('HTTP/' . $protocol . ' ' . $statusCode . ' ' . $reasonPhrase);
     
       foreach($this->response->getHeaders() as $header => $values){
         foreach($values as $value)

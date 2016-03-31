@@ -4,8 +4,7 @@ declare(strict_types = 1);
 namespace Asd\Http;
 
 use InvalidArgumentException;
-use Psr\Http\Message\MessageInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\{MessageInterface, StreamInterface};
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

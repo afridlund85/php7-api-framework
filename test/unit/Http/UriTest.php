@@ -3,7 +3,6 @@ namespace Test\Unit;
 
 use InvalidArgumentException;
 use Asd\Http\Uri;
-use Psr\Http\Message\UriInterface;
 
 class UriTest extends \PHPUnit_Framework_TestCase
 {

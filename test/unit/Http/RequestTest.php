@@ -2,9 +2,6 @@
 namespace Test\Unit;
 
 use Asd\Http\Request;
-use Asd\Http\Message;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\MessageInterface;
 
 class RequestTest extends \PHPUnit_Framework_TestCase
 {

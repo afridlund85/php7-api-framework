@@ -2,7 +2,6 @@
 namespace Test\Unit;
 
 use Asd\Http\Message;
-use Psr\Http\Message\MessageInterface;
 
 class MessageTest extends \PHPUnit_Framework_TestCase
 {

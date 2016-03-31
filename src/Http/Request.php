@@ -5,8 +5,7 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 use Asd\Http\RequestBody;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\{RequestInterface, UriInterface};
 
 /**
  * Representation of an outgoing, client-side request.

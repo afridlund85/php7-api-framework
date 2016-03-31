@@ -1,9 +1,7 @@
 <?php
 namespace Test\Unit;
 
-use Asd\Http\Stream;
 use Asd\Http\ResponseBody;
-use Psr\Http\Message\StreamInterface;
 use Test\Unit\StreamStub;
 
 class ResponseBody extends \PHPUnit_Framework_TestCase

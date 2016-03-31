@@ -2,7 +2,6 @@
 namespace Test\Unit;
 
 use Asd\Http\Stream;
-use Psr\Http\Message\StreamInterface;
 use Test\Unit\StreamStub;
 
 class StreamTest extends \PHPUnit_Framework_TestCase
