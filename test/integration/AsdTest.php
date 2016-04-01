@@ -8,9 +8,14 @@ use Asd\Router\{Router, Route};
 
 class MyController extends Controller
 {
-  public function myAction()
+  public function jsonAction()
   {
     $this->json('Hello World!');
+  }
+
+  public function textAction()
+  {
+    $this->response->getBody()->write('Hello World!');
   }
 }
 
@@ -25,7 +30,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
     $request = new Request('GET', $uri);
     $response = new Response();
     $this->app = new Asd($router, $request, $response);
-    $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\MyController@myAction'));
+    $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\MyController@jsonAction'));
   }
 
   /**

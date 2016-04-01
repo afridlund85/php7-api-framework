@@ -56,7 +56,7 @@ class Asd
     $this->router->setBasePath($basePath);
   }
 
-  private function dispatch(Route $route)
+  private function dispatch(Route $route) : Response
   {
     $controller = $route->getController();
     $action = $route->getAction();
