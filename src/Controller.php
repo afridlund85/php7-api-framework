@@ -29,7 +29,9 @@ class Controller
   public function json($data)
   {
     $responseBody = $this->response->getBody();
+    $responseBody->rewind();
     $responseBody->write(json_encode($data));
-    $this->response = $this->response->withBody($responseBody);
+    $jsonResponse = $this->response->withHeader('Content-Type', 'application/json;charset=utf-8');
+    $jsonResponse = $jsonResponse->withBody($responseBody);
   }
 }

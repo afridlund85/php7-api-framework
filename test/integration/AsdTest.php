@@ -19,7 +19,6 @@ class AsdTest extends \PHPUnit_Framework_TestCase
   
   public function setUp()
   {
-
     $router = new Router();
     $uri = new Uri();
     $uri = $uri->withPath('path');
@@ -31,6 +30,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
 
   /**
    * @test
+   * @covers Asd\Asd::run
    * @covers Asd\Asd::dispatch
    */
   public function dispatch()
