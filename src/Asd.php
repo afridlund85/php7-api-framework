@@ -80,12 +80,12 @@ class Asd
   private function sendResponse(Response $response)
   {
     if(!headers_sent()){
-      $protocol = $this->response->getProtocolVersion();
-      $statusCode = $this->response->getStatusCode();
-      $reasonPhrase = $this->response->getReasonPhrase();
+      $protocol = $response->getProtocolVersion();
+      $statusCode = $response->getStatusCode();
+      $reasonPhrase = $response->getReasonPhrase();
       header('HTTP/' . $protocol . ' ' . $statusCode . ' ' . $reasonPhrase);
-    
-      foreach($this->response->getHeaders() as $header => $values){
+      
+      foreach($response->getHeaders() as $header => $values){
         foreach($values as $value)
           header($header . ':' . $value, false);
       }
