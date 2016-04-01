@@ -32,6 +32,6 @@ class Controller
     $responseBody->rewind();
     $responseBody->write(json_encode($data));
     $jsonResponse = $this->response->withHeader('Content-Type', 'application/json;charset=utf-8');
-    $jsonResponse = $jsonResponse->withBody($responseBody);
+    $this->response = $jsonResponse->withBody($responseBody);
   }
 }
