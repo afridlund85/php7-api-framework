@@ -8,12 +8,12 @@ None, it is not even close to ready for release.
 
 ##Some Key Concepts
 
-PSR: 1,2,4,7
-No statics, no globals
-No strict conventions in naming/routing, folder structure etc
-No settings or configs
-Transparency, no unncessary abstraction/wrapping
-PHP7 strict types, declare all parameters and return types
+* PSR: 1,2,4,7
+* No statics, no globals
+* No strict conventions in naming/routing, folder structure etc
+* No settings or configs
+* Transparency, no unncessary abstraction/wrapping
+* PHP7 strict types, declare all parameters and return types
 
 ## Intended usage
 
