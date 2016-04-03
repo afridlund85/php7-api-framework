@@ -104,12 +104,6 @@ composer system
 composer sniff
 ```
 
-**(Try to)Auto-fix PSR-2 issues**
-
-```
-composer fixer
-```
-
 ### Code coverage
 
 **Generate code coverage**
