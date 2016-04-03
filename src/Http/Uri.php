@@ -47,16 +47,34 @@ class Uri implements UriInterface
         string $query = null,
         string $fragment = null
     ) {
-        $this->scheme = $scheme ??
-            (empty($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) === 'off' ? 'http' : 'https');
-        $this->user = $user ?? $_SERVER['PHP_AUTH_USER'] ?? null;
-        $this->password = $password ?? $_SERVER['PHP_AUTH_PW'] ?? null;
-        $this->host = $host ??
-            (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'] ?? null);
-        $this->port = $port ?? $_SERVER['SERVER_PORT'] ?? null;
-        $this->path = $path ?? $_SERVER['REQUEST_URI'] ?? null;
-        $this->query = $query ?? $_SERVER['QUERY_STRING'] ?? null;
-        $this->fragment = $fragment ?? null;
+        $this->scheme = $scheme ?? (
+            empty($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) === 'off' ?
+                'http' :
+                'https'
+        );
+        $this->user = $user ??
+            $_SERVER['PHP_AUTH_USER'] ??
+            null;
+        $this->password = $password ??
+            $_SERVER['PHP_AUTH_PW'] ??
+            null;
+        $this->host = $host ?? (
+            isset($_SERVER['HTTP_HOST']) ?
+                $_SERVER['HTTP_HOST'] :
+                $_SERVER['SERVER_NAME'] ??
+                    null
+        );
+        $this->port = $port ??
+            $_SERVER['SERVER_PORT'] ??
+            null;
+        $this->path = $path ??
+            $_SERVER['REQUEST_URI'] ??
+            null;
+        $this->query = $query ??
+            $_SERVER['QUERY_STRING'] ??
+            null;
+        $this->fragment = $fragment ??
+            null;
     }
 
     /**

@@ -6,6 +6,7 @@ namespace Asd\Router;
 use InvalidArgumentException;
 use Asd\Exception\RouteNotFound;
 use Asd\Http\Request;
+use Psr\Http\Message\RequestInterface;
 use Asd\Router\Route;
 
 /**
@@ -47,7 +48,7 @@ class Router
      * @param  Request $req Request-object
      * @return Route
      */
-    public function matchRequest(Request $req) : Route
+    public function matchRequest(RequestInterface $req) : Route
     {
         foreach ($this->routes as $route) {
             if ($route->matchesRequest($req, $this->basePath)) {

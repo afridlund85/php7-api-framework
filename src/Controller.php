@@ -3,36 +3,36 @@ declare (strict_types = 1);
 
 namespace Asd;
 
-use Asd\Http\Request;
-use Asd\Http\Response;
+// use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class Controller
+abstract class Controller
 {
 
-    protected $request;
-    protected $response;
+    // protected $request;
+    // protected $response;
 
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-    }
+    // public function setRequest(RequestInterface $request)
+    // {
+    //     $this->request = $request;
+    // }
 
-    public function setResponse(Response $response)
-    {
-        $this->response = $response;
-    }
+    // public function setResponse(ResponseInterface $response)
+    // {
+    //     $this->response = $response;
+    // }
 
-    public function getResponse()
-    {
-        return $this->response;
-    }
+    // public function getResponse()
+    // {
+    //     return $this->response;
+    // }
 
-    public function json($data)
+    public function json(ResponseInterface $reponse, $data)
     {
-        $responseBody = $this->response->getBody();
+        $responseBody = $reponse->getBody();
         $responseBody->rewind();
         $responseBody->write(json_encode($data));
-        $jsonResponse = $this->response->withHeader('Content-Type', 'application/json;charset=utf-8');
-        $this->response = $jsonResponse->withBody($responseBody);
+        $jsonResponse = $reponse->withHeader('Content-Type', 'application/json;charset=utf-8');
+        return $jsonResponse->withBody($responseBody);
     }
 }

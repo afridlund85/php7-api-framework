@@ -4,6 +4,10 @@ declare (strict_types = 1);
 namespace Asd;
 
 use InvalidArgumentException;
+use RuntimeException;
+use Closure;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Asd\Exception\RouteNotFound;
 use Asd\Router\Router;
 use Asd\Router\Route;
@@ -18,7 +22,11 @@ class Asd
     private $request;
     private $response;
 
-    public function __construct(Router $router = null, Request $request = null, Response $response = null)
+    public function __construct(
+        Router $router = null,
+        RequestInterface $request = null,
+        ResponseInterface $response = null
+    )
     {
         $this->router = $router ?? new Router();
         $this->request = $request ?? new Request();
@@ -37,15 +45,9 @@ class Asd
 
     public function run()
     {
-        try {
-            $route = $this->router->matchRequest($this->request);
-            $response = $this->dispatch($route);
-            $this->sendResponse($response);
-        } catch (RouteNotFound $e) {
-            echo '404';
-        } catch (Throwable $t) {
-            echo 'error';
-        }
+        $route = $this->router->matchRequest($this->request);
+        $response = $this->dispatch($route);
+        $this->sendResponse($response);
     }
 
     public function addRoute(Route $route)
@@ -58,35 +60,40 @@ class Asd
         $this->router->setBasePath($basePath);
     }
 
-    private function dispatch(Route $route) : Response
+    private function dispatch(Route $route) : ResponseInterface
     {
-        $controller = $route->getController();
-        $action = $route->getAction();
-        if (!class_exists($controller)) {
-            throw new InvalidArgumentException('Class: "' . $controller . '" not found');
+        $callback = $route->getCallback();
+
+        if ($callback instanceof Closure) {
+            return call_user_func_array($callback, array($this->request, $this->response));
         }
         
-        $controller = new $controller();
-        if (!$controller instanceof Controller) {
-            throw new InvalidArgumentException('Class: "' . $controller . '" does not extend from Asd\\Controller');
-        }
-        $controller->setRequest($this->request);
-        $controller->setResponse($this->response);
+        $cb = explode('::', $callback);
 
-        if (!method_exists($controller, $action)) {
-            throw new InvalidArgumentException(
-                'Method: "' . $action .
-                '" in controller class: "' . $controller .
-                '" not found'
-            );
-        }
+        $className = $cb[0];
+        $methodName = $cb[1];
+        
+        $class = new $className();
 
-        call_user_func(array($controller, $action));
-
-        return $controller->getResponse();
+        return call_user_func_array(
+            array($class, $methodName),
+            array($this->request, $this->response)
+        );
     }
 
-    private function sendResponse(Response $response)
+    private function sendResponse(ResponseInterface $response)
+    {
+        $this->sendHeaders($response);
+        
+        echo (string)$response->getBody();
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * Cover when system tets are in place
+     */
+    private function sendHeaders(ResponseInterface $response)
     {
         if (!headers_sent()) {
             $protocol = $response->getProtocolVersion();
@@ -100,7 +107,5 @@ class Asd
                 }
             }
         }
-        
-        echo (string)$response->getBody();
     }
 }

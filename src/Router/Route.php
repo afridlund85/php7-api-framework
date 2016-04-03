@@ -4,10 +4,10 @@ declare (strict_types = 1);
 namespace Asd\Router;
 
 use InvalidArgumentException;
-use Asd\Http\Request;
+use Psr\Http\Message\RequestInterface;
 
 /**
- * Represents a single route and its settings
+ * Represents a single route
  */
 class Route
 {
@@ -23,23 +23,25 @@ class Route
      */
     private $path;
 
-    private $controller;
-
-    private $action;
+    /**
+     * callback function
+     * @var callable
+     */
+    private $callback;
 
     /**
      * Route object that represents a registered route in the application
      * @param string $method HTTP-method
      * @param string $path   path/uri
      */
-    public function __construct(string $method = '', string $path = '', string $callback = '')
+    public function __construct(string $method, string $path, callable $callback)
     {
         if (!$this->isValidMethod($method)) {
             throw new InvalidArgumentException('"' . $method . '" is not a valid method.');
         }
         $this->method = strtoupper($method);
-        $this->path = '/' . trim((trim(trim($path), '/')));
-        $this->parseCallback($callback);
+        $this->path = '/' . trim($path, '/');
+        $this->callback = $callback;
     }
     /**
      * Return HTTP-method as string
@@ -60,19 +62,12 @@ class Route
     }
 
     /**
-     * @return string
+     * Returns callback
+     * @return callable
      */
-    public function getController() : string
+    public function getCallback() : callable
     {
-        return $this->controller;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAction() : string
-    {
-        return $this->action;
+        return $this->callback;
     }
 
     /**
@@ -82,7 +77,7 @@ class Route
      */
     private function isValidMethod(string $method) : bool
     {
-        $valid = ['GET', 'POST'];
+        $valid = ['GET', 'POST', 'PUT', 'DELETE'];
         return in_array(strtoupper($method), $valid);
     }
 
@@ -102,7 +97,7 @@ class Route
         return true;
     }
 
-    public function matchesRequest(Request $req, string $basePath = '') : bool
+    public function matchesRequest(RequestInterface $req, string $basePath = '') : bool
     {
         if ($this->method !== $req->getMethod()) {
             return false;
@@ -122,16 +117,4 @@ class Route
         return false;
     }
 
-    private function parseCallback(string $callback)
-    {
-        $parts = explode('@', $callback);
-        if (empty($parts[0])) {
-            throw new InvalidArgumentException('No controller class provided for callback');
-        }
-        if (empty($parts[1])) {
-            throw new InvalidArgumentException('No action method provided for callback');
-        }
-        $this->controller = $parts[0];
-        $this->action = $parts[1];
-    }
 }

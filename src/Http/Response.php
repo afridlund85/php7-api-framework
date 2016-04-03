@@ -6,6 +6,7 @@ namespace Asd\Http;
 use InvalidArgumentException;
 use Asd\Http\ResponseBody;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Representation of an outgoing, server-side response.
@@ -101,7 +102,7 @@ class Response extends Message implements ResponseInterface
         511 => 'Network Authentication Required',
     ];
 
-    public function __construct(int $statusCode = 200, string $reasonPhrase = '', ResponseBody $body = null)
+    public function __construct(int $statusCode = 200, string $reasonPhrase = '', StreamInterface $body = null)
     {
         $this->validateStatusCode($statusCode);
         $this->statusCode = $statusCode;

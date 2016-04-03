@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Asd\Http\RequestBody;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Representation of an outgoing, client-side request.
@@ -50,7 +51,7 @@ class Request extends Message implements RequestInterface
      * @param UriInterface|null $uri
      * @param RequestBody|null  $body
      */
-    public function __construct(string $method = null, UriInterface $uri = null, RequestBody $body = null)
+    public function __construct(string $method = null, UriInterface $uri = null, StreamInterface $body = null)
     {
         $method = $method ?? $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $this->method = $this->validateMethod($method);

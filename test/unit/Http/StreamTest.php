@@ -9,12 +9,22 @@ class StreamTest extends \PHPUnit_Framework_TestCase
 
     protected $stream;
     protected $streamStub;
+
+    protected $readStream;
+    protected $readStreamStub;
+
+    protected $writeStream;
+    protected $writeStreamStub;
     
     public function setUp()
     {
         stream_wrapper_register('streamTester', '\Test\Unit\StreamStub');
-        $this->streamStub = fopen('streamTester://whatever', 'r+');
+        $this->streamStub = fopen('streamTester://readwrite', 'r+');
+        $this->readStreamStub = fopen('streamTester://readonly', 'r');
+        $this->writeStreamStub = fopen('streamTester://writeonly', 'w');
         $this->stream = new Stream($this->streamStub);
+        $this->readStream = new Stream($this->readStreamStub);
+        $this->writeStream = new Stream($this->writeStreamStub);
     }
 
     public function tearDown()
@@ -92,6 +102,9 @@ class StreamTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->stream->isWritable());
         $this->stream->detach();
         $this->assertFalse($this->stream->isWritable());
+
+        $this->assertTrue($this->writeStream->isWritable());
+        $this->assertFalse($this->readStream->isWritable());
     }
 
     /**
@@ -104,6 +117,9 @@ class StreamTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->stream->isReadable());
         $this->stream->detach();
         $this->assertFalse($this->stream->isReadable());
+
+        $this->assertFalse($this->writeStream->isReadable());
+        $this->assertTrue($this->readStream->isReadable());
     }
 
     /**
