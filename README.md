@@ -8,12 +8,14 @@ None, it is not even close to ready for release.
 
 ##Some Key Concepts
 
+* PHP 7 only
+* No dependencies(expect PSR-7 interfaces)
 * PSR: 1,2,4,7
 * No statics, no globals
-* No strict conventions in naming/routing, folder structure etc
+* No forced strict conventions in naming/routing, folder structure etc when using
 * No settings or configs
 * Transparency, no unncessary abstraction/wrapping
-* PHP7 strict types, declare all parameters and return types
+* Use PHP 7 strict types, (except PSR-7 classes, cuz they're not PHP 7)
 
 ## Intended usage
 
@@ -68,7 +70,11 @@ cd php7-api-framework
 composer install
 ```
 
-### Runing tests
+### Tests
+
+Three levels of testing, unit, integration and system.
+
+#### Runing tests
 
 **Run all test suites**
 ```
@@ -90,10 +96,24 @@ composer integration
 composer system
 ```
 
+### PSR-2 linting
+
+**Check for PSR-2 errors**
+
+```
+composer sniff
+```
+
+**(Try to)Auto-fix PSR-2 issues**
+
+```
+composer fixer
+```
+
 ### Code coverage
 
 **Generate code coverage**
 
 ```
-composer run-script coverage
+composer coverage
 ```
