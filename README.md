@@ -33,8 +33,16 @@ use Asd\Router\Route;
 
 $app = new Asd();
 
-$app->addRoute(new Route('GET', '/', 'MyApp\Controller\Welcome@start'));
-$app->addRoute(new Route('GET', 'about', 'MyApp\Controller\Welcome@about'));
+$app->addRoute(new Route('GET', '/', 'MyApp\Controller\Welcome::start'));
+$app->addRoute(new Route('GET', 'about', 'MyApp\Controller\Welcome::about'));
+$app->addRoute(new Route('post', 'blog', function($req, $res){
+  //do stuff
+  return $this->res;
+}));
+$app->addRoute(new Route('post', 'auth', function($req, $res, Asd\Session $session){
+  //Session handler available through DI
+  return $this->res;
+}));
 
 $app->run();
 ```
@@ -48,14 +56,19 @@ use Asd\Controller;
 
 class Welcome extends Controller
 {
-  public function start()
+
+  public function __construct(Asd\Session $session)
   {
-    $this->response->withJson('Hello!');
+    //session class automatically available through DI
+  }
+  public function start($req, $res)
+  {
+    return $res->withJsonResponse('Hello!');
   }
 
-  public function about()
+  public function about($req, $res)
   {
-    $this->response->withJson(['name' => 'Steve', 'email' => 'steve@email.com']);
+    return $res->withJsonResponse(['name' => 'Steve', 'email' => 'steve@email.com']);
   }
 }
 ```
