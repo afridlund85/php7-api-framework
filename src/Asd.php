@@ -18,34 +18,48 @@ use Asd\Http\Request;
 use Asd\Http\Response;
 use Asd\Controller;
 
+/**
+ * Main class, where the magic happends
+ */
 class Asd
 {
-
+    /**
+     * Router instance
+     * @var Asd\Router\Router
+     */
     private $router;
+
+    /**
+     * Initial request object
+     * @var Psr\Http\Message\RequestInterface
+     */
     private $request;
+
+    /**
+     * Initial response object
+     * @var Psr\Http\Message\ResponseInterface
+     */
     private $response;
 
+    /**
+     * @param Router|null $router
+     * @param Psr\Http\Message\RequestInterface|null $request
+     * @param Psr\Http\Message\ResponseInterface|null $response
+     */
     public function __construct(
         Router $router = null,
         RequestInterface $request = null,
         ResponseInterface $response = null
-    )
-    {
+    ) {
         $this->router = $router ?? new Router();
         $this->request = $request ?? new Request();
         $this->response = $response ?? new Response();
     }
 
     /**
-     * @codeCoverageIgnore
+     * Start the application and process the request
+     * @return void
      */
-    private function dump($v)
-    {
-        echo '<pre>';
-        var_dump($v);
-        exit;
-    }
-
     public function run()
     {
         $route = $this->router->matchRequest($this->request);
@@ -53,16 +67,31 @@ class Asd
         $this->sendResponse($response);
     }
 
+    /**
+     * Add a route to the router
+     * @param Asd\Router\Route $route
+     * @return void
+     */
     public function addRoute(Route $route)
     {
         $this->router->addRoute($route);
     }
 
+    /**
+     * Set a base path for the application, useful if it does not run from root
+     * @param string $basePath
+     * @return void
+     */
     public function setBasePath(string $basePath)
     {
         $this->router->setBasePath($basePath);
     }
 
+    /**
+     * Dispatch the matched routes callback
+     * @param  Asd\Router\Route $route
+     * @return Psr\Http\Message\ResponseInterface
+     */
     private function dispatch(Route $route) : ResponseInterface
     {
         $callback = $route->getCallback();
@@ -74,6 +103,11 @@ class Asd
         return $this->dispatchClass($callback);
     }
 
+    /**
+     * Dispatch anonymus / Closure function
+     * @param  Closure $callback
+     * @return Psr\Http\Message\ResponseInterface
+     */
     private function dispatchClosure(Closure $callback) : ResponseInterface
     {
         
@@ -85,6 +119,11 @@ class Asd
         return call_user_func_array($callback, $dependencies);
     }
 
+    /**
+     * Dispatch class method
+     * @param  string $callback string in "namespace\class::method"-format
+     * @return Psr\Http\Message\ResponseInterface
+     */
     private function dispatchClass(string $callback) : ResponseInterface
     {
         $cb = explode('::', $callback);
@@ -94,7 +133,7 @@ class Asd
         
         $reflection = new ReflectionClass($className);
         $constructor = $reflection->getConstructor();
-        if($constructor === null){
+        if ($constructor === null) {
             $class = new $className();
         } else {
             $dependencies = $this->getDependencies($constructor);
@@ -107,6 +146,11 @@ class Asd
         );
     }
 
+    /**
+     * Using the reflection, looks for declared type parameters
+     * @param  ReflectionFunctionAbstract $reflection
+     * @return string[]
+     */
     private function getDependencies(ReflectionFunctionAbstract $reflection) : array
     {
         $dependencies = array();
@@ -120,6 +164,11 @@ class Asd
         return $dependencies;
     }
 
+    /**
+     * Start output of the response object
+     * @param  Psr\Http\Message\ResponseInterface $response
+     * @return void
+     */
     private function sendResponse(ResponseInterface $response)
     {
         $this->sendHeaders($response);
@@ -128,9 +177,9 @@ class Asd
     }
 
     /**
-     * @codeCoverageIgnore
-     *
-     * Cover when system tets are in place
+     * Send response headers from response object
+     * @param  Psr\Http\Message\ResponseInterface $response
+     * @return void
      */
     private function sendHeaders(ResponseInterface $response)
     {

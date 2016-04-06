@@ -7,7 +7,6 @@ use Asd\Router\Route;
 
 class RouteTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $uriStub;
     protected $requestMock;
     
@@ -25,11 +24,12 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Router\Route::getPath
+     * @covers Asd\Router\Route::parsePath
      */
     public function getPath()
     {
         $route = new Route('GET', '', function(){});
-        $this->assertEquals('/', $route->getPath());
+        $this->assertEquals('', $route->getPath());
     }
 
     /**
@@ -48,11 +48,12 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers Asd\Router\Route::__construct
      * @covers Asd\Router\Route::getPath
+     * @covers Asd\Router\Route::parsePath
      */
-    public function constructor_addsInitialSlashToPath()
+    public function constructor_regularValue()
     {
         $route = new Route('GET', 'my-path', function(){});
-        $this->assertEquals('/my-path', $route->getPath());
+        $this->assertEquals('my-path', $route->getPath());
     }
 
     /**
@@ -63,13 +64,13 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     public function constructor_removesUnnecessarySlashesFromPath()
     {
         $route = new Route('GET', '//my-path', function(){});
-        $this->assertEquals('/my-path', $route->getPath());
+        $this->assertEquals('my-path', $route->getPath());
         
         $route = new Route('GET', 'my-path//', function(){});
-        $this->assertEquals('/my-path', $route->getPath());
+        $this->assertEquals('my-path', $route->getPath());
 
         $route = new Route('GET', '//my-path//', function(){});
-        $this->assertEquals('/my-path', $route->getPath());
+        $this->assertEquals('my-path', $route->getPath());
     }
 
     /**
@@ -194,6 +195,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Router\Route::matchesRequest
+     * @covers Asd\Router\Route::parsePath
      */
     public function matchesRequest_withBase2()
     {
@@ -208,6 +210,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Router\Route::matchesRequest
+     * @covers Asd\Router\Route::parsePath
      */
     public function matchesRequest_withBase3()
     {
@@ -261,5 +264,21 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($route->matchesRequest($this->requestMock));
     }
 
+    /**
+     * @test
+     * @covers Asd\Router\Route::parsePath
+     * @covers Asd\Router\Route::getParams
+     * @covers Asd\Router\Route::matchesRequest
+     */
+    public function parsePath_handlesNamedParameter()
+    {
+        $route = new Route('GET', 'my-path/{name}', function(){});
+        $this->requestMock->method('getMethod')->willReturn('GET');
+        $this->requestMock->method('getUri')->willReturn($this->uriStub);
+
+        $this->uriStub->method('getPath')->willReturn('my-path/JohnDoe');
+        $this->assertTrue($route->matchesRequest($this->requestMock));
+        $this->assertEquals(['name' => 'JohnDoe'], $route->getParams());
+    }
 
 }

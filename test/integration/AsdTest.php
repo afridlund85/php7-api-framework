@@ -77,6 +77,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::dispatchClass
      * @covers Asd\Asd::getDependencies
      * @covers Asd\Asd::sendResponse
+     * @covers Asd\Asd::sendHeaders
      */
     public function run_withControllerClass_jsonResponse()
     {

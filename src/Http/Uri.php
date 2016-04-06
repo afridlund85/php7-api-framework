@@ -371,7 +371,7 @@ class Uri implements UriInterface
      */
     public function withPort($port) : self
     {
-        if ( !(is_null($port) || (is_integer($port) && $port > 1 && $port < 65535)) ) {
+        if (!(is_null($port) || (is_integer($port) && $port > 1 && $port < 65535))) {
             throw new InvalidArgumentException('"' . $port . '" is not a valid port.');
         }
 

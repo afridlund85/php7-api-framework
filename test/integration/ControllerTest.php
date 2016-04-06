@@ -11,6 +11,12 @@ class ClassA extends Controller
         $res = new Response();
         return $this->withJsonResponse($res, 'Hello World!');
     }
+
+    public function textAction()
+    {
+        $res = new Response();
+        return $this->withTextResponse($res, 'Hello World!');
+    }
 }
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
@@ -28,5 +34,16 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(json_encode('Hello World!'), (string)$response->getBody());
     }
 
+    /**
+     * @test
+     * @covers Asd\Controller::withTextResponse
+     */
+    public function withTextResponse()
+    {
+        $controller = new ClassA();
+        $response = $controller->textAction();
+        $this->assertEquals(['text/html;charset=utf-8'], $response->getHeader('Content-Type'));
+        $this->assertEquals('Hello World!', (string)$response->getBody());
+    }
 
 }
