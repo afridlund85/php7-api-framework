@@ -27,7 +27,7 @@ abstract class Controller
     //     return $this->response;
     // }
 
-    public function json(ResponseInterface $reponse, $data)
+    public function withJsonResponse(ResponseInterface $reponse, $data)
     {
         $responseBody = $reponse->getBody();
         $responseBody->rewind();

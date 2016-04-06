@@ -47,34 +47,32 @@ class Uri implements UriInterface
         string $query = null,
         string $fragment = null
     ) {
-        $this->scheme = $scheme ?? (
-            empty($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) === 'off' ?
-                'http' :
-                'https'
-        );
-        $this->user = $user ??
-            $_SERVER['PHP_AUTH_USER'] ??
-            null;
-        $this->password = $password ??
-            $_SERVER['PHP_AUTH_PW'] ??
-            null;
-        $this->host = $host ?? (
-            isset($_SERVER['HTTP_HOST']) ?
-                $_SERVER['HTTP_HOST'] :
-                $_SERVER['SERVER_NAME'] ??
-                    null
-        );
-        $this->port = $port ??
-            $_SERVER['SERVER_PORT'] ??
-            null;
-        $this->path = $path ??
-            $_SERVER['REQUEST_URI'] ??
-            null;
-        $this->query = $query ??
-            $_SERVER['QUERY_STRING'] ??
-            null;
-        $this->fragment = $fragment ??
-            null;
+        $this->scheme = $scheme ?? '';
+        $this->user = $user ?? '';
+        $this->password = $password ?? '';
+        $this->host = $host ?? '';
+        $this->port = $port;
+        $this->path = $path ?? '';
+        $this->query = $query ?? '';
+        $this->fragment = $fragment ?? '';
+    }
+
+    public function withGlobals(array $env = null)
+    {
+        $env = $env ?? $_SERVER;
+        $clone = clone $this;
+
+        $https = $env['HTTPS'] ?? '';
+        $clone->scheme = empty($https) || strtolower($https) === 'off' ? 'http' : 'https';
+        $clone->user = $env['PHP_AUTH_USER'] ?? '';
+        $clone->password = $env['PHP_AUTH_PW'] ?? '';
+        $clone->host = $env['HTTP_HOST'] ?? $env['SERVER_NAME'] ?? '';
+        $clone->port = $env['SERVER_PORT'] ?? null;
+        $clone->path = $env['REQUEST_URI'] ?? '';
+        $clone->query = $env['QUERY_STRING'] ?? '';
+        $clone->fragment = '';
+
+        return $clone;
     }
 
     /**
@@ -93,7 +91,7 @@ class Uri implements UriInterface
      */
     public function getScheme() : string
     {
-        return $this->scheme ?? '';
+        return $this->scheme;
     }
 
     /**
@@ -119,7 +117,7 @@ class Uri implements UriInterface
         $userInfo = $this->getUserInfo();
         $port = $this->getPort();
 
-        $userInfo = $userInfo !== '' ? $userInfo . '@' : '';
+        $userInfo = !empty($userInfo) ? $userInfo . '@' : '';
         $port = is_null($port) ? '' : ':' . $port;
         
         return $userInfo . $this->getHost() . $port;
@@ -142,9 +140,10 @@ class Uri implements UriInterface
      */
     public function getUserInfo() : string
     {
-        $password = is_null($this->user) || is_null($this->password) ? '' : ':' . $this->password;
-        $user = $this->user ?? '';
-        return $user . $password;
+        $password = empty($this->user) || empty($this->password) ?
+            '' :
+            ':' . $this->password;
+        return $this->user . $password;
     }
 
     /**
@@ -160,7 +159,7 @@ class Uri implements UriInterface
      */
     public function getHost() : string
     {
-        return is_null($this->host) ? '' : strtolower($this->host);
+        return strtolower($this->host);
     }
     /**
      * Retrieve the port component of the URI.
@@ -219,7 +218,7 @@ class Uri implements UriInterface
      */
     public function getPath() : string
     {
-        return $this->path ?? '';
+        return $this->path;
     }
 
     /**
@@ -244,7 +243,7 @@ class Uri implements UriInterface
      */
     public function getQuery() : string
     {
-        return $this->query ?? '';
+        return $this->query;
     }
 
     /**
@@ -265,7 +264,7 @@ class Uri implements UriInterface
      */
     public function getFragment() : string
     {
-        return $this->fragment ?? '';
+        return $this->fragment;
     }
 
     /**
@@ -285,16 +284,15 @@ class Uri implements UriInterface
      */
     public function withScheme($scheme) : self
     {
-        if (!is_string($scheme) && !empty($scheme)) {
-            throw new InvalidArgumentException('scheme must be an empty or string value.');
+        if (!is_string($scheme)) {
+            throw new InvalidArgumentException('scheme must be a string.');
         }
-        if (is_string($scheme) && !empty($scheme)) {
-            $scheme = str_replace('://', '', $scheme);
-            if (strtolower($scheme) !== 'http' && strtolower($scheme) !== 'https') {
-                throw new InvalidArgumentException('only supported schemes are: "http" and "https".');
-            }
+        $scheme = str_replace('://', '', $scheme);
+        $validSchemes = ['', 'http', 'https'];
+        if (!in_array(strtolower($scheme), $validSchemes)) {
+            throw new InvalidArgumentException('only supported schemes are: "http" and "https".');
         }
-        $scheme = empty($scheme) ? null : $scheme;
+
         $clone = clone $this;
         $clone->scheme = $scheme;
         return $clone;
@@ -346,11 +344,11 @@ class Uri implements UriInterface
      */
     public function withHost($host) : self
     {
-        if (!is_string($host) && !empty($host)) {
-            throw new InvalidArgumentException('host must be an empty or string value.');
+        if (!is_string($host)) {
+            throw new InvalidArgumentException('host must be a string.');
         }
         $clone = clone $this;
-        $clone->host = !empty($host) ? $host : null;
+        $clone->host = $host;
         return $clone;
     }
 
@@ -373,7 +371,7 @@ class Uri implements UriInterface
      */
     public function withPort($port) : self
     {
-        if (!(is_null($port) || (is_integer($port) && $port > 1 && $port < 65535))) {
+        if ( !(is_null($port) || (is_integer($port) && $port > 1 && $port < 65535)) ) {
             throw new InvalidArgumentException('"' . $port . '" is not a valid port.');
         }
 
@@ -406,12 +404,12 @@ class Uri implements UriInterface
      */
     public function withPath($path) : self
     {
-        if (!is_string($path) && !empty($path)) {
+        if (!is_string($path)) {
             throw new InvalidArgumentException('path must be string(or empty)');
         }
 
         $clone = clone $this;
-        $clone->path = !empty($path) ? $path : null;
+        $clone->path = $path;
         return $clone;
     }
 
@@ -435,7 +433,7 @@ class Uri implements UriInterface
         if (!is_string($query) && !empty($query)) {
             throw new InvalidArgumentException('Query must be a string(or empty)');
         }
-        $query = !empty($query) ? $query : null;
+        $query = !empty($query) ? $query : '';
         $clone = clone $this;
         $clone->query = $query;
         return $clone;
@@ -460,7 +458,7 @@ class Uri implements UriInterface
         if (!is_string($fragment) && !empty($fragment)) {
             throw new InvalidArgumentException('Query must be a string(or empty)');
         }
-        $fragment = !empty($fragment) ? $fragment : null;
+        $fragment = !empty($fragment) ? $fragment : '';
         $clone = clone $this;
         $clone->fragment = $fragment;
         return $clone;
@@ -492,27 +490,29 @@ class Uri implements UriInterface
     public function __toString() : string
     {
         $uri = '';
-        if ($this->scheme) {
+        if (!empty($this->scheme)) {
             $uri .= $this->getScheme() . ':';
         }
 
-        if ($this->getAuthority() !== '') {
+        if (!empty($this->getAuthority())) {
             $uri .= '//' . $this->getAuthority();
         }
 
-        if (strpos($this->getPath(), '/') !== 0  && $this->getAuthority() !== '') {
-            $uri .= '/' . $this->getPath();
-        } elseif ($this->getAuthority() === '') {
-            $uri .= str_replace('//', '/', $this->getPath());
-        } else {
-            $uri .= $this->getPath();
+        if (!empty($this->getPath())) {
+            if (substr($this->getPath(), 0, 1) !== '/' && !empty($this->getAuthority())) {
+                $uri .= '/' . $this->getPath();
+            } elseif (empty($this->getAuthority())) {
+                $uri .= str_replace('//', '/', $this->getPath());
+            } else {
+                $uri .= $this->getPath();
+            }
         }
 
-        if ($this->query !== null) {
+        if (!empty($this->query)) {
             $uri .= '?' . $this->getQuery();
         }
 
-        if ($this->fragment !== null) {
+        if (!empty($this->fragment)) {
             $uri .= '#' . $this->getFragment();
         }
 

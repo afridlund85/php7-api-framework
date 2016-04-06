@@ -5,6 +5,9 @@ namespace Asd;
 
 use InvalidArgumentException;
 use RuntimeException;
+use ReflectionFunction;
+use ReflectionClass;
+use ReflectionFunctionAbstract;
 use Closure;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -65,20 +68,56 @@ class Asd
         $callback = $route->getCallback();
 
         if ($callback instanceof Closure) {
-            return call_user_func_array($callback, array($this->request, $this->response));
+            return $this->dispatchClosure($callback);
         }
+
+        return $this->dispatchClass($callback);
+    }
+
+    private function dispatchClosure(Closure $callback) : ResponseInterface
+    {
         
+        $reflection = new ReflectionFunction($callback);
+        $dependencies = array_merge(
+            array($this->request, $this->response),
+            $this->getDependencies($reflection)
+        );
+        return call_user_func_array($callback, $dependencies);
+    }
+
+    private function dispatchClass(string $callback) : ResponseInterface
+    {
         $cb = explode('::', $callback);
 
         $className = $cb[0];
         $methodName = $cb[1];
         
-        $class = new $className();
+        $reflection = new ReflectionClass($className);
+        $constructor = $reflection->getConstructor();
+        if($constructor === null){
+            $class = new $className();
+        } else {
+            $dependencies = $this->getDependencies($constructor);
+            $class = $reflection->newInstanceArgs($dependencies);
+        }
 
         return call_user_func_array(
             array($class, $methodName),
             array($this->request, $this->response)
         );
+    }
+
+    private function getDependencies(ReflectionFunctionAbstract $reflection) : array
+    {
+        $dependencies = array();
+        foreach ($reflection->getParameters() as $param) {
+            $class = $param->getClass();
+            if ($class !== null) {
+                $className = $class->getName();
+                array_push($dependencies, new $className());
+            }
+        }
+        return $dependencies;
     }
 
     private function sendResponse(ResponseInterface $response)

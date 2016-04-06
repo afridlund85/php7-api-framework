@@ -7,19 +7,52 @@ use Asd\{Asd, Controller};
 use Asd\Http\{Request, Response, Uri};
 use Asd\Router\{Router, Route};
 
-class MyClass extends Controller
+class Dep
+{
+    public function __construct(){}
+    public function getStuff(){return 'stuff';}
+}
+
+class ClassA extends Controller
 {
     public function jsonAction($req, $res)
     {
-        return $this->json($res, 'Hello World!');
+        return $this->withJsonResponse($res, 'Hello World!');
     }
 
     public function textAction($req, $res)
     {
         $body = $res->getBody();
         $body->write('Hello World!');
-        $res = $res->withBody($body);
-        return $res;
+        return $res->withBody($body);
+    }
+}
+
+class ClassB extends Controller
+{
+    private $dep;
+    public function __construct(Dep $dep)
+    {
+        $this->dep = $dep;
+    }
+    public function jsonAction($req, $res)
+    {
+        return $this->withJsonResponse($res, $this->dep->getStuff());
+    }
+}
+
+class ClassC
+{
+    private $dep;
+    public function __construct(Dep $dep)
+    {
+        $this->dep = $dep;
+    }
+    public function textAction($req, $res)
+    {
+        $body = $res->getBody();
+        $body->write($this->dep->getStuff());
+        return $res->withBody($body);
     }
 }
 
@@ -41,11 +74,13 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @runInSeparateProcess
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::dispatchClass
+     * @covers Asd\Asd::getDependencies
      * @covers Asd\Asd::sendResponse
      */
     public function run_withControllerClass_jsonResponse()
     {
-        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\MyClass::jsonAction'));
+        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\ClassA::jsonAction'));
         $this->app->run();
         $this->expectOutputString(json_encode('Hello World!'));
     }
@@ -54,19 +89,8 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
-     * @covers Asd\Asd::sendResponse
-     */
-    public function run_withControllerClass_textResponse()
-    {
-        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\MyClass::textAction'));
-        $this->app->run();
-        $this->expectOutputString('Hello World!');
-    }
-
-    /**
-     * @test
-     * @covers Asd\Asd::run
-     * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::dispatchClosure
+     * @covers Asd\Asd::getDependencies
      * @covers Asd\Asd::sendResponse
      */
     public function run_withAnonymusFunction()
@@ -83,16 +107,65 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::dispatchClosure
+     * @covers Asd\Asd::getDependencies
      * @covers Asd\Asd::sendResponse
      */
     public function run_anonymusFunction_withClassInstance()
     {
         $this->app->addRoute(new Route('GET', 'path', function($req, $res){
-            $myClass = new MyClass();
-            return $myClass->textAction($req, $res);
+            $ClassA = new ClassA();
+            return $ClassA->textAction($req, $res);
         }));
         $this->app->run();
         $this->expectOutputString('Hello World!');
+    }
+
+    /**
+     * @test
+     * @covers Asd\Asd::run
+     * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::dispatchClosure
+     * @covers Asd\Asd::getDependencies
+     * @covers Asd\Asd::sendResponse
+     */
+    public function run_anonymusFunction_withDependency()
+    {
+        $this->app->addRoute(new Route('GET', 'path', function($req, $res, ClassA $class){
+            return $class->textAction($req, $res);
+        }));
+        $this->app->run();
+        $this->expectOutputString('Hello World!');
+    }
+
+    /**
+     * @test
+     * @covers Asd\Asd::run
+     * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::dispatchClass
+     * @covers Asd\Asd::getDependencies
+     * @covers Asd\Asd::sendResponse
+     */
+    public function run_class_withExtend_withDependency()
+    {
+        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\ClassB::jsonAction'));
+        $this->app->run();
+        $this->expectOutputString(json_encode('stuff'));
+    }
+
+    /**
+     * @test
+     * @covers Asd\Asd::run
+     * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::dispatchClass
+     * @covers Asd\Asd::getDependencies
+     * @covers Asd\Asd::sendResponse
+     */
+    public function run_class_withoutExtend_withDependency()
+    {
+        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\ClassC::textAction'));
+        $this->app->run();
+        $this->expectOutputString('stuff');
     }
 
 }

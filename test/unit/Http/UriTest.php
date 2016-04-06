@@ -65,36 +65,21 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function withScheme_validStringValues()
     {
         $uri = $this->uriSetup();
-        $uri1 = $uri->withScheme('https');
-        $uri2 = $uri->withScheme('https://');
-        $uri3 = $uri->withScheme('http://');
-        $uri4 = $uri->withScheme('http');
 
-        $this->assertEquals('https', $uri1->getScheme());
-        $this->assertEquals('https', $uri2->getScheme());
-        $this->assertEquals('http', $uri3->getScheme());
-        $this->assertEquals('http', $uri4->getScheme());
-    }
+        $uri = $uri->withScheme('https');
+        $this->assertEquals('https', $uri->getScheme());
 
-    /**
-     * @test
-     * @covers Asd\Http\Uri::withScheme
-     * @covers Asd\Http\Uri::getScheme
-     */
-    public function withScheme_emptyValues()
-    {
-        $uri = $this->uriSetup();
-        $uri1 = $uri->withScheme('');
-        $uri2 = $uri->withScheme(null);
-        $uri3 = $uri->withScheme(false);
-        $uri4 = $uri->withScheme(0);
-        $uri5 = $uri->withScheme([]);
-        
-        $this->assertSame('', $uri1->getScheme());
-        $this->assertSame('', $uri2->getScheme());
-        $this->assertSame('', $uri3->getScheme());
-        $this->assertSame('', $uri4->getScheme());
-        $this->assertSame('', $uri5->getScheme());
+        $uri = $uri->withScheme('https://');
+        $this->assertEquals('https', $uri->getScheme());
+
+        $uri = $uri->withScheme('http://');
+        $this->assertEquals('http', $uri->getScheme());
+
+        $uri = $uri->withScheme('http');
+        $this->assertEquals('http', $uri->getScheme());
+
+        $uri = $uri->withScheme('');
+        $this->assertEquals('', $uri->getScheme());
     }
 
     /**
@@ -171,20 +156,10 @@ class UriTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Http\Uri::withHost
      * @covers Asd\Http\Uri::getHost
      */
-    public function withHost_emptyValues()
+    public function withHost_emptyString()
     {
-        $uri = $this->uriSetup();
-        $uri1 = $uri->withHost('');
-        $uri2 = $uri->withHost(null);
-        $uri3 = $uri->withHost(false);
-        $uri4 = $uri->withHost(0);
-        $uri5 = $uri->withHost([]);
-
-        $this->assertSame('', $uri1->getHost());
-        $this->assertSame('', $uri2->getHost());
-        $this->assertSame('', $uri3->getHost());
-        $this->assertSame('', $uri4->getHost());
-        $this->assertSame('', $uri5->getHost());
+        $uri = $this->uriSetup()->withHost('');
+        $this->assertEquals('', $uri->getHost());
     }
 
     /**
@@ -248,9 +223,9 @@ class UriTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Http\Uri::getPort
      * @covers Asd\Http\Uri::withPort
      */
-    public function getPort_nullValue_nullScheme()
+    public function getPort_nullValue_emptyScheme()
     {
-        $uri = $this->uriSetup()->withScheme(null)->withPort(null);
+        $uri = $this->uriSetup()->withScheme('')->withPort(null);
         $this->assertEquals(null, $uri->getPort());
     }
 
@@ -337,17 +312,10 @@ class UriTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Http\Uri::withPath
      * @covers Asd\Http\Uri::getPath
      */
-    public function withPath_emptyValues()
+    public function withPath_emptyString()
     {
         $uri = $this->uriSetup()->withPath('');
-        $uri2 = $uri->withPath(null);
-        $uri3 = $uri->withPath(0);
-        $uri4 = $uri->withPath(false);
-
         $this->assertEquals('', $uri->getPath());
-        $this->assertEquals('', $uri2->getPath());
-        $this->assertEquals('', $uri3->getPath());
-        $this->assertEquals('', $uri4->getPath());
     }
 
     /**
@@ -713,7 +681,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
             . '?' .$this->defaultData['query']
             . '#' . $this->defaultData['fragment'];
 
-        $this->assertEquals('http:', (string)$uri);
+        $this->assertEquals('', (string)$uri);
         $this->assertEquals($expected, (string)$uri2);
     }
 
@@ -724,31 +692,31 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function __toString_variousValues()
     {
         $uri = new Uri();
-        $this->assertEquals('http:', (string)$uri);
+        $this->assertEquals('', (string)$uri);
 
         $uri = $uri->withScheme('https');
         $this->assertEquals('https:', (string)$uri);
 
         $uri = $uri->withScheme('http')->withHost('domain.com');
-        $this->assertEquals('http://domain.com/', (string)$uri);
+        $this->assertEquals('http://domain.com', (string)$uri);
 
         $uri = $uri->withScheme('');
-        $this->assertEquals('//domain.com/', (string)$uri);
+        $this->assertEquals('//domain.com', (string)$uri);
 
         $uri = $uri->withScheme('http')->withPort(80);
-        $this->assertEquals('http://domain.com/', (string)$uri);
+        $this->assertEquals('http://domain.com', (string)$uri);
 
         $uri = $uri->withPort(3000);
-        $this->assertEquals('http://domain.com:3000/', (string)$uri);
+        $this->assertEquals('http://domain.com:3000', (string)$uri);
 
         $uri = $uri->withUserInfo('user', 'pass');
-        $this->assertEquals('http://user:pass@domain.com:3000/', (string)$uri);
+        $this->assertEquals('http://user:pass@domain.com:3000', (string)$uri);
 
         $uri = $uri->withUserInfo('');
-        $this->assertEquals('http://domain.com:3000/', (string)$uri);
+        $this->assertEquals('http://domain.com:3000', (string)$uri);
 
         $uri = $uri->withUserInfo('otherUser');
-        $this->assertEquals('http://otherUser@domain.com:3000/', (string)$uri);
+        $this->assertEquals('http://otherUser@domain.com:3000', (string)$uri);
 
         $uri = $uri->withPort(null)->withPath('relative/path');
         $this->assertEquals('http://otherUser@domain.com/relative/path', (string)$uri);
@@ -764,6 +732,121 @@ class UriTest extends \PHPUnit_Framework_TestCase
 
         $uri = $uri->withFragment('myFr4gM3nT');
         $this->assertEquals('https://domain.com/absolute/path?my=query&true#myFr4gM3nT', (string)$uri);
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Uri::__toString
+     */
+    public function toString_strangeUncertainScenarios()
+    {
+        $uri = new Uri();
+        $uri = $uri->withScheme('http');
+        $uri = $uri->withPath('//multislash/path');
+        $this->assertEquals('http:/multislash/path', (string)$uri);
+
+        $uri = $uri->withHost('domain.com');
+        $this->assertEquals('http://domain.com//multislash/path', (string)$uri);
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Uri::withGlobals
+     */
+    public function withGlobals_allNullValues()
+    {
+        $_SERVER['HTTPS'] = null;
+        $_SERVER['PHP_AUTH_USER'] = null;
+        $_SERVER['PHP_AUTH_PW'] = null;
+        $_SERVER['HTTP_HOST'] = null;
+        $_SERVER['SERVER_NAME'] = null;
+        $_SERVER['SERVER_PORT'] = null;
+        $_SERVER['REQUEST_URI'] = null;
+        $_SERVER['QUERY_STRING'] = null;
+
+        $uri = new Uri();
+        $uri = $uri->withGlobals();
+        $this->assertEquals('http:', (string)$uri);
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Uri::withGlobals
+     */
+    public function withGlobals_withHost()
+    {
+        $_SERVER['HTTPS'] = null;
+        $_SERVER['PHP_AUTH_USER'] = null;
+        $_SERVER['PHP_AUTH_PW'] = null;
+        $_SERVER['HTTP_HOST'] = 'domain.com';
+        $_SERVER['SERVER_NAME'] = null;
+        $_SERVER['SERVER_PORT'] = null;
+        $_SERVER['REQUEST_URI'] = null;
+        $_SERVER['QUERY_STRING'] = null;
+
+        $uri = new Uri();
+        $uri = $uri->withGlobals();
+        $this->assertEquals('http://domain.com', (string)$uri);
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Uri::withGlobals
+     */
+    public function withGlobals_withoutHost_withServerName()
+    {
+        $_SERVER['HTTPS'] = null;
+        $_SERVER['PHP_AUTH_USER'] = null;
+        $_SERVER['PHP_AUTH_PW'] = null;
+        $_SERVER['HTTP_HOST'] = null;
+        $_SERVER['SERVER_NAME'] = 'domain.com';
+        $_SERVER['SERVER_PORT'] = null;
+        $_SERVER['REQUEST_URI'] = null;
+        $_SERVER['QUERY_STRING'] = null;
+
+        $uri = new Uri();
+        $uri = $uri->withGlobals();
+        $this->assertEquals('http://domain.com', (string)$uri);
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Uri::withGlobals
+     */
+    public function withGlobals_withHttps_withHost_withRootUri()
+    {
+        $_SERVER['HTTPS'] = null;
+        $_SERVER['PHP_AUTH_USER'] = null;
+        $_SERVER['PHP_AUTH_PW'] = null;
+        $_SERVER['HTTP_HOST'] = null;
+        $_SERVER['SERVER_NAME'] = 'domain.com';
+        $_SERVER['SERVER_PORT'] = null;
+        $_SERVER['REQUEST_URI'] = '/my/path';
+        $_SERVER['QUERY_STRING'] = null;
+
+        $uri = new Uri();
+        $uri = $uri->withGlobals();
+        $this->assertEquals('http://domain.com/my/path', (string)$uri);
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Uri::withGlobals
+     */
+    public function withGlobals_withHttps_withHost_withRelativeUri()
+    {
+        $_SERVER['HTTPS'] = null;
+        $_SERVER['PHP_AUTH_USER'] = null;
+        $_SERVER['PHP_AUTH_PW'] = null;
+        $_SERVER['HTTP_HOST'] = null;
+        $_SERVER['SERVER_NAME'] = 'domain.com';
+        $_SERVER['SERVER_PORT'] = null;
+        $_SERVER['REQUEST_URI'] = 'my/path';
+        $_SERVER['QUERY_STRING'] = null;
+
+        $uri = new Uri();
+        $uri = $uri->withGlobals();
+        $this->assertEquals('http://domain.com/my/path', (string)$uri);
     }
 
 }
