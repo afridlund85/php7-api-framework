@@ -80,7 +80,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      */
     public function run_withControllerClass_jsonResponse()
     {
-        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\ClassA::jsonAction'));
+        $this->app->addRoute(new Route('GET', 'path', array('Test\Integration\ClassA', 'jsonAction')));
         $this->app->run();
         $this->expectOutputString(json_encode('Hello World!'));
     }
@@ -148,7 +148,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      */
     public function run_class_withExtend_withDependency()
     {
-        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\ClassB::jsonAction'));
+        $this->app->addRoute(new Route('GET', 'path', array('Test\Integration\ClassB', 'jsonAction')));
         $this->app->run();
         $this->expectOutputString(json_encode('stuff'));
     }
@@ -163,7 +163,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      */
     public function run_class_withoutExtend_withDependency()
     {
-        $this->app->addRoute(new Route('GET', 'path', 'Test\Integration\ClassC::textAction'));
+        $this->app->addRoute(new Route('GET', 'path', array('Test\Integration\ClassC', 'textAction')));
         $this->app->run();
         $this->expectOutputString('stuff');
     }

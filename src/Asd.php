@@ -124,12 +124,10 @@ class Asd
      * @param  string $callback string in "namespace\class::method"-format
      * @return Psr\Http\Message\ResponseInterface
      */
-    private function dispatchClass(string $callback) : ResponseInterface
+    private function dispatchClass(array $callback) : ResponseInterface
     {
-        $cb = explode('::', $callback);
-
-        $className = $cb[0];
-        $methodName = $cb[1];
+        $className = $callback[0];
+        $methodName = $callback[1];
         
         $reflection = new ReflectionClass($className);
         $constructor = $reflection->getConstructor();
