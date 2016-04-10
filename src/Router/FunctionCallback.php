@@ -1,9 +1,8 @@
 <?php
 declare(strict_types = 1);
 
-namespace Asd;
+namespace Asd\Router;
 
-use InvalidArgumentException;
 use ReflectionFunction;
 use Closure;
 use Psr\Http\Message\RequestInterface;
@@ -12,12 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 class FunctionCallback extends Callback
 {
     private $callback;
-    private $dependencies;
 
-    public function __construct(Closure $callback, array $dependencies = [])
+    public function __construct(Closure $callback)
     {
         $this->callback = $callback;
-        $this->dependencies = $dependencies;
     }
 
     public function invoke(

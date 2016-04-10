@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Asd;
+namespace Asd\Router;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

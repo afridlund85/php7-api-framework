@@ -9,6 +9,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
 {
     protected $uriStub;
     protected $requestMock;
+    protected $callbackStub;
     
     public function setUp()
     {
@@ -20,7 +21,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->callbackStub = $this->getMockBuilder('\\Asd\\FunctionCallback')
+        $this->callbackStub = $this->getMockBuilder('\\Asd\\Router\\FunctionCallback')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -44,7 +45,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     {
 
         $route = new Route('GET', '', $this->callbackStub);
-        $this->assertTrue($route->getCallback() instanceof \Asd\FunctionCallback);
+        $this->assertTrue($route->getCallback() instanceof \Asd\Router\FunctionCallback);
     }
 
     /**

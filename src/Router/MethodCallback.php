@@ -1,8 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace Asd;
+namespace Asd\Router;
 
+use Throwable;
+use RuntimeException;
 use InvalidArgumentException;
 use ReflectionClass;
 use Psr\Http\Message\RequestInterface;
@@ -33,12 +35,18 @@ class MethodCallback extends Callback
     ) : ResponseInterface {
         $reflection = new ReflectionClass($this->namespace . $this->class);
         $constructor = $reflection->getConstructor();
-        $dependencies = $constructor === null ? array() : $this->getDependencies($constructor);
+
+        try{
+            $dependencies = $constructor === null ? array() : $this->getDependencies($constructor);
+        } catch (Throwable $e) {
+            throw new RuntimeException('Could not resolve dependencies for "'
+                . $this->namespace . $this->class . '"');
+        }
         $class = $reflection->newInstanceArgs($dependencies);
 
         if (!method_exists($class, $this->method)) {
             throw new InvalidArgumentException('Method "' . $this->method
-                . '" does not exist in class "' . $class . '"');
+                . '" does not exist in class "' . $this->class . '"');
         }
 
         return call_user_func_array(

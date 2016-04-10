@@ -5,7 +5,7 @@ namespace Asd\Router;
 
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
-use Asd\CallbackInterface;
+use Asd\Router\CallbackInterface;
 
 /**
  * Represents a single route

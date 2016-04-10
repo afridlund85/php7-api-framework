@@ -3,58 +3,10 @@
 namespace Test\Integration;
 
 use InvalidArgumentException;
-use Asd\{Asd, Controller, FunctionCallback, MethodCallback};
+use Asd\Asd;
 use Asd\Http\{Request, Response, Uri};
-use Asd\Router\{Router, Route};
-
-class Dep
-{
-    public function __construct(){}
-    public function getStuff(){return 'stuff';}
-}
-
-class ClassA extends Controller
-{
-    public function jsonAction($req, $res)
-    {
-        return $this->withJsonResponse($res, 'Hello World!');
-    }
-
-    public function textAction($req, $res)
-    {
-        $body = $res->getBody();
-        $body->write('Hello World!');
-        return $res->withBody($body);
-    }
-}
-
-class ClassB extends Controller
-{
-    private $dep;
-    public function __construct(Dep $dep)
-    {
-        $this->dep = $dep;
-    }
-    public function jsonAction($req, $res)
-    {
-        return $this->withJsonResponse($res, $this->dep->getStuff());
-    }
-}
-
-class ClassC
-{
-    private $dep;
-    public function __construct(Dep $dep)
-    {
-        $this->dep = $dep;
-    }
-    public function textAction($req, $res)
-    {
-        $body = $res->getBody();
-        $body->write($this->dep->getStuff());
-        return $res->withBody($body);
-    }
-}
+use Asd\Router\{Router, Route, FunctionCallback, MethodCallback};
+use Test\Integration\Fakes\{FakeClass, FakeClassDep, FakeController, FakeDependency};
 
 class AsdTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,18 +22,31 @@ class AsdTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @runInSeparateProcess
      * @test
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
      * @covers Asd\Asd::sendHeaders
      */
-    public function run_withControllerClass_jsonResponse()
+    public function run_method()
     {
-        $this->app->addRoute(new Route('GET', 'path', new MethodCallback('Test\Integration', 'ClassA', 'jsonAction')));
+        $this->app->addRoute(new Route('GET', 'path', new MethodCallback('Test\Integration\Fakes', 'FakeController', 'jsonAction')));
         $this->app->run();
-        $this->expectOutputString(json_encode('Hello World!'));
+        $this->expectOutputString(json_encode('Some value'));
+    }
+
+    /**
+     * @test
+     * @covers Asd\Asd::run
+     * @covers Asd\Asd::dispatch
+     * @covers Asd\Asd::sendResponse
+     * @covers Asd\Asd::sendHeaders
+     */
+    public function run_method_withDependency()
+    {
+        $this->app->addRoute(new Route('GET', 'path', new MethodCallback('Test\Integration\Fakes', 'FakeClassDep', 'action')));
+        $this->app->run();
+        $this->expectOutputString('Some value');
     }
 
     /**
@@ -90,7 +55,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
      */
-    public function run_withAnonymusFunction()
+    public function run_closure()
     {
         $this->app->addRoute(new Route('GET', 'path', new FunctionCallback(function($req, $res){
             $res->getBody()->write('Hi there');
@@ -107,14 +72,14 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
      */
-    public function run_anonymusFunction_withClassInstance()
+    public function run_closure_withClassInstance()
     {
         $this->app->addRoute(new Route('GET', 'path', new FunctionCallback(function($req, $res){
-            $ClassA = new ClassA();
-            return $ClassA->textAction($req, $res);
+            $fake = new FakeClass();
+            return $fake->action($req, $res);
         })));
         $this->app->run();
-        $this->expectOutputString('Hello World!');
+        $this->expectOutputString('Some value');
     }
 
     /**
@@ -123,39 +88,15 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
      */
-    public function run_anonymusFunction_withDependency()
+    public function run_closure_withDependency()
     {
-        $this->app->addRoute(new Route('GET', 'path', new FunctionCallback(function($req, $res, ClassA $class){
-            return $class->textAction($req, $res);
+        $this->app->addRoute(new Route('GET', 'path', new FunctionCallback(function($req, $res, \Test\Integration\Fakes\FakeDependency $dep){
+            $dep->setValue('Hello');
+            $res->getBody()->write($dep->getValue());
+            return $res;
         })));
         $this->app->run();
-        $this->expectOutputString('Hello World!');
-    }
-
-    /**
-     * @test
-     * @covers Asd\Asd::run
-     * @covers Asd\Asd::dispatch
-     * @covers Asd\Asd::sendResponse
-     */
-    public function run_class_withExtend_withDependency()
-    {
-        $this->app->addRoute(new Route('GET', 'path', new MethodCallback('Test\Integration', 'ClassB', 'jsonAction')));
-        $this->app->run();
-        $this->expectOutputString(json_encode('stuff'));
-    }
-
-    /**
-     * @test
-     * @covers Asd\Asd::run
-     * @covers Asd\Asd::dispatch
-     * @covers Asd\Asd::sendResponse
-     */
-    public function run_class_withoutExtend_withDependency()
-    {
-        $this->app->addRoute(new Route('GET', 'path', new MethodCallback('Test\Integration', 'ClassC', 'textAction')));
-        $this->app->run();
-        $this->expectOutputString('stuff');
+        $this->expectOutputString('Hello');
     }
 
 }

@@ -3,22 +3,8 @@
 namespace Test\Integration;
 
 use Asd\Controller;
-use Asd\Http\Response;
-
-class ClassD extends Controller
-{
-    public function jsonAction()
-    {
-        $res = new Response();
-        return $this->withJsonResponse($res, 'Hello World!');
-    }
-
-    public function textAction()
-    {
-        $res = new Response();
-        return $this->withTextResponse($res, 'Hello World!');
-    }
-}
+use Test\Integration\Fakes\FakeController;
+use Asd\Http\{Request, Response};
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,10 +15,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function withJsonResponse()
     {
-        $controller = new ClassD();
-        $response = $controller->jsonAction();
+        $request = new Request();
+        $response = new Response();
+        $controller = new FakeController();
+        $response = $controller->jsonAction($request, $response);
         $this->assertEquals(['application/json;charset=utf-8'], $response->getHeader('Content-Type'));
-        $this->assertEquals(json_encode('Hello World!'), (string)$response->getBody());
+        $this->assertEquals(json_encode('Some value'), (string)$response->getBody());
     }
 
     /**
@@ -41,10 +29,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function withTextResponse()
     {
-        $controller = new ClassD();
-        $response = $controller->textAction();
+        $request = new Request();
+        $response = new Response();
+        $controller = new FakeController();
+        $response = $controller->textAction($request, $response);
         $this->assertEquals(['text/html;charset=utf-8'], $response->getHeader('Content-Type'));
-        $this->assertEquals('Hello World!', (string)$response->getBody());
+        $this->assertEquals('Some value', (string)$response->getBody());
     }
 
 }

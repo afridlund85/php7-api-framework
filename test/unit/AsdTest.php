@@ -12,10 +12,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
     protected $requestStub;
     protected $responseStub;
 
-    /**
-     * @before
-     */
-    public function setup()
+    public function setUp()
     {
         $this->routeStub = $this->getMockBuilder('\\Asd\\Router\\Route')
             ->disableOriginalConstructor()

@@ -1,28 +1,18 @@
 <?php
 declare(strict_types = 1);
 
-namespace Asd;
+namespace Asd\Router;
 
+use Throwable;
+use RuntimeException;
 use InvalidArgumentException;
-use Asd\CallbackInterface;
+use Asd\Router\CallbackInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionFunctionAbstract;
 
 abstract class Callback implements CallbackInterface
 {
-    protected function resolveDependencies(array $dependencies) : array
-    {
-        $resolved = [];
-        foreach ($dependencies as $dependency) {
-            if (!class_exists($dependency)) {
-                throw new InvalidArgumentException('Dependency "' . $dependency . '" does not exist.');
-            }
-            $resolved[] = new $dependency();
-        }
-        return $resolved;
-    }
-
     /**
      * Using the reflection, looks for declared type parameters
      * @param  ReflectionFunctionAbstract $reflection
@@ -41,6 +31,13 @@ abstract class Callback implements CallbackInterface
         return $dependencies;
     }
 
+    /**
+     * Abstract, implement in child classes
+     * @param  RequestInterface  $request
+     * @param  ResponseInterface $response
+     * @param  array             $params
+     * @return ResponseInterface
+     */
     abstract public function invoke(
         RequestInterface $request,
         ResponseInterface $response,
