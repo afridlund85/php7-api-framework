@@ -23,57 +23,72 @@ Presumptions: htaccess configured and PSR-4 autoloading
 
 Define routes with HTTP-method, path and controllerclass + method
 
+**index.php**
 ```
-//index.php
-
 require_once('vendor/autoload.php');
 
 use Asd\Asd;
 use Asd\Router\Route;
+use Asd\FunctionCallback;
+use Asd\MethodCallback;
 
 $app = new Asd();
 
-$app->addRoute(new Route('GET', '/', 'MyApp\Controller\Welcome::start'));
-$app->addRoute(new Route('GET', 'about', 'MyApp\Controller\Welcome::about'));
-$app->addRoute(new Route('post', 'blog', function($req, $res){
+//Controller class extending from Asd\Controller and has dependency to Asd\Session
+$app->addRoute(new Route('GET', '/', new MethodCallback('MyApp\Controllers', 'Welcome', 'start')));
+
+//Just some class with a method
+$app->addRoute(new Route('GET', 'about', new MethodCallback('MyApp', 'SomeClass', 'about')));
+
+//Closure/Anonymus function
+$app->addRoute(new Route('post', 'blog', new FunctionCallback(function($req, $res){
   //do stuff
-  return $this->res;
-}));
-$app->addRoute(new Route('post', 'auth', function($req, $res, Asd\Session $session){
-  //Session handler available through DI
-  return $this->res;
-}));
+  return $this->res; //return response
+})));
+
+//Closure/anonymus function with dependency
+$app->addRoute(new Route('post', 'auth', new FunctionCallback(function($req, $res, Asd\Session $session){
+  //session class automatically injected through DI
+  return $this->res;//return response
+})));
 
 $app->run();
 ```
 
+**MyApp/Controllers/Welcome.php**
 ```
-//MyApp/Controller/Welcome.php
-
-namespace MyApp\controller;
+namespace MyApp\controllers;
 
 use Asd\Controller;
 
 class Welcome extends Controller
 {
-
   public function __construct(Asd\Session $session)
   {
-    //session class automatically available through DI
+    //session class automatically injected through DI
   }
   public function start($req, $res)
   {
     return $res->withJsonResponse('Hello!');
   }
+}
+```
 
+**MyApp/SomeClass.php**
+```
+namespace MyApp;
+
+class SomeClass
+{
   public function about($req, $res)
   {
-    return $res->withJsonResponse(['name' => 'Steve', 'email' => 'steve@email.com']);
+    //do stuff;
+    return $res;
   }
 }
 ```
 
-## Setup Dev
+## Setup Development environment
 
 *Requires PHP7*
 
