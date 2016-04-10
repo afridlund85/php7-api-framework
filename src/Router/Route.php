@@ -1,10 +1,11 @@
 <?php
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Asd\Router;
 
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
+use Asd\CallbackInterface;
 
 /**
  * Represents a single route
@@ -25,7 +26,7 @@ class Route
 
     /**
      * Callback function
-     * @var callable
+     * @var Asd\CallbackInterface
      */
     private $callback;
 
@@ -44,9 +45,9 @@ class Route
     /**
      * Route object that represents a registered route in the application
      * @param string $method HTTP-method
-     * @param string $path   path/uri
+     * @param string $path path/uri
      */
-    public function __construct(string $method, string $path, callable $callback)
+    public function __construct(string $method, string $path, CallbackInterface $callback)
     {
         if (!$this->isValidMethod($method)) {
             throw new InvalidArgumentException('"' . $method . '" is not a valid method.');
@@ -77,9 +78,9 @@ class Route
 
     /**
      * Returns callback
-     * @return callable
+     * @return Asd\CallbackInterface
      */
-    public function getCallback() : callable
+    public function getCallback() : CallbackInterface
     {
         return $this->callback;
     }

@@ -1,10 +1,11 @@
 <?php
-namespace Test\Unit;
+
+namespace Test\Integration;
 
 use Asd\Controller;
 use Asd\Http\Response;
 
-class ClassA extends Controller
+class ClassD extends Controller
 {
     public function jsonAction()
     {
@@ -28,7 +29,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function withJsonResponse()
     {
-        $controller = new ClassA();
+        $controller = new ClassD();
         $response = $controller->jsonAction();
         $this->assertEquals(['application/json;charset=utf-8'], $response->getHeader('Content-Type'));
         $this->assertEquals(json_encode('Hello World!'), (string)$response->getBody());
@@ -40,7 +41,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function withTextResponse()
     {
-        $controller = new ClassA();
+        $controller = new ClassD();
         $response = $controller->textAction();
         $this->assertEquals(['text/html;charset=utf-8'], $response->getHeader('Content-Type'));
         $this->assertEquals('Hello World!', (string)$response->getBody());
