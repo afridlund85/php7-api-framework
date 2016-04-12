@@ -33,20 +33,22 @@ class MethodCallback extends Callback
         ResponseInterface $response,
         array $params = []
     ) : ResponseInterface {
-        $reflection = new ReflectionClass($this->namespace . $this->class);
+        $className = $this->namespace . $this->class;
+        $reflection = new ReflectionClass($className);
         $constructor = $reflection->getConstructor();
 
-        try{
-            $dependencies = $constructor === null ? array() : $this->getDependencies($constructor);
+        try {
+            $dependencies = $constructor === null ?
+                array() : $this->resolveDependencies($constructor);
         } catch (Throwable $e) {
             throw new RuntimeException('Could not resolve dependencies for "'
-                . $this->namespace . $this->class . '"');
+                . $className . '"');
         }
         $class = $reflection->newInstanceArgs($dependencies);
 
         if (!method_exists($class, $this->method)) {
             throw new InvalidArgumentException('Method "' . $this->method
-                . '" does not exist in class "' . $this->class . '"');
+                . '" does not exist in class "' . $className . '"');
         }
 
         return call_user_func_array(

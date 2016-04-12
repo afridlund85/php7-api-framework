@@ -18,7 +18,7 @@ abstract class Callback implements CallbackInterface
      * @param  ReflectionFunctionAbstract $reflection
      * @return string[]
      */
-    protected function getDependencies(ReflectionFunctionAbstract $reflection) : array
+    protected function resolveDependencies(ReflectionFunctionAbstract $reflection) : array
     {
         $dependencies = array();
         foreach ($reflection->getParameters() as $param) {

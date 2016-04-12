@@ -1,4 +1,4 @@
-# Asd(name?) PHP7 API Framework [![Build Status](https://travis-ci.org/afridlund85/php7-api-framework.svg?branch=master)](https://travis-ci.org/afridlund85/php7-api-framework) [![Coverage Status](https://coveralls.io/repos/github/afridlund85/php7-api-framework/badge.svg?branch=master)](https://coveralls.io/github/afridlund85/php7-api-framework?branch=master)
+# Asd(name?) PHP7 API Framework [![Build Status](https://travis-ci.org/afridlund85/php7-api-framework.svg?branch=master)](https://travis-ci.org/afridlund85/php7-api-framework) [![Coverage Status](https://coveralls.io/repos/github/afridlund85/php7-api-framework/badge.png?branch=master)](https://coveralls.io/github/afridlund85/php7-api-framework?branch=master)
 
 PHP7 Framework for API applications.
 

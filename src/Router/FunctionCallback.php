@@ -25,7 +25,7 @@ class FunctionCallback extends Callback
         $reflection = new ReflectionFunction($this->callback);
         $dependencies = array_merge(
             array($request, $response),
-            $this->getDependencies($reflection)
+            $this->resolveDependencies($reflection)
         );
         return call_user_func_array($this->callback, $dependencies);
     }
