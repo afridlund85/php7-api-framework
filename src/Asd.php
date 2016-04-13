@@ -10,6 +10,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Asd\Http\Request;
 use Asd\Http\Response;
+use Asd\Http\Uri;
 use Asd\Router\Router;
 use Asd\Router\Route;
 
