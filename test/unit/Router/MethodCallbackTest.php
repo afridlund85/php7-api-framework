@@ -120,7 +120,7 @@ class MethodCallbackTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers Asd\Router\MethodCallback::__construct
      * @covers Asd\Router\MethodCallback::invoke
-     * @covers Asd\Router\Callback::getDependencies
+     * @covers Asd\Router\Callback::resolveDependencies
      */
     public function invoke_withDependency()
     {

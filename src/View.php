@@ -18,7 +18,7 @@ class View
      */
     public function withTemplate(ResponseInterface $response, string $template, array $data) : ResponseInterface
     {
-        $content = $this->renderTemplate(string $template, array $data);
+        $content = $this->renderTemplate($template, $data);
         $body = $response->getBody();
         $body->write($content);
         return $response->withBody($body);

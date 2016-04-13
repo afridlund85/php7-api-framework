@@ -23,7 +23,7 @@ class FunctionCallbackTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers Asd\Router\FunctionCallback::__construct
      * @covers Asd\Router\FunctionCallback::invoke
-     * @covers Asd\Router\Callback::getDependencies
+     * @covers Asd\Router\Callback::resolveDependencies
      */
     public function invoke()
     {
