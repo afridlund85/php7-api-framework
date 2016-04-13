@@ -57,7 +57,7 @@ class Uri implements UriInterface
         $this->fragment = $fragment ?? '';
     }
 
-    public function withGlobals(array $env = null)
+    public function withGlobals(array $env = null) : self
     {
         $env = $env ?? $_SERVER;
         $clone = clone $this;

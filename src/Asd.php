@@ -47,8 +47,14 @@ class Asd
         ResponseInterface $response = null
     ) {
         $this->router = $router ?? new Router();
-        $this->request = $request ?? new Request();
         $this->response = $response ?? new Response();
+        if ($request !== null) {
+            $this->request = $request;
+        } else {
+            $uri = new Uri();
+            $uri = $uri->withGlobals();
+            $this->request = new Request(null, $uri);
+        }
     }
 
     /**
