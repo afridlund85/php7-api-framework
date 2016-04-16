@@ -5,6 +5,8 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 use Asd\Http\ResponseBody;
+use Asd\Http\ReasonPhrases;
+use Asd\Http\HttpStatus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -26,87 +28,36 @@ use Psr\Http\Message\StreamInterface;
 class Response extends Message implements ResponseInterface
 {
     /**
-     * @var integer
+     * @var HttpStatus
      */
-    protected $statusCode;
-    
-    /**
-     * @var string
-     */
-    protected $reasonPhrase;
+    protected $httpStatus;
     
     /**
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @var string[] http status codes(key) and standard phrases(value)
      */
-    protected static $standardPhrases = [
-        100 => 'Continue',
-        101 => 'Switching Protocols',
-        102 => 'Processing',
-        200 => 'OK',
-        201 => 'Created',
-        202 => 'Accepted',
-        203 => 'Non-Authoritative Information',
-        204 => 'No Content',
-        205 => 'Reset Content',
-        206 => 'Partial Content',
-        207 => 'Multi-Status',
-        208 => 'Already Reported',
-        226 => 'IM Used',
-        300 => 'Multiple Choices',
-        301 => 'Moved Permanently',
-        302 => 'Found',
-        303 => 'See Other',
-        304 => 'Not Modified',
-        305 => 'Use Proxy',
-        306 => '(Unused)',
-        307 => 'Temporary Redirect',
-        308 => 'Permanent Redirect',
-        400 => 'Bad Request',
-        401 => 'Unauthorized',
-        402 => 'Payment Required',
-        403 => 'Forbidden',
-        404 => 'Not Found',
-        405 => 'Method Not Allowed',
-        406 => 'Not Acceptable',
-        407 => 'Proxy Authentication Required',
-        408 => 'Request Timeout',
-        409 => 'Conflict',
-        410 => 'Gone',
-        411 => 'Length Required',
-        412 => 'Precondition Failed',
-        413 => 'Payload Too Large',
-        414 => 'URI Too Long',
-        415 => 'Unsupported Media Type',
-        416 => 'Range Not Satisfiable',
-        417 => 'Expectation Failed',
-        421 => 'Misdirected Request',
-        422 => 'Unprocessable Entity',
-        423 => 'Locked',
-        424 => 'Failed Dependency',
-        426 => 'Upgrade Required',
-        428 => 'Precondition Required',
-        429 => 'Too Many Requests',
-        431 => 'Request Header Fields Too Large',
-        451 => 'Unavailable For Legal Reasons',
-        500 => 'Internal Server Error',
-        501 => 'Not Implemented',
-        502 => 'Bad Gateway',
-        503 => 'Service Unavailable',
-        504 => 'Gateway Timeout',
-        505 => 'HTTP Version Not Supported',
-        506 => 'Variant Also Negotiates',
-        507 => 'Insufficient Storage',
-        508 => 'Loop Detected',
-        510 => 'Not Extended',
-        511 => 'Network Authentication Required',
-    ];
 
-    public function __construct(int $statusCode = 200, string $reasonPhrase = '', StreamInterface $body = null)
-    {
-        $this->validateStatusCode($statusCode);
-        $this->statusCode = $statusCode;
-        $this->reasonPhrase = $this->filterReasonPhrase($reasonPhrase, $statusCode);
+    /**
+     * Reason Phrases
+     * @var ReasonPhrases
+     */
+    protected $reasonPhrases;
+
+    /**
+     * Default HTTP status code
+     */
+    const DEFAULT_STATUS_CODE = 200;
+
+    public function __construct(
+        HttpStatus $httpStatus = null,
+        StreamInterface $body = null,
+        ReasonPhrases $reasonPhrases = null
+    ){
+        $this->reasonPhrases = $reasonPhrases ?? new ReasonPhrases();
+        $this->httpStatus = $httpStatus ??  new HttpStatus(
+            self::DEFAULT_STATUS_CODE,
+            $this->reasonPhrases->getPhrase(self::DEFAULT_STATUS_CODE)
+        );
         $this->body = $body ?? new ResponseBody();
     }
 
@@ -120,7 +71,7 @@ class Response extends Message implements ResponseInterface
      */
     public function getStatusCode() : int
     {
-        return $this->statusCode;
+        return $this->httpStatus->getStatusCode();
     }
 
     /**
@@ -145,17 +96,11 @@ class Response extends Message implements ResponseInterface
      */
     public function withStatus($code, $reasonPhrase = '') : self
     {
-        if (!is_integer($code)) {
-            throw new InvalidArgumentException('code must be an integer.');
+        if ($reasonPhrase === '') {
+            $reasonPhrase = $this->reasonPhrases->getPhrase($code);
         }
-        if (!is_string($reasonPhrase) && !empty($reasonPhrase)) {
-            throw new InvalidArgumentException('reason phrase must be an empty or string value.');
-        }
-        $this->validateStatusCode($code);
-
         $clone = clone $this;
-        $clone->statusCode = $code;
-        $clone->reasonPhrase = $this->filterReasonPhrase($reasonPhrase, $code);
+        $clone->httpStatus = $this->httpStatus->withStatusCode($code)->withPhrase($reasonPhrase);
         return $clone;
     }
 
@@ -174,32 +119,6 @@ class Response extends Message implements ResponseInterface
      */
     public function getReasonPhrase() : string
     {
-        return $this->reasonPhrase;
-    }
-
-    /**
-     * Validate that status code is integer within the correct span
-     * @param  int $statusCode http status code
-     * @return void
-     */
-    private function validateStatusCode(int $statusCode)
-    {
-        if (!is_integer($statusCode) || ($statusCode < 100 || $statusCode > 599)) {
-            throw new InvalidArgumentException('status code must be an integer value between 100 and 599.');
-        }
-    }
-
-    /**
-     * Ensure supplied argument is string and applies standard http phrase for status code if not supplied
-     * @param  string $reasonPhrase
-     * @param  int $statusCode
-     * @return string
-     */
-    private function filterReasonPhrase(string $reasonPhrase, int $statusCode) : string
-    {
-        if ($reasonPhrase === '' && array_key_exists($statusCode, self::$standardPhrases)) {
-            return self::$standardPhrases[$statusCode];
-        }
-        return $reasonPhrase;
+        return $this->httpStatus->getPhrase();
     }
 }

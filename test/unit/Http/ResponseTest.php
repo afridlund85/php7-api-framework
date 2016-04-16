@@ -44,7 +44,6 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Response::withStatus
-     * @covers Asd\Http\Response::filterReasonPhrase
      */
     public function withStatus()
     {
@@ -74,48 +73,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Response::withStatus
-     * @expectedException InvalidArgumentException
-     */
-    public function withStatus_stringValue()
-    {
-        $this->response->withStatus('300');
-    }
-
-    /**
-     * @test
-     * @covers Asd\Http\Response::withStatus
-     * @expectedException InvalidArgumentException
-     */
-    public function withStatus_arrayValue()
-    {
-        $this->response->withStatus([300]);
-    }
-
-    /**
-     * @test
-     * @covers Asd\Http\Response::withStatus
-     * @expectedException InvalidArgumentException
-     */
-    public function withStatus_booleanValue()
-    {
-        $this->response->withStatus(true);
-    }
-
-    /**
-     * @test
-     * @covers Asd\Http\Response::withStatus
-     * @expectedException InvalidArgumentException
-     */
-    public function withStatus_numericPhraseValue()
-    {
-        $this->response->withStatus(300, 250);
-    }
-
-    /**
-     * @test
-     * @covers Asd\Http\Response::withStatus
-     * @covers Asd\Http\Response::validateStatusCode
-     * @expectedException InvalidArgumentException
+     * @expectedException OutOfBoundsException
      */
     public function withStatus_statusCodeTooSmall()
     {
@@ -125,8 +83,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Response::withStatus
-     * @covers Asd\Http\Response::validateStatusCode
-     * @expectedException InvalidArgumentException
+     * @expectedException OutOfBoundsException
      */
     public function withStatus_statusCodeTooBig()
     {

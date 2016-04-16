@@ -48,25 +48,9 @@ class Asd
         ResponseInterface $response = null
     ) {
         $this->router = $router ?? new Router();
+        $uri = new Uri();
+        $this->request = $request ?? new Request(null, $uri->withGlobals());
         $this->response = $response ?? new Response();
-        if ($request !== null) {
-            $this->request = $request;
-        } else {
-            $uri = new Uri();
-            $uri = $uri->withGlobals();
-            $this->request = new Request(null, $uri);
-        }
-    }
-
-    /**
-     * Start the application and process the request
-     * @return void
-     */
-    public function run()
-    {
-        $route = $this->router->matchRequest($this->request);
-        $response = $this->dispatch($route);
-        $this->sendResponse($response);
     }
 
     /**
@@ -87,6 +71,17 @@ class Asd
     public function setBasePath(string $basePath)
     {
         $this->router->setBasePath($basePath);
+    }
+    
+    /**
+     * Start the application and process the request
+     * @return void
+     */
+    public function run()
+    {
+        $route = $this->router->matchRequest($this->request);
+        $response = $this->dispatch($route);
+        $this->sendResponse($response);
     }
 
     /**
