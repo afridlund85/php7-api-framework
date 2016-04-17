@@ -52,13 +52,14 @@ class Response extends Message implements ResponseInterface
         HttpStatus $httpStatus = null,
         StreamInterface $body = null,
         ReasonPhrases $reasonPhrases = null
-    ){
+    ) {
         $this->reasonPhrases = $reasonPhrases ?? new ReasonPhrases();
         $this->httpStatus = $httpStatus ??  new HttpStatus(
             self::DEFAULT_STATUS_CODE,
             $this->reasonPhrases->getPhrase(self::DEFAULT_STATUS_CODE)
         );
-        $this->body = $body ?? new ResponseBody();
+        $body = $body ?? new ResponseBody();
+        parent::__construct($body);
     }
 
     /**

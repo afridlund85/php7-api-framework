@@ -56,7 +56,8 @@ class Request extends Message implements RequestInterface
         $method = $method ?? $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $this->method = $this->validateMethod($method);
         $this->uri = $uri ?? new Uri();
-        $this->body = $body ?? new RequestBody();
+        $body = $body ?? new RequestBody();
+        parent::__construct($body);
     }
 
     /**

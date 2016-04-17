@@ -4,8 +4,13 @@ declare (strict_types = 1);
 namespace Asd\Http;
 
 use InvalidArgumentException;
+use OutOfBoundsException;
+use TypeError;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
+use Asd\Http\HttpHeaders;
+use Asd\Http\HttpHeader;
+use Asd\Http\Stream;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses
@@ -25,12 +30,12 @@ abstract class Message implements MessageInterface
     /**
      * @var string
      */
-    protected $protocolVersion = '1.1';
+    protected $protocolVersion;
 
     /**
-     * @var array
+     * @var HttpHeaders
      */
-    protected $headers = [];
+    protected $httpHeaders;
     
     /**
      * @var Psr\Http\Message\StreamInterface
@@ -40,8 +45,17 @@ abstract class Message implements MessageInterface
     /**
      * @var string[]
      */
-    protected static $validProtocols = ['1.0', '1.1', '2.0'];
-    
+    const VALID_PROTOCOLS = ['1.0', '1.1', '2.0'];
+
+    public function __construct(
+        StreamInterface $body = null,
+        HttpHeaders $httpHeaders = null,
+        string $protocolVersion = '1.1'
+    ) {
+        $this->httpHeaders = $httpHeaders ?? new HttpHeaders();
+        $this->body = $body ?? new Stream(fopen('php://temp', 'r+'));
+        $this->protocolVersion = $protocolVersion;
+    }
     /**
      * Retrieves the HTTP protocol version as a string.
      *
@@ -69,7 +83,7 @@ abstract class Message implements MessageInterface
      */
     public function withProtocolVersion($version) : self
     {
-        if (!in_array($version, self::$validProtocols)) {
+        if (!in_array($version, self::VALID_PROTOCOLS)) {
             throw new InvalidArgumentException('Accepted protocols are 1.0, 1.1 and 2.0.');
         }
         $clone = clone $this;
@@ -104,7 +118,11 @@ abstract class Message implements MessageInterface
      */
     public function getHeaders() : array
     {
-        return $this->headers;
+        $headers = [];
+        foreach ($this->httpHeaders->getAllHeaders() as $header) {
+            $headers[$header->getHeaderName()] = $header->getValues();
+        }
+        return $headers;
     }
 
     /**
@@ -117,16 +135,11 @@ abstract class Message implements MessageInterface
      */
     public function hasHeader($name) : bool
     {
-        $headerNames = array_keys($this->headers);
-        foreach ($headerNames as $headerName) {
-            if (strtolower($headerName) === strtolower(''.$name)) {
-                return true;
-            }
+        try {
+            return $this->httpHeaders->hasHeader($name);
+        } catch (TypeError $e) {
+            //Do nothing, return false
         }
-        // foreach($this->headers as $headerName => $values){
-        //   if(strtolower($headerName) === strtolower($name))
-        //     return true;
-        // }
         return false;
     }
 
@@ -146,10 +159,12 @@ abstract class Message implements MessageInterface
      */
     public function getHeader($name) : array
     {
-        if (!$this->hasHeader($name)) {
-            return [];
+        try {
+            return $this->httpHeaders->getHeader($name)->getValues();
+        } catch (OutOfBoundsException $e) {
+            //do nothing because of PSR7 spec, want empty array
         }
-        return $this->headers[$this->getHeaderName($name)];
+        return [];
     }
 
     /**
@@ -173,11 +188,12 @@ abstract class Message implements MessageInterface
      */
     public function getHeaderLine($name) : string
     {
-        if (!$this->hasHeader($name)) {
-            return '';
+        try {
+            return $this->httpHeaders->getHeader($name)->getHeaderLine();
+        } catch (OutOfBoundsException $e) {
+            //do nothing because of PSR7 spec, wants empty string
         }
-        $name = $this->getHeaderName($name);
-        return implode(',', $this->headers[$name]);
+        return '';
     }
 
     /**
@@ -197,16 +213,22 @@ abstract class Message implements MessageInterface
      */
     public function withHeader($name, $value = []) : self
     {
-        if (!is_string($name)) {
-            throw new InvalidArgumentException('header name must be a string.');
-        }
-        $this->validateHeaderValue($value);
+        try {
+            $value = is_array($value) ? $value : [$value];
+            if (!$this->hasHeader($name)) {
+                $header = new HttpHeader($name, $value);
+            } else {
+                $header = $this->httpHeaders->getHeader($name);
+                $header = $header->withValues($value);
+            }
 
-        $value = is_array($value) ? $value : [$value];
-        $clone = clone $this;
-        $name = $this->getHeaderName($name);
-        $clone->headers[$name] = $value;
-        return $clone;
+            $clone = clone $this;
+            $clone->httpHeaders = $this->httpHeaders->addHeader($header);
+            return $clone;
+        } catch (TypeError $e) {
+            throw new InvalidArgumentException();
+        }
+        
     }
 
     /**
@@ -223,23 +245,18 @@ abstract class Message implements MessageInterface
      * @param string $name Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      * @return self
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withAddedHeader($name, $value = []) : self
     {
-        if (!is_string($name)) {
-            throw new InvalidArgumentException('header name must be a string.');
-        }
+        $value = is_array($value) ? $value : [$value];
         if (!$this->hasHeader($name)) {
             return $this->withHeader($name, $value);
         }
 
-        $this->validateHeaderValue($value);
-
-        $value = is_array($value) ? $value : [$value];
+        $header = $this->httpHeaders->getHeader($name)->withAddedValues($value);
         $clone = clone $this;
-        $name = $this->getHeaderName($name);
-        $clone->headers[$name] = array_merge($clone->headers[$name], $value);
+        $clone->httpHeaders = $this->httpHeaders->addHeader($header);
         return $clone;
     }
 
@@ -261,8 +278,7 @@ abstract class Message implements MessageInterface
         if (!$this->hasHeader($name)) {
             return $clone;
         }
-        $name = $this->getHeaderName($name);
-        unset($clone->headers[$name]);
+        $clone->httpHeaders = $this->httpHeaders->removeHeader($name);
         return $clone;
     }
 
@@ -294,40 +310,5 @@ abstract class Message implements MessageInterface
         $clone = clone $this;
         $clone->body = $body;
         return $clone;
-    }
-
-    /**
-     * Validates header value parameter, MUST be: string[] or string
-     * @throws InvalidArgumentException value is not a string or value is not an Array of strings
-     */
-    private function validateHeaderValue($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $val) {
-                if (!is_string($val)) {
-                    throw new InvalidArgumentException('When value is an array, it must only contain strings.');
-                }
-            }
-        } else {
-            if (!is_string($value)) {
-                throw new InvalidArgumentException('value must be a string or an array of strings.');
-            }
-        }
-    }
-
-    /**
-     * Get case-insensitive header name, use hasHeader()
-     * @param  string $name case-insensitive name of header
-     * @return string headerName with existing case-sensitive value, param $name
-     */
-    private function getHeaderName($name) : string
-    {
-        $headerNames = array_keys($this->headers);
-        foreach ($headerNames as $headerName) {
-            if (strtolower(''.$headerName) === strtolower($name)) {
-                return $headerName;
-            }
-        }
-        return $name;
     }
 }

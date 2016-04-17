@@ -84,7 +84,7 @@ class TemplateView
 
     /**
      * Validate that supplied data is assoc array
-     * @param  array $data 
+     * @param  array $data
      * @return void
      */
     private function validateData(array $data)

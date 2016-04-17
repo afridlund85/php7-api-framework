@@ -103,8 +103,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Message::withHeader
-     * @covers Asd\Http\Message::validateHeaderValue
-     * @covers Asd\Http\Message::getHeaderName
+     * @covers Asd\Http\Message::getHeaders
      */
     public function withHeader()
     {
@@ -137,7 +136,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Message::withHeader
-     * @covers Asd\Http\Message::validateHeaderValue
      * @expectedException InvalidArgumentException
      */
     public function withHeader_intHeaderValue()
@@ -148,7 +146,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Message::withHeader
-     * @covers Asd\Http\Message::validateHeaderValue
      * @expectedException InvalidArgumentException
      */
     public function withHeader_intArrayHeaderValue()
@@ -159,7 +156,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Message::getHeader
-     * @covers Asd\Http\Message::getHeaderName
+     * @covers Asd\Http\Message::getHeaders
      */
     public function getHeader()
     {
@@ -187,8 +184,16 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers Asd\Http\Message::hasHeader
+     */
+    public function hasHeader_withInvalidArgument()
+    {
+        $this->assertFalse($this->message->hasHeader(123));
+    }
+
+    /**
+     * @test
      * @covers Asd\Http\Message::getHeaderLine
-     * @covers Asd\Http\Message::getHeaderName
      */
     public function getHeaderLine()
     {
@@ -196,7 +201,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('y', $message->getHeaderLine('x'));
 
         $message = $message->withHeader('a', ['b', 'c', 'def']);
-        $this->assertEquals('b,c,def', $message->getHeaderLine('a'));
+        $this->assertEquals('b, c, def', $message->getHeaderLine('a'));
 
         $this->assertEquals('', $message->getHeaderLine('invalidKey'));
     }
@@ -204,8 +209,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Message::withAddedHeader
-     * @covers Asd\Http\Message::validateHeaderValue
-     * @covers Asd\Http\Message::getHeaderName
+     * @covers Asd\Http\Message::getHeaders
      */
     public function withAddedHeader()
     {
@@ -214,13 +218,13 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['x' => ['y', 'z']], $message->getHeaders());
         $this->assertEquals(['y', 'z'], $message->getHeader('x'));
-        $this->assertEquals('y,z', $message->getHeaderLine('x'));
+        $this->assertEquals('y, z', $message->getHeaderLine('x'));
 
         $message = $message->withAddedHeader('x', ['a', 'b']);
 
         $this->assertEquals(['x' => ['y', 'z', 'a', 'b']], $message->getHeaders());
         $this->assertEquals(['y', 'z', 'a', 'b'], $message->getHeader('x'));
-        $this->assertEquals('y,z,a,b', $message->getHeaderLine('x'));
+        $this->assertEquals('y, z, a, b', $message->getHeaderLine('x'));
     }
 
     /**
@@ -230,13 +234,25 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function withAddedHeader_invalidHeader()
     {
-        $message = $this->message->withAddedHeader(123, 'value');
+        $message = $this->message->withHeader('headername', 'y');
+        $message->withAddedHeader([123], 'value');
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Message::withAddedHeader
+     * @expectedException InvalidArgumentException
+     */
+    public function withAddedHeader_invalidValue()
+    {
+        $message = $this->message->withHeader('headername', 'y');
+        $message->withAddedHeader('headername', 123);
     }
 
     /**
      * @test
      * @covers Asd\Http\Message::withoutHeader
-     * @covers Asd\Http\Message::getHeaderName
+     * @covers Asd\Http\Message::getHeaders
      */
     public function withoutHeader()
     {

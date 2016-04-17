@@ -100,7 +100,7 @@ class ReasonPhrases
     public function withAddedPhrases(array $reasonPhrases)
     {
         $clone = clone $this;
-        $clone->reasonPhrases = array_merge($this->reasonPhrases, $reasonPhrases);
+        $clone->reasonPhrases = $reasonPhrases + $this->reasonPhrases;
         return $clone;
     }
 }
