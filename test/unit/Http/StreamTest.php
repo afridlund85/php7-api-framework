@@ -95,6 +95,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Stream::isWritable
+     * @covers Asd\Http\Stream::isMatchingMode
      * @covers Asd\Http\Stream::getMetadata
      */
     public function isWritable()
@@ -110,6 +111,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Stream::isReadable
+     * @covers Asd\Http\Stream::isMatchingMode
      * @covers Asd\Http\Stream::getMetadata
      */
     public function isReadable()

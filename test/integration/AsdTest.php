@@ -23,6 +23,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @runInSeparateProcess
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
@@ -54,6 +55,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
+     * @covers Asd\Asd::sendHeaders
      */
     public function run_closure()
     {
@@ -71,6 +73,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
+     * @covers Asd\Asd::sendHeaders
      */
     public function run_closure_withClassInstance()
     {
@@ -87,6 +90,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
+     * @covers Asd\Asd::sendHeaders
      */
     public function run_closure_withDependency()
     {

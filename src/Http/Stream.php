@@ -16,8 +16,14 @@ use Psr\Http\Message\StreamInterface;
  */
 class Stream implements StreamInterface
 {
-
+    /**
+     * Resource for strean
+     * @var resrouce
+     */
     protected $resource;
+
+    const WRITABLE_MODES = ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'];
+    const READABLE_MODES = ['r', 'r+', 'w+', 'a+', 'x+', 'c+'];
 
     /**
      * @link http://php.net/manual/en/language.types.resource.php
@@ -184,15 +190,8 @@ class Stream implements StreamInterface
             return false;
         }
 
-        $modes = ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'];
         $mode = $this->getMetadata('mode');
-        foreach ($modes as $m) {
-            if (strpos($mode, $m) !== false) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->isMatchingMode(self::WRITABLE_MODES, $mode);
     }
 
     /**
@@ -223,13 +222,19 @@ class Stream implements StreamInterface
         if (!is_resource($this->resource)) {
             return false;
         }
-        
-        $modes = ['r', 'r+', 'w+', 'a+', 'x+', 'c+'];
-
-        //modes can contain extra characters depending on system
-        //http://php.net/manual/en/function.fopen.php
-        //return in_array($this->getMetadata('mode'), $modes);
         $mode = $this->getMetadata('mode');
+        return $this->isMatchingMode(self::READABLE_MODES, $mode);
+    }
+
+    /**
+     * Modes can contain extra characters depending on system
+     * @link(http://php.net/manual/en/function.fopen.php, php.net)
+     * @param  array   $modes [description]
+     * @param  string  $mode  [description]
+     * @return boolean        [description]
+     */
+    private function isMatchingMode(array $modes, string $mode) : bool
+    {
         foreach ($modes as $m) {
             if (strpos($mode, $m) !== false) {
                 return true;
