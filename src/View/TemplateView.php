@@ -66,7 +66,7 @@ class TemplateView
     {
         $this->validateData($data);
         $clone = clone $this;
-        $clone->data = array_merge($this->data, $data);
+        $clone->data = $data + $this->data;
         return $clone;
     }
 

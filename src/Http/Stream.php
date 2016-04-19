@@ -22,7 +22,16 @@ class Stream implements StreamInterface
      */
     protected $resource;
 
+    /**
+     * Strings representing stream modes accepted for writing
+     * @var string[]
+     */
     const WRITABLE_MODES = ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'];
+
+    /**
+     * Strings representing stream modes accepted for reading
+     * @var string[]
+     */
     const READABLE_MODES = ['r', 'r+', 'w+', 'a+', 'x+', 'c+'];
 
     /**
