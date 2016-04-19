@@ -4,31 +4,31 @@ namespace Asd\Collections;
 
 trait IteratorTrait
 {
-    private $iteratorArray;
-    private $iteratorPosition;
+    private $array;
+    private $position;
     
     public function rewind()
     {
-        $this->iteratorPosition = 0;
+        $this->position = 0;
     }
 
     public function current()
     {
-        return $this->iteratorArray[$this->iteratorPosition];
+        return $this->array[$this->position];
     }
 
     public function key()
     {
-        return $this->iteratorPosition;
+        return $this->position;
     }
 
     public function next()
     {
-        $this->iteratorPosition += 1;
+        $this->position += 1;
     }
 
     public function valid()
     {
-        return isset($this->iteratorArray[$this->iteratorPosition]);
+        return isset($this->array[$this->position]);
     }
 }

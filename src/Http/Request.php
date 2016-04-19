@@ -4,10 +4,10 @@ declare (strict_types = 1);
 namespace Asd\Http;
 
 use InvalidArgumentException;
-use Asd\Http\RequestBody;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
+use Asd\Http\RequestBody;
 
 /**
  * Representation of an outgoing, client-side request.

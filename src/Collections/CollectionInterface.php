@@ -3,6 +3,7 @@
 namespace Asd\Collections;
 
 use Iterator;
+use Chainable;
 
 interface CollectionInterface extends Iterator
 {

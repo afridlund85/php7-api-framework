@@ -5,20 +5,20 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 
-class HttpStatus
+class Status
 {
-    private $statusCode;
+    private $code;
     private $phrase;
-    public function __construct(int $statusCode, string $phrase)
+    public function __construct(int $code, string $phrase)
     {
-        $this->validateStatusCode($statusCode);
-        $this->statusCode = $statusCode;
+        $this->validateStatusCode($code);
+        $this->code = $code;
         $this->phrase = $phrase;
     }
 
     public function getStatusCode() : int
     {
-        return $this->statusCode;
+        return $this->code;
     }
 
     public function getPhrase() : string
@@ -26,24 +26,24 @@ class HttpStatus
         return $this->phrase;
     }
 
-    public function withStatusCode(int $statusCode)
+    public function withStatusCode(int $code) : self
     {
-        $this->validateStatusCode($statusCode);
+        $this->validateStatusCode($code);
         $clone = clone $this;
-        $clone->statusCode = $statusCode;
+        $clone->code = $code;
         return $clone;
     }
 
-    public function withPhrase(string $phrase)
+    public function withPhrase(string $phrase) : self
     {
         $clone = clone $this;
         $clone->phrase = $phrase;
         return $clone;
     }
 
-    private function validateStatusCode(int $statusCode)
+    private function validateStatusCode(int $code)
     {
-        if (!is_integer($statusCode) || ($statusCode < 100 || $statusCode > 599)) {
+        if (!is_integer($code) || ($code < 100 || $code > 599)) {
             throw new InvalidArgumentException('status statusCode must be an integer value between 100 and 599.');
         }
     }

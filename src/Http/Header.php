@@ -5,20 +5,21 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 
-class HttpHeader
+class Header
 {
-    private $headerName;
+    private $name;
     private $values;
 
-    public function __construct(string $headerName, array $values = [])
+    public function __construct(string $name, array $values = [])
     {
-        $this->headerName = $headerName;
-        $this->values = $this->filterValues($values);
+        $this->validateValues($values);
+        $this->name = $name;
+        $this->values = $values;
     }
 
-    public function getHeaderName() : string
+    public function getName() : string
     {
-        return $this->headerName;
+        return $this->name;
     }
 
     public function getValues() : array
@@ -31,39 +32,40 @@ class HttpHeader
         return implode(', ', $this->values);
     }
 
-    public function withHeaderName(string $headerName) : self
+    public function withName(string $name) : self
     {
         $clone = clone $this;
-        $clone->headerName = $headerName;
+        $clone->name = $name;
         return $clone;
     }
 
     public function withValues(array $values) : self
     {
+        $this->validateValues($values);
         $clone = clone $this;
-        $clone->values = $this->filterValues($values);
+        $clone->values = $values;
         return $clone;
     }
 
     public function withAddedValues(array $values) : self
     {
+        $this->validateValues($values);
         $clone = clone $this;
-        $clone->values = array_merge($this->values, $this->filterValues($values));
+        $clone->values = array_merge($this->values, $values);
         return $clone;
     }
 
     public function __toString() : string
     {
-        return $this->headerName . ': ' . $this->getHeaderLine();
+        return $this->name . ': ' . $this->getHeaderLine();
     }
 
-    private function filterValues(array $values) : array
+    private function validateValues(array $values)
     {
         foreach ($values as $value) {
             if (!is_string($value)) {
                 throw new InvalidArgumentException();
             }
         }
-        return $values;
     }
 }

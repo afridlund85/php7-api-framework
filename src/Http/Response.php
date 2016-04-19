@@ -4,11 +4,12 @@ declare (strict_types = 1);
 namespace Asd\Http;
 
 use InvalidArgumentException;
-use Asd\Http\ResponseBody;
-use Asd\Http\ReasonPhrases;
-use Asd\Http\HttpStatus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Asd\Http\ResponseBody;
+use Asd\Http\ReasonPhrases;
+use Asd\Http\Status;
+
 
 /**
  * Representation of an outgoing, server-side response.
@@ -28,7 +29,7 @@ use Psr\Http\Message\StreamInterface;
 class Response extends Message implements ResponseInterface
 {
     /**
-     * @var HttpStatus
+     * @var Status
      */
     protected $httpStatus;
     
@@ -49,12 +50,12 @@ class Response extends Message implements ResponseInterface
     const DEFAULT_STATUS_CODE = 200;
 
     public function __construct(
-        HttpStatus $httpStatus = null,
+        Status $status = null,
         StreamInterface $body = null,
         ReasonPhrases $reasonPhrases = null
     ) {
         $this->reasonPhrases = $reasonPhrases ?? new ReasonPhrases();
-        $this->httpStatus = $httpStatus ??  new HttpStatus(
+        $this->httpStatus = $status ??  new Status(
             self::DEFAULT_STATUS_CODE,
             $this->reasonPhrases->getPhrase(self::DEFAULT_STATUS_CODE)
         );
