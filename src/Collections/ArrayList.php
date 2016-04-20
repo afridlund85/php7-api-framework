@@ -4,6 +4,8 @@ namespace Asd\Collections;
 
 use OutOfBoundsException;
 use Asd\Collections\CollectionInterface;
+use Asd\Collections\ListInterface;
+use Asd\Collections\Collection;
 use Asd\Collections\IteratorTrait;
 
 /**
@@ -12,13 +14,13 @@ use Asd\Collections\IteratorTrait;
  * Does not allow gaps in indexes.
  * Mutations always return cloned version with changes.
  */
-abstract class ArrayList implements CollectionInterface
+abstract class ArrayList extends Collection implements ListInterface
 {
     /**
      * Trait with iterator methods
      */
     use IteratorTrait {
-        rewind as traitRewind;
+        rewind as IteratorRewind;
     }
 
     /**
@@ -28,14 +30,14 @@ abstract class ArrayList implements CollectionInterface
      */
     public function rewind()
     {
-        $this->array = $this->list;
-        $this->traitRewind();
+        $this->iteratorArray = $this->list;
+        $this->IteratorRewind();
     }
 
     protected $size = 0;
     protected $list = [];
 
-    public function add($obj) : CollectionInterface
+    public function add($obj) : ListInterface
     {
         $clone = clone $this;
         $clone->list[$clone->size] = $obj;
@@ -43,7 +45,7 @@ abstract class ArrayList implements CollectionInterface
         return $clone;
     }
 
-    public function addAt($obj, int $index) : CollectionInterface
+    public function addAt($obj, int $index) : ListInterface
     {
         if ($index < 0 && $index >= $this->size()) {
             throw new OutOfBoundsException('The index does not exists');
@@ -62,13 +64,18 @@ abstract class ArrayList implements CollectionInterface
         return $this->list[$this->size];
     }
 
+    public function toArray() : array
+    {
+        return $this->list;
+    }
+
     /**
      * Removed element should shift the elements folloing it to the left, hence
      * the unset into array_values
      * @param int $index
-     * @return CollectionInterface
+     * @return ListInterface
      */
-    public function remove($index) : CollectionInterface
+    public function remove($index) : ListInterface
     {
         if ($index < 0 && $index >= $this->size()) {
             throw new OutOfBoundsException('The index does not exists');
@@ -80,26 +87,17 @@ abstract class ArrayList implements CollectionInterface
         return $clone;
     }
 
-    public function contains($obj) : bool
-    {
-        return in_array($obj, $this->list);
-    }
-
-    public function clear()
+    public function clear() : ListInterface
     {
         $clone = clone $this;
         unset($clone->list);
+        $clone->size = 0;
         return $clone;
     }
 
-    public function size() : int
+    public function contains($obj) : bool
     {
-        return $this->size;
-    }
-
-    public function isEmpty() : bool
-    {
-        return $this->size === 0;
+        return in_array($obj, $this->list);
     }
 
     public function indexOf($obj) : int

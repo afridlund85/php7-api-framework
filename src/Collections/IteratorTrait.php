@@ -4,7 +4,7 @@ namespace Asd\Collections;
 
 trait IteratorTrait
 {
-    private $array;
+    private $iteratorArray;
     private $position;
     
     public function rewind()
@@ -14,7 +14,7 @@ trait IteratorTrait
 
     public function current()
     {
-        return $this->array[$this->position];
+        return $this->iteratorArray[$this->position];
     }
 
     public function key()
@@ -29,6 +29,6 @@ trait IteratorTrait
 
     public function valid()
     {
-        return isset($this->array[$this->position]);
+        return isset($this->iteratorArray[$this->position]);
     }
 }
