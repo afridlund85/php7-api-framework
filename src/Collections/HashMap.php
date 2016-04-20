@@ -2,6 +2,7 @@
 
 namespace Asd\Collections;
 
+use OutOfBoundsException;
 use Asd\Collections\CollectionInterface;
 use Asd\Collections\MapInterface;
 use Asd\Collections\IteratorTrait;
@@ -31,12 +32,18 @@ abstract class HashMap extends Collection implements MapInterface
 
     public function put($key, $obj) : MapInterface
     {
-        $this->size++;
+        $clone = clone $this;
+        $clone->map[$key] = $obj;
+        $clone->size = $this->containsKey($key) ? $clone->size : $clone->size+1;
+        return $clone;
     }
 
     public function get($key)
     {
-
+        if (!$this->containsKey()) {
+            throw new OutOfBoundsException('The key does not exists');
+        }
+        return $this->map[$key];
     }
     
     public function toArray() : array
@@ -46,8 +53,13 @@ abstract class HashMap extends Collection implements MapInterface
     
     public function remove($key) : MapInterface
     {
+        if (!$this->containsKey()) {
+            throw new OutOfBoundsException('The key does not exists');
+        }
         $clone = clone $this;
+        unset($clone->map[$key]);
         $clone->size--;
+        return $clone;
     }
     
     public function clear() : MapInterface
@@ -60,12 +72,11 @@ abstract class HashMap extends Collection implements MapInterface
 
     public function containsKey($key) : bool
     {
-
+        return array_key_exists($key, $this->map);
     }
 
     public function containsValue($obj) : bool
     {
-
+        return in_array($obj, $this->toArray());
     }
-    
 }

@@ -2,7 +2,7 @@
 
 namespace Asd\Collections;
 
-use OutOfBoundsException;
+use OutOfRangeException;
 use Asd\Collections\CollectionInterface;
 use Asd\Collections\ListInterface;
 use Asd\Collections\Collection;
@@ -48,7 +48,7 @@ abstract class ArrayList extends Collection implements ListInterface
     public function addAt($obj, int $index) : ListInterface
     {
         if ($index < 0 && $index >= $this->size()) {
-            throw new OutOfBoundsException('The index does not exists');
+            throw new OutOfRangeException('The index does not exists');
         }
         $clone = clone $this;
         $clone->list[] = $obj;
@@ -59,7 +59,7 @@ abstract class ArrayList extends Collection implements ListInterface
     public function get($index)
     {
         if ($index < 0 && $index >= $this->size()) {
-            throw new OutOfBoundsException('The index does not exists');
+            throw new OutOfRangeException('The index does not exists');
         }
         return $this->list[$this->size];
     }
@@ -78,7 +78,7 @@ abstract class ArrayList extends Collection implements ListInterface
     public function remove($index) : ListInterface
     {
         if ($index < 0 && $index >= $this->size()) {
-            throw new OutOfBoundsException('The index does not exists');
+            throw new OutOfRangeException('The index does not exists');
         }
         $clone = clone $this;
         unset($clone->list[$index]);

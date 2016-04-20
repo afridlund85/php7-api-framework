@@ -10,7 +10,6 @@ use Asd\Http\ResponseBody;
 use Asd\Http\ReasonPhrases;
 use Asd\Http\Status;
 
-
 /**
  * Representation of an outgoing, server-side response.
  *
