@@ -7,7 +7,7 @@ use Asd\Collections\CollectionInterface;
 use Asd\Collections\MapInterface;
 use Asd\Collections\IteratorTrait;
 
-abstract class HashMap extends Collection implements MapInterface
+class HashMap extends Collection implements MapInterface
 {
     /**
      * Trait with iterator methods
@@ -28,19 +28,19 @@ abstract class HashMap extends Collection implements MapInterface
     }
 
     protected $map = [];
-    protected $size = 0;
 
     public function put($key, $obj) : MapInterface
     {
+        $size = $this->containsKey($key) ? $this->size : $this->size + 1; 
         $clone = clone $this;
         $clone->map[$key] = $obj;
-        $clone->size = $this->containsKey($key) ? $clone->size : $clone->size+1;
+        $clone->size = $size;
         return $clone;
     }
 
     public function get($key)
     {
-        if (!$this->containsKey()) {
+        if (!$this->containsKey($key)) {
             throw new OutOfBoundsException('The key does not exists');
         }
         return $this->map[$key];
@@ -53,7 +53,7 @@ abstract class HashMap extends Collection implements MapInterface
     
     public function remove($key) : MapInterface
     {
-        if (!$this->containsKey()) {
+        if (!$this->containsKey($key)) {
             throw new OutOfBoundsException('The key does not exists');
         }
         $clone = clone $this;

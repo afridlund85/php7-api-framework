@@ -6,6 +6,7 @@ use Asd\Collections\CollectionInterface;
 
 abstract class Collection implements CollectionInterface
 {
+    protected $size = 0;
     public function size() : int
     {
         return $this->size;

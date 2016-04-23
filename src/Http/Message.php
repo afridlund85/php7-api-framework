@@ -8,9 +8,10 @@ use OutOfBoundsException;
 use TypeError;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
-use Asd\Http\Headers;
 use Asd\Http\Header;
 use Asd\Http\Stream;
+use Asd\Collections\MapInterface;
+use Asd\Collections\HashMap;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses
@@ -33,9 +34,9 @@ abstract class Message implements MessageInterface
     protected $protocolVersion;
 
     /**
-     * @var Headers
+     * @var MapInterface
      */
-    protected $httpHeaders;
+    protected $headers;
     
     /**
      * @var Psr\Http\Message\StreamInterface
@@ -49,10 +50,10 @@ abstract class Message implements MessageInterface
 
     public function __construct(
         StreamInterface $body = null,
-        Headers $httpHeaders = null,
+        MapInterface $headers = null,
         string $protocolVersion = '1.1'
     ) {
-        $this->httpHeaders = $httpHeaders ?? new Headers();
+        $this->headers = $headers ?? new HashMap();
         $this->body = $body ?? new Stream(fopen('php://temp', 'r+'));
         $this->protocolVersion = $protocolVersion;
     }
@@ -119,7 +120,7 @@ abstract class Message implements MessageInterface
     public function getHeaders() : array
     {
         $headers = [];
-        foreach ($this->httpHeaders->all() as $header) {
+        foreach ($this->headers as $header) {
             $headers[$header->getName()] = $header->getValues();
         }
         return $headers;
@@ -135,10 +136,8 @@ abstract class Message implements MessageInterface
      */
     public function hasHeader($name) : bool
     {
-        try {
-            return $this->httpHeaders->contains($name);
-        } catch (TypeError $e) {
-            //Do nothing, return false
+        if (is_string($name)) {
+            return $this->headers->containsKey($name);
         }
         return false;
     }
@@ -160,7 +159,7 @@ abstract class Message implements MessageInterface
     public function getHeader($name) : array
     {
         try {
-            return $this->httpHeaders->get($name)->getValues();
+            return $this->headers->get($name)->getValues();
         } catch (OutOfBoundsException $e) {
             //do nothing because of PSR7 spec, want empty array
         }
@@ -189,7 +188,7 @@ abstract class Message implements MessageInterface
     public function getHeaderLine($name) : string
     {
         try {
-            return $this->httpHeaders->get($name)->getHeaderLine();
+            return $this->headers->get($name)->getHeaderLine();
         } catch (OutOfBoundsException $e) {
             //do nothing because of PSR7 spec, wants empty string
         }
@@ -218,12 +217,11 @@ abstract class Message implements MessageInterface
             if (!$this->hasHeader($name)) {
                 $header = new Header($name, $value);
             } else {
-                $header = $this->httpHeaders->get($name);
-                $header = $header->withValues($value);
+                $header = $this->headers->get($name)->withValues($value);
             }
 
             $clone = clone $this;
-            $clone->httpHeaders = $this->httpHeaders->add($header);
+            $clone->headers = $this->headers->put($header->getName(), $header);
             return $clone;
         } catch (TypeError $e) {
             throw new InvalidArgumentException();
@@ -254,9 +252,9 @@ abstract class Message implements MessageInterface
             return $this->withHeader($name, $value);
         }
 
-        $header = $this->httpHeaders->get($name)->withAddedValues($value);
+        $header = $this->headers->get($name)->withAddedValues($value);
         $clone = clone $this;
-        $clone->httpHeaders = $this->httpHeaders->add($header);
+        $clone->headers = $this->headers->put($header->getName(), $header);
         return $clone;
     }
 
@@ -278,7 +276,7 @@ abstract class Message implements MessageInterface
         if (!$this->hasHeader($name)) {
             return $clone;
         }
-        $clone->httpHeaders = $this->httpHeaders->remove($name);
+        $clone->headers = $this->headers->remove($name);
         return $clone;
     }
 

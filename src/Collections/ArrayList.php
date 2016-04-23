@@ -14,7 +14,7 @@ use Asd\Collections\IteratorTrait;
  * Does not allow gaps in indexes.
  * Mutations always return cloned version with changes.
  */
-abstract class ArrayList extends Collection implements ListInterface
+class ArrayList extends Collection implements ListInterface
 {
     /**
      * Trait with iterator methods
@@ -34,7 +34,6 @@ abstract class ArrayList extends Collection implements ListInterface
         $this->IteratorRewind();
     }
 
-    protected $size = 0;
     protected $list = [];
 
     public function add($obj) : ListInterface
