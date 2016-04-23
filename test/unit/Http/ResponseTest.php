@@ -89,5 +89,26 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $this->response->withStatus(600);
     }
-    
+
+    /**
+     * @test
+     * @covers Asd\Http\Response::withJson
+     */
+    public function withJsonResponse()
+    {
+        $response = $this->response->withJson(['Some value']);
+        $this->assertEquals(['application/json;charset=utf-8'], $response->getHeader('Content-Type'));
+        $this->assertEquals(json_encode(['Some value']), (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     * @covers Asd\Http\Response::withText
+     */
+    public function withTextResponse()
+    {
+        $response = $this->response->withText('Some value');
+        $this->assertEquals(['text/html;charset=utf-8'], $response->getHeader('Content-Type'));
+        $this->assertEquals('Some value', (string)$response->getBody());
+    }
 }

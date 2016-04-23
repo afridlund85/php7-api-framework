@@ -50,7 +50,7 @@ class Asd
         $this->router = $router ?? new Router();
         $uri = new Uri();
         $this->request = $request ?? new Request(null, $uri->withGlobals());
-        $this->response = $response ?? new AsdResponse();
+        $this->response = $response ?? new Response();
     }
 
     /**

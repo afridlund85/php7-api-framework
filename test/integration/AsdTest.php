@@ -4,7 +4,7 @@ namespace Test\Integration;
 
 use InvalidArgumentException;
 use Asd\Asd;
-use Asd\Http\{Request, AsdResponse, Uri};
+use Asd\Http\{Request, Response, Uri};
 use Asd\Router\{Router, Route, FunctionCallback, MethodCallback};
 use Test\Integration\Fakes\{FakeClass, FakeClassDep, FakeDependency};
 
@@ -17,7 +17,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
         $uri = new Uri();
         $uri = $uri->withPath('path');
         $request = new Request('GET', $uri);
-        $response = new AsdResponse();
+        $response = new Response();
         $this->app = new Asd($router, $request, $response);
     }
 
