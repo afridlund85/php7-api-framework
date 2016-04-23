@@ -74,7 +74,7 @@ class TemplateView
      * Using output buffer to process template and its data
      * @return string
      */
-    private function render() : string
+    public function render() : string
     {
         ob_start();
         extract($this->data);
