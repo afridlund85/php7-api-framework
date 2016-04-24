@@ -31,7 +31,7 @@ abstract class Message implements MessageInterface
     /**
      * @var string
      */
-    protected $protocolVersion;
+    protected $protocolVersion = '1.1';
 
     /**
      * @var MapInterface
@@ -48,14 +48,9 @@ abstract class Message implements MessageInterface
      */
     const VALID_PROTOCOLS = ['1.0', '1.1', '2.0'];
 
-    public function __construct(
-        StreamInterface $body = null,
-        MapInterface $headers = null,
-        string $protocolVersion = '1.1'
-    ) {
+    public function __construct(MapInterface $headers = null)
+    {
         $this->headers = $headers ?? new HashMap();
-        $this->body = $body ?? new Stream(fopen('php://temp', 'r+'));
-        $this->protocolVersion = $protocolVersion;
     }
     /**
      * Retrieves the HTTP protocol version as a string.
@@ -226,7 +221,6 @@ abstract class Message implements MessageInterface
         } catch (TypeError $e) {
             throw new InvalidArgumentException();
         }
-        
     }
 
     /**

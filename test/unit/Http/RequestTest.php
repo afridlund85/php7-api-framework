@@ -9,6 +9,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     protected $request;
     protected $uriStub;
     protected $requestBodyStub;
+    protected $headersStub;
 
     public function setUp()
     {
@@ -18,7 +19,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->requestBodyStub = $this->getMockBuilder('\\Asd\\Http\\RequestBody')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->request = new Request('GET', $this->uriStub, $this->requestBodyStub);
+        $this->headersStub = $this->getMockBuilder('\\Asd\\Http\\Headers')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->request = new Request('GET', $this->uriStub, $this->requestBodyStub, $this->headersStub);
     }
 
     /**
@@ -56,6 +60,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function withUri()
     {
+        $headerStub = $this->getMockBuilder('\\Asd\\Http\\Header')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $headerStub->method('getValues')->willReturn(['host.com']);
+        $this->headersStub->method('containsKey')->willReturn(false);
+        $this->headersStub->method('put')->willReturn($this->headersStub);
+        $this->headersStub->method('get')->willReturn($headerStub);
+
         $uriMock = $this->getMockBuilder('\\Asd\\Http\\Uri')
             ->disableOriginalConstructor()
             ->getMock();
@@ -65,7 +77,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($uriMock, $request->getUri());
         $this->assertSame($uriMock, $request->getUri());
 
-        $this->assertTrue($request->hasHeader('Host'));
         $this->assertEquals(['host.com'], $request->getHeader('Host'));
     }
 
@@ -75,6 +86,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function withUri_preserveHost_noPreviousHost_uriWithHost()
     {
+        $headerStub = $this->getMockBuilder('\\Asd\\Http\\Header')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $headerStub->method('getValues')->willReturn(['host.com']);
+        $this->headersStub->method('containsKey')->willReturn(false);
+        $this->headersStub->method('put')->willReturn($this->headersStub);
+        $this->headersStub->method('get')->willReturn($headerStub);
+
         $uriMock = $this->getMockBuilder('\\Asd\\Http\\Uri')
             ->disableOriginalConstructor()
             ->getMock();
@@ -83,8 +102,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $request = $this->request->withUri($uriMock, true);
 
         $this->assertFalse($this->request->hasHeader('Host'));
-        $this->assertTrue($request->hasHeader('Host'));
-        $this->assertEquals([], $this->request->getHeader('Host'));
         $this->assertEquals(['host.com'], $request->getHeader('Host'));
     }
 
@@ -94,6 +111,17 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function withUri_preserveHost_hasPreviousHost_uriWithHost()
     {
+        $headerStub = $this->getMockBuilder('\\Asd\\Http\\Header')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $headerStub->method('withValues')->willReturn($headerStub);
+        $headerStub->method('getName')->willReturn('Host');
+        $headerStub->method('getValues')->willReturn(['firsthost.io']);
+
+        $this->headersStub->method('containsKey')->willReturn(true);
+        $this->headersStub->method('put')->willReturn($this->headersStub);
+        $this->headersStub->method('get')->willReturn($headerStub);
+
         $uriMock = $this->getMockBuilder('\\Asd\\Http\\Uri')
             ->disableOriginalConstructor()->getMock();
         $uriMock->method('getHost')->willReturn('host.com');
@@ -101,7 +129,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $request = $this->request->withHeader('Host', 'firsthost.io');
         $request = $request->withUri($uriMock, true);
 
-        $this->assertTrue($request->hasHeader('Host'));
         $this->assertEquals(['firsthost.io'], $request->getHeader('Host'));
     }
 
@@ -111,6 +138,17 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function withUri_preserveHost_hasPreviousHost_uriWithoutHost()
     {
+        $headerStub = $this->getMockBuilder('\\Asd\\Http\\Header')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $headerStub->method('withValues')->willReturn($headerStub);
+        $headerStub->method('getName')->willReturn('Host');
+        $headerStub->method('getValues')->willReturn(['firsthost.io']);
+        
+        $this->headersStub->method('containsKey')->willReturn(true);
+        $this->headersStub->method('put')->willReturn($this->headersStub);
+        $this->headersStub->method('get')->willReturn($headerStub);
+        
         $uriMock = $this->getMockBuilder('\\Asd\\Http\\Uri')
             ->disableOriginalConstructor()->getMock();
 
@@ -188,7 +226,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('PUT', $request->getMethod());
 
         $request = $this->request->withMethod('delete');
-        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('delete', $request->getMethod());
     }
 
     /**

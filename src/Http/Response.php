@@ -6,9 +6,11 @@ namespace Asd\Http;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Asd\Collections\MapInterface;
 use Asd\Http\ResponseBody;
 use Asd\Http\ReasonPhrases;
 use Asd\Http\Status;
+use Asd\Http\Headers;
 
 /**
  * Representation of an outgoing, server-side response.
@@ -51,6 +53,7 @@ class Response extends Message implements ResponseInterface
     public function __construct(
         Status $status = null,
         StreamInterface $body = null,
+        MapInterface $headers = null,
         ReasonPhrases $reasonPhrases = null
     ) {
         $this->reasonPhrases = $reasonPhrases ?? new ReasonPhrases();
@@ -58,8 +61,8 @@ class Response extends Message implements ResponseInterface
             self::DEFAULT_STATUS_CODE,
             $this->reasonPhrases->getPhrase(self::DEFAULT_STATUS_CODE)
         );
-        $body = $body ?? new ResponseBody();
-        parent::__construct($body);
+        $this->body = $body ?? new ResponseBody();
+        $this->headers = $headers ?? new Headers();
     }
 
     /**

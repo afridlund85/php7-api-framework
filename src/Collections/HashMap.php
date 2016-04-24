@@ -31,7 +31,7 @@ class HashMap extends Collection implements MapInterface
 
     public function put($key, $obj) : MapInterface
     {
-        $size = $this->containsKey($key) ? $this->size : $this->size + 1; 
+        $size = $this->containsKey($key) ? $this->size : $this->size + 1;
         $clone = clone $this;
         $clone->map[$key] = $obj;
         $clone->size = $size;

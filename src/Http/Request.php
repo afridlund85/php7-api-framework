@@ -7,7 +7,9 @@ use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
+use Asd\Collections\MapInterface;
 use Asd\Http\RequestBody;
+use Asd\Http\Headers;
 
 /**
  * Representation of an outgoing, client-side request.
@@ -46,18 +48,34 @@ class Request extends Message implements RequestInterface
      */
     protected $uri;
 
+    const VALID_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+
     /**
      * @param string            $method
      * @param UriInterface|null $uri
      * @param RequestBody|null  $body
      */
-    public function __construct(string $method = null, UriInterface $uri = null, StreamInterface $body = null)
-    {
+    public function __construct(
+        string $method = null,
+        UriInterface $uri = null,
+        StreamInterface $body = null,
+        MapInterface $headers = null
+    ) {
         $method = $method ?? $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $this->method = $this->validateMethod($method);
-        $this->uri = $uri ?? new Uri();
-        $body = $body ?? new RequestBody();
-        parent::__construct($body);
+        $this->body = $body ?? new RequestBody();
+
+        if ($uri === null) {
+            $uri = new Uri();
+            $uri = $uri->withGlobals();
+        }
+        $this->uri = $uri;
+        
+        if ($headers === null) {
+            $headers = new Headers();
+            $headers = $headers->withGlobals();
+        }
+        $this->headers = $headers;
     }
 
     /**
@@ -209,9 +227,7 @@ class Request extends Message implements RequestInterface
      */
     private function validateMethod(string $method) : string
     {
-        $method = strtoupper($method);
-        $valid = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
-        if (!in_array($method, $valid)) {
+        if (!in_array(strtoupper($method), self::VALID_METHODS)) {
             throw new InvalidArgumentException('Invalid http method');
         }
         return $method;
