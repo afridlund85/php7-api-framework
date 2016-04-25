@@ -2,7 +2,7 @@
 namespace Test\Unit;
 
 use Asd\Http\RequestBody;
-use Test\Unit\StreamStub;
+use Test\Fakes\StreamStub;
 
 class RequestBody extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +33,7 @@ class RequestBody extends \PHPUnit_Framework_TestCase
      */
     public function constructor_withValidStream()
     {
-        stream_wrapper_register('requestBody', '\Test\Unit\StreamStub');
+        stream_wrapper_register('requestBody', '\Test\Fakes\StreamStub');
         $streamStub = fopen('requestBody://requestBody', 'r+');
         $requestBody = new RequestBody($streamStub);
         $this->assertEquals($streamStub, $requestBody->detach());

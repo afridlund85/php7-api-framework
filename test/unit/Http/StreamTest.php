@@ -2,7 +2,7 @@
 namespace Test\Unit;
 
 use Asd\Http\Stream;
-use Test\Unit\StreamStub;
+use Test\Fakes\StreamStub;
 
 class StreamTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        stream_wrapper_register('streamTester', '\Test\Unit\StreamStub');
+        stream_wrapper_register('streamTester', '\Test\Fakes\StreamStub');
         $this->streamStub = fopen('streamTester://readwrite', 'r+');
         $this->readStreamStub = fopen('streamTester://readonly', 'r');
         $this->writeStreamStub = fopen('streamTester://writeonly', 'w');

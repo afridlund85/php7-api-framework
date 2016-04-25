@@ -1,5 +1,5 @@
 <?php
-namespace Test\Integration\Fakes;
+namespace Test\Fakes;
 
 class FakeClassDep
 {

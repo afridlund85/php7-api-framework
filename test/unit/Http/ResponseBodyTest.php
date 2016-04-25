@@ -2,7 +2,7 @@
 namespace Test\Unit;
 
 use Asd\Http\ResponseBody;
-use Test\Unit\StreamStub;
+use Test\Fakes\StreamStub;
 
 class ResponseBody extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +33,7 @@ class ResponseBody extends \PHPUnit_Framework_TestCase
      */
     public function constructor_withValidStream()
     {
-        stream_wrapper_register('responseBody', '\Test\Unit\StreamStub');
+        stream_wrapper_register('responseBody', '\Test\Fakes\StreamStub');
         $streamStub = fopen('responseBody://responseBody', 'r+');
         $responseBody = new ResponseBody($streamStub);
         $this->assertEquals($streamStub, $responseBody->detach());

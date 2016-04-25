@@ -1,5 +1,5 @@
 <?php
-namespace Test\Unit;
+namespace Test\Fakes;
 
 class StreamStub
 {
