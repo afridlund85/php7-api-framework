@@ -10,7 +10,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Asd\Http\Request;
 use Asd\Http\Response;
-use Asd\Http\Uri;
 use Asd\Router\Router;
 use Asd\Router\Route;
 
@@ -48,8 +47,7 @@ class Asd
         ResponseInterface $response = null
     ) {
         $this->router = $router ?? new Router();
-        $uri = new Uri();
-        $this->request = $request ?? new Request(null, $uri->withGlobals());
+        $this->request = $request ?? new Request();
         $this->response = $response ?? new Response();
     }
 

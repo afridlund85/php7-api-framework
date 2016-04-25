@@ -33,11 +33,11 @@ class StatusTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers Asd\Http\Status::getStatusCode
+     * @covers Asd\Http\Status::getCode
      */
     public function getStatusCode()
     {
-        $this->assertEquals(200, $this->status->getStatusCode());
+        $this->assertEquals(200, $this->status->getCode());
     }
 
     /**
@@ -51,23 +51,23 @@ class StatusTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers Asd\Http\Status::withStatusCode
+     * @covers Asd\Http\Status::withCode
      */
     public function withStatusCode()
     {
-        $newStatus = $this->status->withStatusCode(201);
-        $this->assertEquals(201, $newStatus->getStatusCode());
+        $newStatus = $this->status->withCode(201);
+        $this->assertEquals(201, $newStatus->getCode());
         $this->assertNotSame($newStatus, $this->status);
     }
 
     /**
      * @test
-     * @covers Asd\Http\Status::withStatusCode
+     * @covers Asd\Http\Status::withCode
      * @expectedException InvalidArgumentException
      */
     public function withStatusCode_invalidValue()
     {
-        $this->status->withStatusCode(99);
+        $this->status->withCode(99);
     }
 
     /**

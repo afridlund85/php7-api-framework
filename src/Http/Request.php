@@ -64,18 +64,9 @@ class Request extends Message implements RequestInterface
         $method = $method ?? $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $this->method = $this->validateMethod($method);
         $this->body = $body ?? new RequestBody();
-
-        if ($uri === null) {
-            $uri = new Uri();
-            $uri = $uri->withGlobals();
-        }
-        $this->uri = $uri;
+        $this->uri = $uri ?? (new Uri())->withGlobals();
+        $this->headers = $headers ?? (new Headers())->withGlobals();
         
-        if ($headers === null) {
-            $headers = new Headers();
-            $headers = $headers->withGlobals();
-        }
-        $this->headers = $headers;
     }
 
     /**

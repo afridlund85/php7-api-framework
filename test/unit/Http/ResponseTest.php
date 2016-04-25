@@ -73,7 +73,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Response::withStatus
-     * @expectedException OutOfBoundsException
+     * @expectedException InvalidArgumentException
      */
     public function withStatus_statusCodeTooSmall()
     {
@@ -83,7 +83,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers Asd\Http\Response::withStatus
-     * @expectedException OutOfBoundsException
+     * @expectedException InvalidArgumentException
      */
     public function withStatus_statusCodeTooBig()
     {

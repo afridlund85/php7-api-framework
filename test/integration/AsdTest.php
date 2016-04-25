@@ -23,7 +23,6 @@ class AsdTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @runInSeparateProcess
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse
@@ -52,6 +51,7 @@ class AsdTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @runInSeparateProcess
      * @covers Asd\Asd::run
      * @covers Asd\Asd::dispatch
      * @covers Asd\Asd::sendResponse

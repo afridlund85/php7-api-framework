@@ -9,14 +9,15 @@ class Status
 {
     private $code;
     private $phrase;
-    public function __construct(int $code, string $phrase)
+    
+    public function __construct(int $code, string $phrase = '')
     {
-        $this->validateStatusCode($code);
+        $this->validateCode($code);
         $this->code = $code;
         $this->phrase = $phrase;
     }
 
-    public function getStatusCode() : int
+    public function getCode() : int
     {
         return $this->code;
     }
@@ -26,9 +27,9 @@ class Status
         return $this->phrase;
     }
 
-    public function withStatusCode(int $code) : self
+    public function withCode(int $code) : self
     {
-        $this->validateStatusCode($code);
+        $this->validateCode($code);
         $clone = clone $this;
         $clone->code = $code;
         return $clone;
@@ -41,7 +42,7 @@ class Status
         return $clone;
     }
 
-    private function validateStatusCode(int $code)
+    private function validateCode(int $code)
     {
         if (!is_integer($code) || ($code < 100 || $code > 599)) {
             throw new InvalidArgumentException('status statusCode must be an integer value between 100 and 599.');
