@@ -46,21 +46,25 @@ class ArrayList extends Collection implements ListInterface
 
     public function addAt($obj, int $index) : ListInterface
     {
-        if ($index < 0 && $index >= $this->size()) {
+        if ($index < 0 || $index >= $this->size()) {
             throw new OutOfRangeException('The index does not exists');
         }
         $clone = clone $this;
+        $clone->list = array_slice($this->list, 0, $index, true);
         $clone->list[] = $obj;
+        if (isset($this->list[$index])) {
+            $clone->list = array_merge($clone->list, array_slice($this->list, $index));
+        }
         $clone->size++;
         return $clone;
     }
 
-    public function get($index)
+    public function get(int $index)
     {
-        if ($index < 0 && $index >= $this->size()) {
+        if ($index < 0 || $index >= $this->size()) {
             throw new OutOfRangeException('The index does not exists');
         }
-        return $this->list[$this->size];
+        return $this->list[$index];
     }
 
     public function toArray() : array
@@ -74,9 +78,9 @@ class ArrayList extends Collection implements ListInterface
      * @param int $index
      * @return ListInterface
      */
-    public function remove($index) : ListInterface
+    public function remove(int $index) : ListInterface
     {
-        if ($index < 0 && $index >= $this->size()) {
+        if ($index < 0 || $index >= $this->size()) {
             throw new OutOfRangeException('The index does not exists');
         }
         $clone = clone $this;
@@ -89,7 +93,7 @@ class ArrayList extends Collection implements ListInterface
     public function clear() : ListInterface
     {
         $clone = clone $this;
-        unset($clone->list);
+        $clone->list = [];
         $clone->size = 0;
         return $clone;
     }

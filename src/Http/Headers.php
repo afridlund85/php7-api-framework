@@ -29,21 +29,21 @@ class Headers extends HashMap implements MapInterface
             if (substr($key, 0, 5) === 'HTTP_') {
                 $name = str_replace('_', ' ', strtolower(substr($key, 5)));
                 $name = str_replace(' ', '-', ucwords($name));
-                $content = explode(';', $value);
+                $content = explode(',', $value);
             } elseif (array_key_exists($key, self::CONTENT_KEYS)) {
                 $name = self::CONTENT_KEYS[$key];
                 $content = [$value];
             } elseif (in_array($key, self::AUTH_KEYS)) {
                 $name = 'Authorization';
                 if ($key === 'PHP_AUTH_USER') {
-                    $content = 'Basic ' . base64_encode($value . ':' . ($env['PHP_AUTH_PW'] ?? ''));
+                    $content = ['Basic ' . base64_encode($value . ':' . ($env['PHP_AUTH_PW'] ?? ''))];
                 } else {
                     $content = [$value];
                 }
             }
             if ($name !== null && $content !== null) {
                 $header = new Header($name, $content);
-                $clone = $clone->put($headerName, $header);
+                $clone = $clone->put($name, $header);
             }
         }
         return $clone;

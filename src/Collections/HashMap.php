@@ -65,7 +65,7 @@ class HashMap extends Collection implements MapInterface
     public function clear() : MapInterface
     {
         $clone = clone $this;
-        unset($clone->map);
+        $clone->map = [];
         $clone->size = 0;
         return $clone;
     }
