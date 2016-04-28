@@ -5,7 +5,7 @@ namespace Asd\Collections;
 /**
  * This trait is based on the PHP Iterator interface.
  * @link http://php.net/manual/en/class.iterator.php
- * 
+ *
  * It can be included in Collections to allow them to work with foreach.
  * Depending on the structure of the collection, some methods may have to be
  * overridden and/or called from the collection implementation.
@@ -19,7 +19,7 @@ trait IteratorTrait
     private $iteratorArray;
 
     /**
-     * Current position of iteration 
+     * Current position of iteration.
      * @var [type]
      */
     private $position;

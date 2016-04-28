@@ -11,7 +11,7 @@ class HashMap extends Collection implements MapInterface
 {
     /**
      * Trait with iterator methods, must "override" rewrite in order to supply
-     * an array that can be iterated. Wont work with key value array. 
+     * an array that can be iterated. Wont work with key value array.
      */
     use IteratorTrait{
         rewind as IteratorRewind;

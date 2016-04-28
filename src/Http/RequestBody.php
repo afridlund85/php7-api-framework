@@ -10,7 +10,7 @@ class RequestBody extends Stream
     /**
      * Default behaviour for Request Body Streams.
      * Opens a new stream for the response but also copies the content of
-     * php://input to fill the stream with potential content from client.  
+     * php://input to fill the stream with potential content from client.
      * @param [type] $resource [description]
      */
     public function __construct($resource = null)

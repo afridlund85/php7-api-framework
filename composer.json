@@ -38,7 +38,11 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --testsuite All",
+        "test": [
+            "@unit",
+            "@integration",
+            "@sniff"
+        ],
         "unit": "./vendor/bin/phpunit --testsuite Unit",
         "integration": "./vendor/bin/phpunit --testsuite Integration",
         "system": "./vendor/bin/phpunit --testsuite System",

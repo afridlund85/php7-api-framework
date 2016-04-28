@@ -21,7 +21,7 @@ class Header
 
     /**
      * @param string $name header name
-     * @param string[] $values array of strings with header values 
+     * @param string[] $values array of strings with header values
      */
     public function __construct(string $name, array $values = [])
     {
@@ -50,7 +50,7 @@ class Header
 
     /**
      * return header values as comma separated string
-     * @return string 
+     * @return string
      */
     public function getHeaderLine() : string
     {

@@ -6,6 +6,10 @@ namespace Asd\View;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Allows a template PHP files to be parsed with data and returned as a string
+ * for later use or added to a PSR7 Response object.
+ */
 class TemplateView
 {
     /**
@@ -85,7 +89,7 @@ class TemplateView
     /**
      * Render content of template and write it to response body.
      * Does not remove previous body content.
-     * @param  ResponseInterface $response 
+     * @param  ResponseInterface $response
      * @return ResponseInterface
      */
     public function renderToReponse(ResponseInterface $response) : ResponseInterface
