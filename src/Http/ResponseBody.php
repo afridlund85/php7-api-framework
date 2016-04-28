@@ -7,7 +7,10 @@ use InvalidArgumentException;
 
 class ResponseBody extends Stream
 {
-
+    /**
+     * Simply adds a default stream source for the ResponseBody if none is supplied
+     * @param resource A stream resurce 
+     */
     public function __construct($resource = null)
     {
         if (!is_resource($resource) && $resource !== null) {

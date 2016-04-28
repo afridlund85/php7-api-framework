@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Asd\View;
 
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 
 class TemplateView
 {
@@ -25,9 +26,7 @@ class TemplateView
      */
     public function __construct(string $template, array $data = [])
     {
-        if (!file_exists($template)) {
-            throw new InvalidArgumentException('Template file "' . $template . '" not found.');
-        }
+        $this->validateTemplate($template);
         $this->validateData($data);
         $this->template = $template;
         $this->data = $data;
@@ -39,6 +38,7 @@ class TemplateView
      */
     public function withTemplate(string $template) : self
     {
+        $this->validateTemplate($template);
         $clone = clone $this;
         $clone->template = $template;
         return $clone;
@@ -83,14 +83,41 @@ class TemplateView
     }
 
     /**
+     * Render content of template and write it to response body.
+     * Does not remove previous body content.
+     * @param  ResponseInterface $response 
+     * @return ResponseInterface
+     */
+    public function renderToReponse(ResponseInterface $response) : ResponseInterface
+    {
+        $body = $reponse->getBody();
+        $body->write($this->render());
+        return $response->withBody($body);
+    }
+
+    /**
      * Validate that supplied data is assoc array
      * @param  array $data
      * @return void
+     * @throws InvalidArgumentException
      */
     private function validateData(array $data)
     {
         if (array_values($data) !== $data) {
             throw new InvalidArgumentException('supplied data is not associative array');
+        }
+    }
+
+    /**
+     * Validate that template file exists
+     * @param  string $template path to template file
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public function validateTemplate(string $template)
+    {
+        if (!file_exists($template)) {
+            throw new InvalidArgumentException('Template file "' . $template . '" not found.');
         }
     }
 }

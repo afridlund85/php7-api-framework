@@ -5,9 +5,22 @@ namespace Asd\Http;
 
 use InvalidArgumentException;
 
+/**
+ * Represent a HTTP status with a status code and a reason phrase
+ * ex: 200 OK or 403 Forbidden
+ */
 class Status
 {
+    /**
+     * Http status code
+     * @var int
+     */
     private $code;
+
+    /**
+     * Http reason phrase
+     * @var string
+     */
     private $phrase;
     
     public function __construct(int $code, string $phrase = '')
@@ -17,16 +30,30 @@ class Status
         $this->phrase = $phrase;
     }
 
+    /**
+     * return http status code
+     * @return int
+     */
     public function getCode() : int
     {
         return $this->code;
     }
 
+    /**
+     * Return reason phrase
+     * @return string
+     */
     public function getPhrase() : string
     {
         return $this->phrase;
     }
 
+    /**
+     * Change status code.
+     * Is immutable, returns clone
+     * @param int $code http status code
+     * @return self
+     */
     public function withCode(int $code) : self
     {
         $this->validateCode($code);
@@ -35,6 +62,12 @@ class Status
         return $clone;
     }
 
+    /**
+     * Change reason phrase.
+     * Is imutable, retuns clone.
+     * @param string $phrase Reason phrase
+     * @return self
+     */
     public function withPhrase(string $phrase) : self
     {
         $clone = clone $this;
@@ -42,6 +75,12 @@ class Status
         return $clone;
     }
 
+    /**
+     * Validate that status code is within accepted range
+     * @param int $code int value between 100 and 599
+     * @return void
+     * @throws InvalidArgumentException
+     */
     private function validateCode(int $code)
     {
         if (!is_integer($code) || ($code < 100 || $code > 599)) {

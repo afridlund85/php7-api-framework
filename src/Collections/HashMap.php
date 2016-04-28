@@ -10,7 +10,8 @@ use Asd\Collections\IteratorTrait;
 class HashMap extends Collection implements MapInterface
 {
     /**
-     * Trait with iterator methods
+     * Trait with iterator methods, must "override" rewrite in order to supply
+     * an array that can be iterated. Wont work with key value array. 
      */
     use IteratorTrait{
         rewind as IteratorRewind;
@@ -18,7 +19,7 @@ class HashMap extends Collection implements MapInterface
 
     /**
      * Iterator rewind method, defines what collection to iterate by assigning
-     * $this->array in the Iterator trait to the list
+     * $this->map in the Iterator trait to the list
      * @return void
      */
     public function rewind()

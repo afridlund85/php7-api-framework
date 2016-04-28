@@ -7,17 +7,29 @@ use Asd\Collections\HashMap;
 
 class Headers extends HashMap implements MapInterface
 {
+    /**
+     * Special keys for HTTP headers in _SERVER global regarding content
+     */
     const CONTENT_KEYS = [
         'CONTENT_LENGTH' => 'Content-Length',
         'CONTENT_TYPE' => 'Content-Type',
         'CONTENT_MD5' => 'Content-Md5'
     ];
 
+    /**
+     * Special keys for HTTP headers in _SERVER global regarding authorization
+     */
     const AUTH_KEYS = [
         'REDIRECT_HTTP_AUTHORIZATION',
         'PHP_AUTH_USER',
         'PHP_AUTH_DIGEST'
     ];
+
+    /**
+     * Create a collection of Asd\Http\Header from global _SERVER or supplied array of header values.
+     * @param  array|null $env Headers as assoc array
+     * @return self
+     */
     public function withGlobals(array $env = null) : self
     {
         $env = $env ?? $_SERVER;
