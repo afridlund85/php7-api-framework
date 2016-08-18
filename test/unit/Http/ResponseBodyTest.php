@@ -4,7 +4,7 @@ namespace Test\Unit;
 use Asd\Http\ResponseBody;
 use Test\Fakes\StreamStub;
 
-class ResponseBody extends \PHPUnit_Framework_TestCase
+class ResponseBodyTest extends \PHPUnit_Framework_TestCase
 {
 
     /**

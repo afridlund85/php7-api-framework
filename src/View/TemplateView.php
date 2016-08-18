@@ -107,7 +107,7 @@ class TemplateView
      */
     private function validateData(array $data)
     {
-        if (array_values($data) !== $data) {
+        if (array_values($data) === $data) {
             throw new InvalidArgumentException('supplied data is not associative array');
         }
     }
