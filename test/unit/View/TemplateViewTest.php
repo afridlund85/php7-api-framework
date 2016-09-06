@@ -2,6 +2,7 @@
 namespace Test\Unit;
 
 use Asd\View\TemplateView;
+use Asd\Http\Response;
 use InvalidArgumentException;
 
 class TemplateViewTest extends \PHPUnit_Framework_TestCase
@@ -104,5 +105,29 @@ class TemplateViewTest extends \PHPUnit_Framework_TestCase
         $output = $templateView->render();
         $expected = '<div>fake valuefake value 2</div>';
         $this->assertEquals($output, $expected);
+    }
+
+    /**
+     * @test
+     * @covers Asd\View\TemplateView::renderToReponse
+     * @covers Asd\View\TemplateView::render
+     */
+    public function renderToReponse()
+    {
+        $bodyMock = $this->getMockBuilder('\\Asd\\Http\\ResponseBody')
+            ->setMethods(['write'])
+            ->getMock();
+
+        $bodyMock->expects($this->once())
+            ->method('write')
+            ->with($this->equalTo('<div>fake valuefake response body value</div>'));
+
+        $responseStub = $this->getMockBuilder('\\Asd\\Http\\Response')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $responseStub->method('getBody')->willReturn($bodyMock);
+        $responseStub->method('withBody')->willReturn($responseStub);
+        $templateView = $this->templateView->withAddedData(['key2' => 'fake response body value']);
+        $templateView->renderToReponse($responseStub);
     }
 }

@@ -66,7 +66,6 @@ class Request extends Message implements RequestInterface
         $this->body = $body ?? new RequestBody();
         $this->uri = $uri ?? (new Uri())->withGlobals();
         $this->headers = $headers ?? (new Headers())->withGlobals();
-        
     }
 
     /**

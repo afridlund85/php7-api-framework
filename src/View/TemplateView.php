@@ -94,7 +94,7 @@ class TemplateView
      */
     public function renderToReponse(ResponseInterface $response) : ResponseInterface
     {
-        $body = $reponse->getBody();
+        $body = $response->getBody();
         $body->write($this->render());
         return $response->withBody($body);
     }
